@@ -3,26 +3,12 @@ import { loginCustomer, registerCustomer } from '../services/api';
 
 export default function LoginPage({ onAuthSuccess }) {
   const [isRegister, setIsRegister] = useState(false);
-  const [email, setEmail] = useState('pushpak.bajanghate@example.com');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-  // Quick preset accounts for seamless educational testing
-  const demoAccounts = [
-    { label: 'Pushpak Bajanghate', email: 'pushpak.bajanghate@example.com' },
-    { label: 'Virat Kohli', email: 'virat.kohli@example.com' },
-    { label: 'Pranav Tapdiya', email: 'pranav.tapdiya@example.com' },
-  ];
-
-  const handleSelectDemo = (acc) => {
-    setEmail(acc.email);
-    setPassword('password123');
-    setIsRegister(false);
-    setError('');
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +18,7 @@ export default function LoginPage({ onAuthSuccess }) {
     try {
       if (isRegister) {
         await registerCustomer(name, email, phone, password);
-        // After registration, auto-login
+        // After dynamic registration, dynamically authenticate
         const loginData = await loginCustomer(email, password);
         onAuthSuccess(loginData.access_token, loginData.customer);
       } else {
@@ -62,44 +48,10 @@ export default function LoginPage({ onAuthSuccess }) {
         </h2>
         <p style={{ margin: 0, color: '#64748b', fontSize: '14px' }}>
           {isRegister
-            ? 'Sign up to test AI-driven personalized customer support'
-            : 'Sign in to access your orders and chat with support'}
+            ? 'Sign up to access AI-powered customer support'
+            : 'Sign in to access support and manage your requests'}
         </p>
       </div>
-
-      {!isRegister && (
-        <div style={{
-          marginBottom: '20px',
-          padding: '12px',
-          backgroundColor: '#f8fafc',
-          borderRadius: '8px',
-          border: '1px solid #e2e8f0'
-        }}>
-          <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 600, display: 'block', marginBottom: '6px' }}>
-            Quick Demo Accounts:
-          </span>
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-            {demoAccounts.map((acc) => (
-              <button
-                key={acc.email}
-                type="button"
-                onClick={() => handleSelectDemo(acc)}
-                style={{
-                  fontSize: '11px',
-                  padding: '4px 8px',
-                  backgroundColor: email === acc.email ? '#e0e7ff' : '#ffffff',
-                  color: email === acc.email ? '#3730a3' : '#475569',
-                  border: '1px solid #cbd5e1',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
-                }}
-              >
-                {acc.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
 
       {error && (
         <div style={{
@@ -127,7 +79,7 @@ export default function LoginPage({ onAuthSuccess }) {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Pushpak Bajanghate"
+                placeholder="Enter your full name"
                 style={{
                   width: '100%',
                   padding: '10px 12px',
@@ -147,7 +99,7 @@ export default function LoginPage({ onAuthSuccess }) {
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+91-9823011223"
+                placeholder="Enter phone number"
                 style={{
                   width: '100%',
                   padding: '10px 12px',
@@ -170,7 +122,7 @@ export default function LoginPage({ onAuthSuccess }) {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="customer@example.com"
+            placeholder="name@example.com"
             style={{
               width: '100%',
               padding: '10px 12px',
@@ -225,7 +177,7 @@ export default function LoginPage({ onAuthSuccess }) {
       </form>
 
       <div style={{ marginTop: '18px', textAlign: 'center', fontSize: '13px', color: '#64748b' }}>
-        {isRegister ? 'Already registered?' : "Don't have an account?"}{' '}
+        {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
         <button
           type="button"
           onClick={() => {

@@ -23,7 +23,7 @@ def send_chat_message(
     4. Receives model response
     5. Returns response to customer
     """
-    ai_response = generate_support_response(current_customer, payload.message)
+    ai_response = generate_support_response(payload.message)
 
     return ChatMessageResponse(
         response=ai_response,

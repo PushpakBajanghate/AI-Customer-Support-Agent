@@ -204,6 +204,28 @@ def seed_database(db_url: str = None):
             session.add(ticket)
 
         session.commit()
+
+        # In PostgreSQL, synchronize primary key sequences to max(id) so dynamic inserts succeed
+        if target_url.startswith("postgresql"):
+            print("Synchronizing PostgreSQL primary key sequences...")
+            from sqlalchemy import text
+            tables = [
+                "customers", "products", "orders", "order_items",
+                "shipments", "returns", "refunds", "support_tickets"
+            ]
+            for table in tables:
+                try:
+                    session.execute(text(f"""
+                        SELECT setval(
+                            pg_get_serial_sequence('{table}', 'id'),
+                            COALESCE((SELECT MAX(id) FROM {table}), 1),
+                            (SELECT MAX(id) IS NOT NULL FROM {table})
+                        );
+                    """))
+                except Exception as seq_err:
+                    print(f"Notice: sequence for {table} not updated: {seq_err}")
+            session.commit()
+
         print("Successfully seeded all database tables!")
 
     except Exception as e:

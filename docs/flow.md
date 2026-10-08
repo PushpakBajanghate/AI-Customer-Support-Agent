@@ -220,57 +220,95 @@ React Client (ChatPage.jsx)
        │ 13. Resets loading state & automatically scrolls to bottom
 ```
 
-## Conversational LLM Flow (Phase 4)
+## Conversational LLM Flow (Phase 4 — Dynamic Runtime Google Gemini)
 
-In Phase 4, the `/chat` route connects directly to the configured language model (Google Gemini) with customer context and safety instructions:
+In Phase 4, the `/chat` route connects directly to the live Google Gemini API (`LLM_MODEL`) using credentials configured in `.env`.
+
+> [!IMPORTANT]
+> **Dynamic Runtime Guarantee:**
+> Chat messages and assistant responses are generated dynamically at runtime. No conversation messages or LLM responses are hardcoded.
+
+### Step-by-Step Runtime Message Lifecycle
 
 ```
-Customer (React Client)
+User enters message
+  │
+  ▼
+React captures actual input (ChatPage.jsx)
+  │
+  ▼
+JWT + actual message sent to FastAPI (POST /chat)
+  │
+  ▼
+FastAPI verifies JWT (get_current_customer dependency)
+  │
+  ▼
+FastAPI identifies authenticated customer (PostgreSQL lookup)
+  │
+  ▼
+FastAPI sends actual message to Gemini (via LangChain ChatGoogleGenerativeAI)
+  │
+  ▼
+Gemini dynamically generates response (conditioned on system prompt)
+  │
+  ▼
+FastAPI returns actual response (HTTP 200 ChatMessageResponse)
+  │
+  ▼
+React displays response (dynamically renders assistant message bubble)
+```
+
+```
+[Customer Browser / React Chat UI]
        │
-       │ 1. Submits chat message with JWT Authorization header
+       │ 1. User enters real message into input field (e.g. "I want to return my shoes")
+       │ 2. Submits via Enter or Send button; React captures actual input into state
+       │ 3. Dispatches POST /chat with Bearer JWT header and dynamic message payload
        ▼
-FastAPI `/chat` Endpoint
+[FastAPI Backend /chat Endpoint]
        │
-       │ 2. `get_current_customer` dependency validates JWT
-       │    Extracts authenticated `current_customer` (e.g. Pushpak Bajanghate, ID #1)
+       │ 4. `get_current_customer` dependency validates JWT signature & expiration
+       │ 5. Identifies authenticated customer record in PostgreSQL
        ▼
-LLM Service Layer (`app.services.llm`)
+[LLM Service Layer (`app.services.llm`)]
        │
-       │ 3. Formats System Prompt with verified Customer Context:
-       │    - Name: Pushpak Bajanghate
-       │    - ID: 1
-       │    - Guidelines: concise, helpful, never hallucinate orders, no unverified actions
-       │ 4. Constructs prompt messages: [SystemMessage, HumanMessage]
+       │ 6. Loads LLM_API_KEY and LLM_MODEL dynamically from .env
+       │ 7. Assembles SystemMessage with safety guidelines and customer context
+       │ 8. Assembles HumanMessage containing the exact user runtime text
        ▼
-Language Model (Google Gemini: `gemini-1.5-flash`)
+[Google Gemini API (`ChatGoogleGenerativeAI`)]
        │
-       │ 5. Processes prompt and generates natural conversational reply
+       │ 9. Gemini dynamically processes prompt and generates live contextual response
        ▼
-FastAPI Response Serialization
+[FastAPI Backend /chat Endpoint]
        │
-       │ 6. Packages reply into `ChatMessageResponse` JSON payload
+       │ 10. Serializes response into JSON payload { response, customer_id, customer_name, timestamp }
+       │ 11. Returns HTTP 200 response (or genuine HTTP 500 / 502 on provider error)
        ▼
-React Client (ChatPage.jsx)
+[Customer Browser / React Chat UI]
        │
-       │ 7. Appends live AI response bubble and scrolls to bottom
+       │ 12. Appends dynamically received assistant response bubble to conversation view
 ```
 
 ---
 
 ## Phase Changelog
 
-### Phase 4: LLM Integration (Google Gemini) (2026-10-08)
+### Phase 4: LLM Integration (Google Gemini — Real Dynamic Inference) (2026-10-08)
 - **Status:** Completed
 - **Changes Introduced:**
   - Implemented modular, provider-agnostic LLM service in `backend/app/services/llm.py`:
     - Reads `LLM_API_KEY` and `LLM_MODEL` from `.env`.
     - Automatically checks fallbacks for `GEMINI_API_KEY` and `GOOGLE_API_KEY`.
-    - Configures Google Gemini (`gemini-1.5-flash`) via `ChatGoogleGenerativeAI` with temperature `0.3`.
+    - Configures Google Gemini via `ChatGoogleGenerativeAI` with temperature `0.3`.
     - Structured system prompt defining the assistant as: *"An AI customer-support assistant that helps authenticated customers with orders, returns, refunds, shipping and product questions."*
     - Enforced guidelines: concise, helpful, never invent order information, never claim actions performed unless verified, ask for clarification.
-    - Gracefully handles unconfigured API keys with polite informative notifications without crashing.
-  - Updated `backend/app/api/chat.py` to route customer messages through `generate_support_response`.
-  - Added unit test suite in `backend/tests/test_chat.py` with mock LLM validation ensuring customer identity and system prompt propagation.
+    - Zero hardcoded responses, mock scripts, or fake fallbacks.
+    - Genuine error propagation: missing API key returns HTTP 500; external Gemini failure returns HTTP 502 Bad Gateway.
+  - Updated `backend/app/api/chat.py` to route customer messages dynamically through `generate_support_response`.
+  - Updated `frontend/src/pages/ChatPage.jsx` and `LoginPage.jsx` to start with blank message state and real dynamic user inputs (no prefilled demo accounts or hardcoded chat bubbles).
+  - Synchronized PostgreSQL primary key sequences in `backend/seed.py` so dynamic registrations seamlessly succeed.
+  - Added unit test suite in `backend/tests/test_chat.py` with mock LLM validation ensuring dynamic message propagation and error handling.
   - Updated `.env.example` to document Google Gemini environment variables.
 
 ### Phase 3: Customer Support Chat Interface (2026-10-08)
