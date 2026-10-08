@@ -292,7 +292,129 @@ React displays response (dynamically renders assistant message bubble)
 
 ---
 
+## Router Agent Orchestration Flow (Phase 5 — LangGraph Intent Classification)
+
+In Phase 5, customer messages are routed through a LangGraph state machine. The Router Agent's **ONLY responsibility is intent understanding and workflow selection**. It does NOT perform business actions (such as querying order tables or executing refunds).
+
+### Core Routing Pipeline
+
+```
+message
+  │
+  ▼
+Router Agent (LangGraph node)
+  │ (Google Gemini structured JSON classification)
+  ▼
+intent (one of 13 supported types)
+  │
+  ▼
+Support workflow (conversational node in Phase 5; tool execution in Phase 6+)
+```
+
+### Detailed State Machine Flow
+
+```
+[Customer Browser / React Frontend]
+       │
+       │ 1. User enters real message (e.g. "I want to return my shoes")
+       │ 2. Submits via Enter/Send → React dispatches POST /chat with Bearer JWT
+       ▼
+[FastAPI Backend /chat Endpoint]
+       │
+       │ 3. `get_current_customer` dependency decodes JWT → extracts customer_id (e.g. 1)
+       │    Customer never needs to provide customer_id manually
+       │ 4. Initializes `AgentState`:
+       │    { customer_id, customer_name, customer_email, message, conversation_history }
+       ▼
+[LangGraph StateGraph — Compiled Pipeline]
+       │
+       │ 5. Entry point: `router_node`
+       ▼
+[Router Agent Node (`app.agents.router`)]
+       │
+       │ 6. Injects authenticated customer context + conversation history into ROUTER_SYSTEM_PROMPT
+       │ 7. Calls Google Gemini with structured output contract
+       │ 8. Gemini analyzes message and returns JSON:
+       │    {
+       │      "intent": "ORDER_RETURN",
+       │      "confidence": 0.94,
+       │      "needs_clarification": false,
+       │      "required_information": [],
+       │      "acknowledgement": "I understand you'd like to return an item..."
+       │    }
+       │ 9. Router updates `AgentState` with intent classification
+       │    NOTE: Does NOT ask "which shoes yet" — the downstream Support Agent will
+       │    use customer context to find possible matching orders
+       ▼
+[LangGraph Edge: router → conversational]
+       ▼
+[Conversational Node (`app.agents.conversational`)]
+       │
+       │ 10. Evaluates Router confidence:
+       │     - If confidence >= 0.8 & no clarification: uses Router acknowledgement directly
+       │     - Otherwise: invokes Gemini with intent-guided prompt for a richer response
+       │ 11. Sets `final_response` in `AgentState`
+       ▼
+[LangGraph Edge: conversational → END]
+       ▼
+[FastAPI Serialization & Response]
+       │
+       │ 12. Packages response into `ChatMessageResponse`:
+       │     {
+       │       "response": "...",
+       │       "customer_id": 1,
+       │       "customer_name": "Pushpak Bajanghate",
+       │       "timestamp": "...",
+       │       "router": {
+       │         "intent": "ORDER_RETURN",
+       │         "confidence": 0.94,
+       │         "needs_clarification": false,
+       │         "required_information": []
+       │       }
+       │     }
+       ▼
+[Customer Browser / React Frontend]
+       │
+       │ 13. Displays assistant response bubble
+       │ 14. Renders live Intent Badge: [● Intent: ORDER_RETURN (94%)]
+```
+
+### Supported Intent Types (13 Total)
+
+| Intent | Description | Downstream Workflow (Phase 6+) |
+|---|---|---|
+| `ORDER_TRACKING` | Customer wants to track an order | Support Agent queries `shipments` table by `customer_id` |
+| `ORDER_CANCEL` | Customer wants to cancel an order | Support Agent checks `orders.status` and validates cancellation |
+| `ORDER_RETURN` | Customer wants to return an item | Support Agent checks `return_window_days` on customer's orders |
+| `REFUND_STATUS` | Customer asking about a refund | Support Agent queries `refunds` table by `customer_id` |
+| `REFUND_REQUEST` | Customer requesting a new refund | Support Agent checks return completion and triggers refund flow |
+| `PRODUCT_INFORMATION` | Customer asking about product specs | RAG node retrieves product documentation |
+| `DAMAGED_PRODUCT` | Customer received damaged item | Return flow with expedited replacement priority |
+| `WRONG_PRODUCT` | Customer received incorrect item | Return flow with item verification |
+| `DELIVERY_DELAY` | Customer asking about delayed package | Support Agent checks carrier tracking via `shipments` |
+| `PAYMENT_ISSUE` | Payment failed or incorrect charge | Billing verification workflow |
+| `HUMAN_ESCALATION` | Customer explicitly requests a human | Support Agent creates a high-priority `support_tickets` record |
+| `GENERAL_QUESTION` | Broad questions about store, hours, etc. | Conversational / FAQ RAG retrieval |
+| `UNKNOWN` | Intent unclear from context | Clarification flow prompts customer politely |
+
+---
+
 ## Phase Changelog
+
+### Phase 5: Router Agent (LangGraph Intent Classification) (2026-10-08)
+- **Status:** Completed
+- **Changes Introduced:**
+  - Implemented the LangGraph Router Agent state machine (`backend/app/agents/`):
+    - `state.py`: Defined `AgentState` TypedDict carrying customer context, conversation history, intent, confidence, and responses.
+    - `router.py`: Implemented `router_node` using Google Gemini with structured JSON output. Classifies into 13 supported intent types. Returns confidence (0.0–1.0), `needs_clarification`, and `required_information`.
+    - `conversational.py`: Implemented `conversational_node` providing intent-guided responses. Uses Router acknowledgements directly for high-confidence cases.
+    - `graph.py`: Built and compiled `StateGraph` (`router → conversational → END`). Exported thread-safe `run_support_graph()`.
+  - Created router schemas in `backend/app/schemas/router.py`: `IntentType` enum (13 intents) and `RouterOutput` Pydantic model.
+  - Updated `backend/app/schemas/chat.py` with `RouterInfo` embedded in `ChatMessageResponse`.
+  - Updated `backend/app/api/chat.py` to route all chat traffic through `run_support_graph()`.
+  - Updated `frontend/src/pages/ChatPage.jsx` to render live intent badges with confidence percentages on assistant messages (Decagon-style UX).
+  - Created automated test suite in `backend/tests/test_router.py` (10 tests) and updated `backend/tests/test_chat.py` (5 tests) — 23 total backend tests passing.
+  - Zero hardcoded behavior: all intents, confidences, and responses generated dynamically by Google Gemini at runtime.
 
 ### Phase 4: LLM Integration (Google Gemini — Real Dynamic Inference) (2026-10-08)
 - **Status:** Completed

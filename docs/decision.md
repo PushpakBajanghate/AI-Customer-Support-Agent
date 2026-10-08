@@ -4,6 +4,61 @@ This document tracks all architectural decisions, technology selections, trade-o
 
 ---
 
+## Record 006: Phase 5 LangGraph Router Agent (Intent Classification)
+
+**Date:** 2026-10-08  
+**Status:** Accepted  
+
+### 1. Context & Motivation
+Following Decagon's multi-agent architecture, the first step in handling customer requests is **intent understanding**. A single monolithic LLM prompt that tries to understand intent, query databases, check return eligibility, and execute refunds simultaneously is brittle, error-prone, and hard to audit. Instead, the Router Agent acts as a specialized, low-latency classifier whose **sole responsibility** is determining what the customer wants and routing them to the correct downstream workflow.
+
+### 2. Key Decisions
+
+#### Decision 1: LangGraph as the State Machine Framework
+- **Rationale:** LangGraph allows modeling agent workflows as deterministic, cyclical state graphs with explicit state management, node isolation, and conditional edges.
+- **Topology (Phase 5):** `START → router_node → conversational_node → END`.
+- **Future-proofing:** In Phase 6+, conditional edges will route directly from `router_node` to specialized tool nodes (`order_tracking_node`, `returns_node`, `rag_node`, `escalation_node`) based on the classified intent.
+
+#### Decision 2: Router Agent Scope — Strictly Classification, Zero Business Actions
+- **Core Principle:** The Router Agent does NOT query order tables, perform cancellations, issue refunds, or access PostgreSQL business entities.
+- **Benefit:** Decouples intent classification from execution. The Router operates fast with minimal token overhead and cannot accidentally trigger unauthorized mutations.
+- **Example:** If a customer says *"I want to return my shoes"*, the Router identifies `ORDER_RETURN` with high confidence. It does **NOT** ask *"which shoes?"* at this stage. The downstream Support Agent will look up the customer's active orders in PostgreSQL to find possible matching items automatically.
+
+#### Decision 3: Exhaustive 13-Intent Taxonomy
+- The Router classifies into exactly 13 supported intent types:
+  `ORDER_TRACKING`, `ORDER_CANCEL`, `ORDER_RETURN`, `REFUND_STATUS`, `REFUND_REQUEST`, `PRODUCT_INFORMATION`, `DAMAGED_PRODUCT`, `WRONG_PRODUCT`, `DELIVERY_DELAY`, `PAYMENT_ISSUE`, `HUMAN_ESCALATION`, `GENERAL_QUESTION`, `UNKNOWN`.
+- Validated via Pydantic `IntentType` enum — any unrecognized output from the LLM cleanly falls back to `UNKNOWN`.
+
+#### Decision 4: Structured Output Contract via Gemini
+- The Router prompt instructs Google Gemini to respond with a strict JSON object:
+  ```json
+  {
+    "intent": "ORDER_RETURN",
+    "confidence": 0.94,
+    "needs_clarification": false,
+    "required_information": [],
+    "acknowledgement": "I understand you'd like to return an item..."
+  }
+  ```
+- All responses are dynamically generated at runtime. No intents, confidence values, or acknowledgements are hardcoded.
+
+#### Decision 5: Context Injection Without Customer Friction
+- The Router prompt receives:
+  1. `customer_id` and `customer_name` (extracted from JWT token, verified against PostgreSQL)
+  2. Current customer message
+  3. Conversation history (prior turns in the session)
+- The customer is **never** asked for their customer ID or account number.
+
+#### Decision 6: Two-Tier Response Strategy for Efficiency
+- For high-confidence classifications ($\ge 0.8$) without clarification needs, the Conversational node uses the Router's acknowledgement directly, avoiding an unnecessary second LLM round-trip.
+- For lower confidence or ambiguous queries, the Conversational node generates an intent-guided contextual response.
+
+### 3. Known Limitations (Phase 5)
+- The Support Agent tool execution nodes are not yet active (scheduled for Phase 6+).
+- Conversation history is currently passed from the React client state; server-side LangGraph checkpointers (PostgreSQL-backed) will be introduced in subsequent phases.
+
+---
+
 ## Record 005: Phase 4 Real Dynamic LLM Integration (Google Gemini)
 
 **Date:** 2026-10-08  

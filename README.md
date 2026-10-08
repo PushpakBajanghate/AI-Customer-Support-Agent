@@ -146,7 +146,7 @@ The web UI will be available at [http://localhost:3000](http://localhost:3000).
 - [x] **Phase 2:** FastAPI backend & JWT customer authentication
 - [x] **Phase 3:** Basic chat interface UI
 - [x] **Phase 4:** Provider-agnostic LLM integration (Google Gemini)
-- [ ] **Phase 5:** Router Agent (intent classification)
+- [x] **Phase 5:** Router Agent (intent classification with LangGraph)
 - [ ] **Phase 6:** Support Agent (LangGraph workflow)
 - [ ] **Phase 7:** Customer context and conversational memory
 - [ ] **Phase 8:** Customer-support tools (Order lookup, cancellation, return initiation)
