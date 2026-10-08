@@ -4,6 +4,38 @@ This document tracks all architectural decisions, technology selections, trade-o
 
 ---
 
+## Record 003: Phase 2 Authentication & Customer Identity Context
+
+**Date:** 2026-10-08  
+**Status:** Accepted  
+
+### 1. Context & Motivation
+An AI support agent must understand who is asking a question without ever asking the user: "What is your customer ID?". Furthermore, actions (like order tracking, cancellation, and refund requests) must be cryptographically locked to the caller's identity to prevent unauthorized access across accounts.
+
+### 2. Key Decisions
+
+#### Decision 1: JWT (JSON Web Tokens) with HS256 for Stateless Authentication
+- **Rationale:** JWTs allow the React client to make authenticated requests with a standard Bearer token (`Authorization: Bearer <token>`). The token payload contains the verified `customer.id` (in the `sub` claim), email, and expiration time.
+- **Alternatives Considered:**
+  - *Server-side session cookies:* Requires shared session storage (Redis/database) and CSRF protection headers, adding operational complexity.
+  - *OAuth2 with Third-Party Providers (Google/GitHub/Auth0):* Overkill for this educational application, makes local student setup harder without registered app credentials.
+
+#### Decision 2: Bcrypt for Secure One-Way Password Hashing
+- **Rationale:** Plaintext passwords are never stored. Bcrypt with 10 salt rounds provides industry-standard brute-force resistance. Direct `bcrypt` usage was selected over legacy wrappers to ensure full compatibility with modern Python runtimes (Python 3.12+ / 3.13).
+- **Alternatives Considered:**
+  - *PBKDF2/SHA-256:* Faster, but less resistant to GPU-based hardware attacks.
+  - *Argon2:* High memory overhead, slightly more complex setup for simple student projects.
+
+#### Decision 3: Dependency-Injected Customer Identity (`get_current_customer`)
+- **Rationale:** The FastAPI dependency `get_current_customer` validates the JWT token, decodes the `sub` claim, and fetches the `Customer` record from the database.
+- **Agent Integration Principle:** When a customer sends a chat message, the backend extracts `current_customer.id` from the dependency and directly injects it into the LangGraph state/context. The agent therefore has immediate access to the user's order history, active returns, and open tickets—without asking the user to identify themselves.
+
+### 3. Known Limitations (Phase 2)
+- Refresh tokens are omitted for simplicity; access tokens have a configurable lifespan (default 60 minutes).
+- Chat endpoints and agent graph states are not yet built (scheduled for subsequent phases).
+
+---
+
 ## Record 002: Phase 1 Database Schema & Synthetic Commerce Data
 
 **Date:** 2026-10-08  

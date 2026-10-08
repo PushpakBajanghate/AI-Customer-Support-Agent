@@ -14,7 +14,7 @@ the PostgreSQL database (or configured SQLAlchemy database) with:
 import os
 import sys
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -43,7 +43,7 @@ DATA_DIR = ROOT_DIR / "data"
 def parse_iso_datetime(dt_str: str) -> datetime:
     """Helper to convert ISO string to datetime object."""
     if not dt_str:
-        return datetime.utcnow()
+        return datetime.now(timezone.utc)
     return datetime.fromisoformat(dt_str)
 
 def load_json_file(file_path: Path):

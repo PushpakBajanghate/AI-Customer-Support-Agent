@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -8,7 +8,7 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False)
-    order_date = Column(DateTime, default=datetime.utcnow, nullable=False)
+    order_date = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     status = Column(String, nullable=False)  # delivered, shipped, processing, cancelled
     payment_status = Column(String, nullable=False)  # paid, pending, refunded
     total_amount = Column(Float, nullable=False)

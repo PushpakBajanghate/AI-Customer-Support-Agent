@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -12,7 +12,7 @@ class SupportTicket(Base):
     description = Column(Text, nullable=False)
     status = Column(String, nullable=False, default="open")  # open, in_progress, resolved, closed
     priority = Column(String, nullable=False, default="medium")  # low, medium, high, urgent
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
     # Relationships
     customer = relationship("Customer", back_populates="support_tickets")

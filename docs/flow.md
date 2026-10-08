@@ -136,7 +136,66 @@ The business logic of the customer support agent follows a clear relational hier
 
 ---
 
+## Authentication & Customer Context Flow (Phase 2)
+
+A core tenet of this architecture is that **the AI support agent operates strictly within the verified identity of the authenticated customer**.
+
+```
+[Customer Client]
+       │
+       │ 1. POST /auth/login { email, password }
+       ▼
+[FastAPI / Backend Service]
+       │ 2. Verify password with bcrypt against PostgreSQL
+       │ 3. Generate signed JWT { sub: str(customer.id), email, exp }
+       ▼
+[Customer Client]
+       │
+       │ 4. Authenticated Request (e.g. "Where is my order?")
+       │    Headers: Authorization: Bearer <JWT>
+       ▼
+[FastAPI `get_current_customer` Dependency]
+       │ 5. Validate JWT signature and decode token
+       │ 6. Extract `customer_id` from subject (`sub`)
+       │ 7. Query PostgreSQL for Customer record
+       ▼
+[Backend Context Assembly]
+       │ 8. Inject verified `customer_id` into Agent Execution State
+       ▼
+[Future LangGraph AI Support Agent]
+       │ 9. Tool execution scoped automatically:
+       │    get_customer_orders(customer_id=customer_id)
+       │    No need to ask the customer: "What is your customer ID?"
+       ▼
+[Safe, Personalized Response Returned to Customer]
+```
+
+### Context Isolation Guarantee:
+- The agent **never prompts the customer for their customer ID or account number**.
+- The backend guarantees that any tool executed (such as order lookup, cancellation, or refund processing) is bound to `customer.id` extracted from the cryptographically verified JWT token.
+- This prevents horizontal privilege escalation where Customer A could attempt to query or cancel Customer B's orders.
+
+---
+
 ## Phase Changelog
+
+### Phase 2: FastAPI Backend & JWT Authentication (2026-10-08)
+- **Status:** Completed
+- **Changes Introduced:**
+  - Implemented secure password hashing and verification using `bcrypt` (10 rounds, salt-protected).
+  - Implemented JWT token creation and verification using `python-jose` (HS256).
+  - Created authentication schemas in `backend/app/schemas/auth.py`:
+    - `CustomerRegisterRequest` (validates name, email, phone, and password).
+    - `CustomerLoginRequest` (validates email and password).
+    - `CustomerResponse` (safe public profile; excludes password hash).
+    - `TokenResponse` (returns access_token, token_type, and customer profile).
+  - Built auth service with `get_current_customer` dependency in `backend/app/services/auth.py`.
+  - Added endpoints in `backend/app/api/auth.py`:
+    - `POST /auth/register` (creates new customer account with hashed password).
+    - `POST /auth/login` (verifies credentials and issues JWT token).
+    - `GET /auth/me` (retrieves current authenticated customer context).
+    - `GET /health` (checks environment and database connection status).
+  - Created automated test suite in `backend/tests/test_auth.py` covering health check, registration, duplicate emails, password validation, login, token generation, and `/auth/me` authorization.
 
 ### Phase 1: Database & Synthetic Commerce Data (2026-10-08)
 - **Status:** Completed

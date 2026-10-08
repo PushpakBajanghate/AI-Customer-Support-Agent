@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -11,7 +11,7 @@ class Customer(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     phone = Column(String, nullable=False)
     password_hash = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
     # Relationships
     orders = relationship("Order", back_populates="customer", cascade="all, delete-orphan")

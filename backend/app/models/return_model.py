@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -11,7 +11,7 @@ class Return(Base):
     order_item_id = Column(Integer, ForeignKey("order_items.id"), nullable=False)
     reason = Column(String, nullable=False)
     status = Column(String, nullable=False)  # requested, approved, completed, rejected
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
     # Relationships
     order = relationship("Order", back_populates="returns")
