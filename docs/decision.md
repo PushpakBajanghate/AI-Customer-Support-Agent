@@ -4,6 +4,43 @@ This document tracks all architectural decisions, technology selections, trade-o
 
 ---
 
+## Record 002: Phase 1 Database Schema & Synthetic Commerce Data
+
+**Date:** 2026-10-08  
+**Status:** Accepted  
+
+### 1. Context & Motivation
+An AI support agent must reason over reliable customer information: past purchases, item specifications, shipment statuses, return eligibility, and payment refunds. We need a clean, structured schema and realistic test data to evaluate agent reasoning and tool executions.
+
+### 2. Key Decisions
+
+#### Decision 1: PostgreSQL Chosen Exclusively for Transactional Data
+- **Rationale:** E-commerce operations require ACID guarantees. An order cannot be partially cancelled or refunded. PostgreSQL provides strong relational integrity, foreign key constraints, and transactional rollbacks.
+- **Why Qdrant is NOT used for transactional data:**
+  1. *Mutability & Consistency:* Order statuses and inventory change rapidly. Vector databases are not designed for frequent updates or transactional locks.
+  2. *Exact Matches vs Semantic Similarity:* When looking up "Order #3", the system requires an exact match on `orders.id = 3`, not a cosine-similarity guess.
+  3. *Security & Privacy:* Filtering transactional data across vector spaces introduces risks of cross-customer leakage. SQL foreign key constraints ensure strict tenancy filtering by `customer_id`.
+  4. *RAG Role Clarification:* Qdrant is strictly reserved for static/semi-static unstructured knowledge (company return policies, shipping FAQs, warranty disclaimers).
+
+#### Decision 2: Schema Design & Normalization Choices
+- **Item-Level Returns (`returns.order_item_id`):** Customers typically return a specific product (e.g. ill-fitting shoes) rather than an entire multi-item order. Linking returns to `order_items` enables item-level policy checks against `products.return_window_days`.
+- **Decoupled Refunds (`refunds` vs `returns`):** Not every refund originates from a return (e.g. an order cancelled before shipping produces an immediate refund without an item return). Decoupling them allows flexible refund tracking across both cancellations and returns.
+- **Single-Table Shipment (`shipments.order_id` unique):** Models 1:1 order fulfillment for simplicity while maintaining carrier tracking info.
+- **Plain SQLAlchemy Relationships:** Avoided over-abstracted repository layers; models use standard SQLAlchemy `relationship()` declarations for clear, beginner-friendly readability.
+
+#### Decision 3: Synthetic Dataset Sizing (10 Customers, 20 Products, 28 Orders)
+- **Rationale:** Massive datasets make debugging test cases cumbersome and clutter version control. A small, handcrafted dataset of ~10 customers, 20 products, and 28 orders is compact enough to inspect in seconds, yet rich enough to test:
+  - Return window expiration (e.g. orders placed 60 days ago vs 3 days ago).
+  - Multi-status workflows (`delivered`, `shipped`, `processing`, `cancelled`).
+  - Varying refund states (`completed`, `pending`, `failed`).
+  - Realistic escalation scenarios via support tickets.
+
+### 3. Known Limitations (Phase 1)
+- Passwords are saved as bcrypt hashes in seed data, but FastAPI auth token generation endpoints are not yet wired up (scheduled for Phase 2).
+- Direct database seeding is tested and verified; production migration tooling (Alembic) is deferred to deployment phases to avoid premature complexity.
+
+---
+
 ## Record 001: Phase 0 Foundation & Architecture
 
 **Date:** 2026-10-08  

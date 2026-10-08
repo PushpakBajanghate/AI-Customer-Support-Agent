@@ -1,0 +1,339 @@
+[
+  {
+    "id": 1,
+    "customer_id": 1,
+    "order_date": "2026-09-28T14:20:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 4999.00,
+    "shipping_address": "Flat 402, Shivam Residency, Baner Road, Pune, Maharashtra 411045",
+    "items": [
+      { "id": 1, "product_id": 1, "quantity": 1, "price": 4999.00 }
+    ]
+  },
+  {
+    "id": 2,
+    "customer_id": 1,
+    "order_date": "2026-10-05T09:15:00",
+    "status": "shipped",
+    "payment_status": "paid",
+    "total_amount": 1999.00,
+    "shipping_address": "Flat 402, Shivam Residency, Baner Road, Pune, Maharashtra 411045",
+    "items": [
+      { "id": 2, "product_id": 2, "quantity": 1, "price": 1999.00 }
+    ]
+  },
+  {
+    "id": 3,
+    "customer_id": 1,
+    "order_date": "2026-10-07T18:40:00",
+    "status": "processing",
+    "payment_status": "paid",
+    "total_amount": 1499.00,
+    "shipping_address": "Flat 402, Shivam Residency, Baner Road, Pune, Maharashtra 411045",
+    "items": [
+      { "id": 3, "product_id": 7, "quantity": 1, "price": 1499.00 }
+    ]
+  },
+  {
+    "id": 4,
+    "customer_id": 2,
+    "order_date": "2026-08-15T11:00:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 22499.00,
+    "shipping_address": "B-12, Green Acres, Viman Nagar, Pune, Maharashtra 411014",
+    "items": [
+      { "id": 4, "product_id": 3, "quantity": 1, "price": 22499.00 }
+    ]
+  },
+  {
+    "id": 5,
+    "customer_id": 2,
+    "order_date": "2026-10-02T13:30:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 4798.00,
+    "shipping_address": "B-12, Green Acres, Viman Nagar, Pune, Maharashtra 411014",
+    "items": [
+      { "id": 5, "product_id": 4, "quantity": 1, "price": 3499.00 },
+      { "id": 6, "product_id": 5, "quantity": 1, "price": 1299.00 }
+    ]
+  },
+  {
+    "id": 6,
+    "customer_id": 2,
+    "order_date": "2026-10-06T15:00:00",
+    "status": "processing",
+    "payment_status": "pending",
+    "total_amount": 2199.00,
+    "shipping_address": "B-12, Green Acres, Viman Nagar, Pune, Maharashtra 411014",
+    "items": [
+      { "id": 7, "product_id": 8, "quantity": 1, "price": 2199.00 }
+    ]
+  },
+  {
+    "id": 7,
+    "customer_id": 3,
+    "order_date": "2026-07-20T10:10:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 2799.00,
+    "shipping_address": "Plot 88, Ram Nagar, Wardha Road, Nagpur, Maharashtra 440015",
+    "items": [
+      { "id": 8, "product_id": 6, "quantity": 1, "price": 2799.00 }
+    ]
+  },
+  {
+    "id": 8,
+    "customer_id": 3,
+    "order_date": "2026-10-01T16:45:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 3299.00,
+    "shipping_address": "Plot 88, Ram Nagar, Wardha Road, Nagpur, Maharashtra 440015",
+    "items": [
+      { "id": 9, "product_id": 18, "quantity": 1, "price": 3299.00 }
+    ]
+  },
+  {
+    "id": 9,
+    "customer_id": 3,
+    "order_date": "2026-10-04T12:00:00",
+    "status": "cancelled",
+    "payment_status": "refunded",
+    "total_amount": 1899.00,
+    "shipping_address": "Plot 88, Ram Nagar, Wardha Road, Nagpur, Maharashtra 440015",
+    "items": [
+      { "id": 10, "product_id": 15, "quantity": 1, "price": 1899.00 }
+    ]
+  },
+  {
+    "id": 10,
+    "customer_id": 4,
+    "order_date": "2026-09-10T14:00:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 8999.00,
+    "shipping_address": "Penthouse 9, DLF Phase 5, Gurugram, Haryana 122009",
+    "items": [
+      { "id": 11, "product_id": 16, "quantity": 1, "price": 8999.00 }
+    ]
+  },
+  {
+    "id": 11,
+    "customer_id": 4,
+    "order_date": "2026-10-03T11:25:00",
+    "status": "shipped",
+    "payment_status": "paid",
+    "total_amount": 6499.00,
+    "shipping_address": "Penthouse 9, DLF Phase 5, Gurugram, Haryana 122009",
+    "items": [
+      { "id": 12, "product_id": 17, "quantity": 1, "price": 6499.00 }
+    ]
+  },
+  {
+    "id": 12,
+    "customer_id": 4,
+    "order_date": "2026-10-07T17:10:00",
+    "status": "processing",
+    "payment_status": "paid",
+    "total_amount": 3299.00,
+    "shipping_address": "Penthouse 9, DLF Phase 5, Gurugram, Haryana 122009",
+    "items": [
+      { "id": 13, "product_id": 18, "quantity": 1, "price": 3299.00 }
+    ]
+  },
+  {
+    "id": 13,
+    "customer_id": 5,
+    "order_date": "2026-08-25T15:40:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 2499.00,
+    "shipping_address": "Suit 701, Nariman Point Towers, Mumbai, Maharashtra 400021",
+    "items": [
+      { "id": 14, "product_id": 12, "quantity": 1, "price": 2499.00 }
+    ]
+  },
+  {
+    "id": 14,
+    "customer_id": 5,
+    "order_date": "2026-09-30T10:00:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 1699.00,
+    "shipping_address": "Suit 701, Nariman Point Towers, Mumbai, Maharashtra 400021",
+    "items": [
+      { "id": 15, "product_id": 14, "quantity": 1, "price": 1699.00 }
+    ]
+  },
+  {
+    "id": 15,
+    "customer_id": 5,
+    "order_date": "2026-10-05T18:00:00",
+    "status": "cancelled",
+    "payment_status": "refunded",
+    "total_amount": 3499.00,
+    "shipping_address": "Suit 701, Nariman Point Towers, Mumbai, Maharashtra 400021",
+    "items": [
+      { "id": 16, "product_id": 4, "quantity": 1, "price": 3499.00 }
+    ]
+  },
+  {
+    "id": 16,
+    "customer_id": 6,
+    "order_date": "2026-09-15T09:30:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 2899.00,
+    "shipping_address": "15/4, Civil Lines, Prayagraj, Uttar Pradesh 211001",
+    "items": [
+      { "id": 17, "product_id": 9, "quantity": 1, "price": 2899.00 }
+    ]
+  },
+  {
+    "id": 17,
+    "customer_id": 6,
+    "order_date": "2026-10-04T14:15:00",
+    "status": "shipped",
+    "payment_status": "paid",
+    "total_amount": 1199.00,
+    "shipping_address": "15/4, Civil Lines, Prayagraj, Uttar Pradesh 211001",
+    "items": [
+      { "id": 18, "product_id": 10, "quantity": 1, "price": 1199.00 }
+    ]
+  },
+  {
+    "id": 18,
+    "customer_id": 7,
+    "order_date": "2026-09-01T16:00:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 999.00,
+    "shipping_address": "Flat 301, Lake View Apts, Dharampeth, Nagpur, Maharashtra 440010",
+    "items": [
+      { "id": 19, "product_id": 11, "quantity": 1, "price": 999.00 }
+    ]
+  },
+  {
+    "id": 19,
+    "customer_id": 7,
+    "order_date": "2026-09-29T11:45:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 799.00,
+    "shipping_address": "Flat 301, Lake View Apts, Dharampeth, Nagpur, Maharashtra 440010",
+    "items": [
+      { "id": 20, "product_id": 13, "quantity": 1, "price": 799.00 }
+    ]
+  },
+  {
+    "id": 20,
+    "customer_id": 7,
+    "order_date": "2026-10-06T13:20:00",
+    "status": "processing",
+    "payment_status": "paid",
+    "total_amount": 1399.00,
+    "shipping_address": "Flat 301, Lake View Apts, Dharampeth, Nagpur, Maharashtra 440010",
+    "items": [
+      { "id": 21, "product_id": 19, "quantity": 1, "price": 1399.00 }
+    ]
+  },
+  {
+    "id": 21,
+    "customer_id": 8,
+    "order_date": "2026-09-18T10:15:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 499.00,
+    "shipping_address": "House 45, Shivaji Nagar, Chandrapur, Maharashtra 442401",
+    "items": [
+      { "id": 22, "product_id": 20, "quantity": 1, "price": 499.00 }
+    ]
+  },
+  {
+    "id": 22,
+    "customer_id": 8,
+    "order_date": "2026-10-02T15:50:00",
+    "status": "shipped",
+    "payment_status": "paid",
+    "total_amount": 4999.00,
+    "shipping_address": "House 45, Shivaji Nagar, Chandrapur, Maharashtra 442401",
+    "items": [
+      { "id": 23, "product_id": 1, "quantity": 1, "price": 4999.00 }
+    ]
+  },
+  {
+    "id": 23,
+    "customer_id": 9,
+    "order_date": "2026-08-10T12:00:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 2799.00,
+    "shipping_address": "B-304, Palm Meadows, Whitefield, Bengaluru, Karnataka 560066",
+    "items": [
+      { "id": 24, "product_id": 6, "quantity": 1, "price": 2799.00 }
+    ]
+  },
+  {
+    "id": 24,
+    "customer_id": 9,
+    "order_date": "2026-10-01T17:30:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 1999.00,
+    "shipping_address": "B-304, Palm Meadows, Whitefield, Bengaluru, Karnataka 560066",
+    "items": [
+      { "id": 25, "product_id": 2, "quantity": 1, "price": 1999.00 }
+    ]
+  },
+  {
+    "id": 25,
+    "customer_id": 9,
+    "order_date": "2026-10-06T10:45:00",
+    "status": "shipped",
+    "payment_status": "paid",
+    "total_amount": 1499.00,
+    "shipping_address": "B-304, Palm Meadows, Whitefield, Bengaluru, Karnataka 560066",
+    "items": [
+      { "id": 26, "product_id": 7, "quantity": 1, "price": 1499.00 }
+    ]
+  },
+  {
+    "id": 26,
+    "customer_id": 10,
+    "order_date": "2026-09-05T14:10:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 3499.00,
+    "shipping_address": "Sector 14, Hiran Magri, Udaipur, Rajasthan 313002",
+    "items": [
+      { "id": 27, "product_id": 4, "quantity": 1, "price": 3499.00 }
+    ]
+  },
+  {
+    "id": 27,
+    "customer_id": 10,
+    "order_date": "2026-09-27T16:00:00",
+    "status": "delivered",
+    "payment_status": "paid",
+    "total_amount": 2499.00,
+    "shipping_address": "Sector 14, Hiran Magri, Udaipur, Rajasthan 313002",
+    "items": [
+      { "id": 28, "product_id": 12, "quantity": 1, "price": 2499.00 }
+    ]
+  },
+  {
+    "id": 28,
+    "customer_id": 10,
+    "order_date": "2026-10-04T18:20:00",
+    "status": "cancelled",
+    "payment_status": "refunded",
+    "total_amount": 999.00,
+    "shipping_address": "Sector 14, Hiran Magri, Udaipur, Rajasthan 313002",
+    "items": [
+      { "id": 29, "product_id": 11, "quantity": 1, "price": 999.00 }
+    ]
+  }
+]

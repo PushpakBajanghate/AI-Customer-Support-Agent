@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "name": "SonicPulse Wireless Noise Cancelling Headphones",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 4999.00,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 2,
+    "name": "AuraBass True Wireless Earbuds",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 1999.00,
+    "return_window_days": 7,
+    "warranty_days": 365
+  },
+  {
+    "id": 3,
+    "name": "UltraView 27-inch 4K IPS Monitor",
+    "category": "Monitors",
+    "brand": "VisionTech",
+    "price": 22499.00,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 4,
+    "name": "NovaPro Mechanical Gaming Keyboard (Brown Switch)",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 3499.00,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 5,
+    "name": "ErgoGlide Precision Wireless Mouse",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 1299.00,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 6,
+    "name": "ApexFit Smart Fitness Tracker Band",
+    "category": "Wearables",
+    "brand": "ApexGear",
+    "price": 2799.00,
+    "return_window_days": 10,
+    "warranty_days": 365
+  },
+  {
+    "id": 7,
+    "name": "Veloce 65W GaN Fast Charger",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 1499.00,
+    "return_window_days": 7,
+    "warranty_days": 180
+  },
+  {
+    "id": 8,
+    "name": "PowerStream 20000mAh Power Bank with PD",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 2199.00,
+    "return_window_days": 7,
+    "warranty_days": 180
+  },
+  {
+    "id": 9,
+    "name": "Clarity 1080p Full HD Webcam with Stereo Mic",
+    "category": "Peripherals",
+    "brand": "VisionTech",
+    "price": 2899.00,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 10,
+    "name": "AeroVent Laptop Cooling Stand with RGB",
+    "category": "Accessories",
+    "brand": "CoolMaster",
+    "price": 1199.00,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 11,
+    "name": "Classic Fit Cotton Pique Polo Shirt",
+    "category": "Apparel",
+    "brand": "UrbanThread",
+    "price": 999.00,
+    "return_window_days": 30,
+    "warranty_days": 0
+  },
+  {
+    "id": 12,
+    "name": "All-Weather Commuter Laptop Backpack (25L)",
+    "category": "Luggage",
+    "brand": "UrbanThread",
+    "price": 2499.00,
+    "return_window_days": 30,
+    "warranty_days": 365
+  },
+  {
+    "id": 13,
+    "name": "HydroShield Thermal Water Bottle 1L",
+    "category": "Home & Kitchen",
+    "brand": "PureLife",
+    "price": 799.00,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 14,
+    "name": "BaristaPro Stainless Steel French Press",
+    "category": "Home & Kitchen",
+    "brand": "PureLife",
+    "price": 1699.00,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 15,
+    "name": "OptiClean Sonic Electric Toothbrush",
+    "category": "Personal Care",
+    "brand": "HealthCraft",
+    "price": 1899.00,
+    "return_window_days": 0,
+    "warranty_days": 365
+  },
+  {
+    "id": 16,
+    "name": "BreathePure HEPA Room Air Purifier",
+    "category": "Home Appliances",
+    "brand": "PureLife",
+    "price": 8999.00,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 17,
+    "name": "SoundBar Studio 120W Dolby Audio",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 6499.00,
+    "return_window_days": 10,
+    "warranty_days": 365
+  },
+  {
+    "id": 18,
+    "name": "Strata Lite Running Shoes",
+    "category": "Footwear",
+    "brand": "ApexGear",
+    "price": 3299.00,
+    "return_window_days": 30,
+    "warranty_days": 90
+  },
+  {
+    "id": 19,
+    "name": "Titanium Edge Stainless Steel Chef Knife 8-inch",
+    "category": "Home & Kitchen",
+    "brand": "KitchenPro",
+    "price": 1399.00,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 20,
+    "name": "Braided USB-C to USB-C 100W Cable 2m",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 499.00,
+    "return_window_days": 7,
+    "warranty_days": 180
+  }
+]

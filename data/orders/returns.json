@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "order_id": 1,
+    "order_item_id": 1,
+    "reason": "Slight audio crackle in right ear cup during ANC mode",
+    "status": "requested",
+    "created_at": "2026-10-02T11:00:00"
+  },
+  {
+    "id": 2,
+    "order_id": 4,
+    "order_item_id": 4,
+    "reason": "Monitor stand too large for small desk",
+    "status": "rejected",
+    "created_at": "2026-09-20T14:30:00"
+  },
+  {
+    "id": 3,
+    "order_id": 5,
+    "order_item_id": 6,
+    "reason": "Ergonomic mouse shape uncomfortable for left hand",
+    "status": "approved",
+    "created_at": "2026-10-04T09:15:00"
+  },
+  {
+    "id": 4,
+    "order_id": 7,
+    "order_item_id": 8,
+    "reason": "Screen scratch noticed after 2 months of use",
+    "status": "rejected",
+    "created_at": "2026-09-25T16:00:00"
+  },
+  {
+    "id": 5,
+    "order_id": 13,
+    "order_item_id": 14,
+    "reason": "Laptop backpack zipper teeth misaligned",
+    "status": "completed",
+    "created_at": "2026-09-02T10:30:00"
+  },
+  {
+    "id": 6,
+    "order_id": 14,
+    "order_item_id": 15,
+    "reason": "French press glass chipped during unboxing",
+    "status": "completed",
+    "created_at": "2026-10-02T12:00:00"
+  },
+  {
+    "id": 7,
+    "order_id": 26,
+    "order_item_id": 27,
+    "reason": "Key switches too loud for home office environment",
+    "status": "requested",
+    "created_at": "2026-09-29T15:20:00"
+  }
+]

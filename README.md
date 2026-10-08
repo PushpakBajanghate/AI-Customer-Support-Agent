@@ -109,6 +109,9 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Seed the database with synthetic data
+python seed.py
+
 # Run the FastAPI server
 uvicorn app.main:app --reload --port 8000
 ```
@@ -139,7 +142,7 @@ The web UI will be available at [http://localhost:3000](http://localhost:3000).
 ## 🗺️ Incremental Development Roadmap
 
 - [x] **Phase 0:** Project setup, directory structure, architecture documentation & skeletons
-- [ ] **Phase 1:** Database models & synthetic commerce data (customers, products, orders, returns)
+- [x] **Phase 1:** Database models & synthetic commerce data (customers, products, orders, returns)
 - [ ] **Phase 2:** FastAPI backend & JWT customer authentication
 - [ ] **Phase 3:** Basic chat interface UI
 - [ ] **Phase 4:** Provider-agnostic LLM integration

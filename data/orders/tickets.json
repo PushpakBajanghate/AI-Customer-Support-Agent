@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "customer_id": 1,
+    "subject": "Delayed delivery inquiry for Earbuds",
+    "description": "Customer inquired about tracking update for order #2 via Delhivery.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-10-06T11:20:00"
+  },
+  {
+    "id": 2,
+    "customer_id": 1,
+    "subject": "Return pickup request for SonicPulse Headphones",
+    "description": "Customer requested scheduling courier pickup for return of order #1 item.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-10-07T14:00:00"
+  },
+  {
+    "id": 3,
+    "customer_id": 2,
+    "subject": "Payment status pending on recent order",
+    "description": "Customer experienced UPI debit but order #6 shows payment pending.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-10-06T16:30:00"
+  },
+  {
+    "id": 4,
+    "customer_id": 3,
+    "subject": "Return rejection appeal for order #7",
+    "description": "Customer asked if 10-day return policy can be extended due to business travel.",
+    "status": "closed",
+    "priority": "low",
+    "created_at": "2026-09-26T10:15:00"
+  },
+  {
+    "id": 5,
+    "customer_id": 4,
+    "subject": "Installation support for 120W SoundBar",
+    "description": "Customer requesting assistance for optical audio configuration with TV.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-10-05T15:45:00"
+  },
+  {
+    "id": 6,
+    "customer_id": 5,
+    "subject": "Refund confirmation for cancelled keyboard order",
+    "description": "Customer requesting bank UTR number for processed refund of order #15.",
+    "status": "open",
+    "priority": "urgent",
+    "created_at": "2026-10-07T09:10:00"
+  },
+  {
+    "id": 7,
+    "customer_id": 8,
+    "subject": "Wrong billing address on invoice",
+    "description": "Customer requested updated GST invoice with business entity name.",
+    "status": "resolved",
+    "priority": "low",
+    "created_at": "2026-09-22T13:00:00"
+  },
+  {
+    "id": 8,
+    "customer_id": 10,
+    "subject": "Refund failed alert for order #26",
+    "description": "System flagged failed refund gateway response for order #26.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-10-07T12:00:00"
+  }
+]

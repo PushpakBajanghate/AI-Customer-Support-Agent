@@ -40,6 +40,66 @@ When a customer sends a message in the chat interface, the system processes it t
 
 ---
 
+## Relational Entity Flow (PostgreSQL Source of Truth)
+
+The business logic of the customer support agent follows a clear relational hierarchy:
+
+```
+                  ┌─────────────────────┐
+                  │      Customer       │
+                  │ (id, name, email)   │
+                  └──────────┬──────────┘
+                             │
+            ┌────────────────┴────────────────┐
+            │ 1:N                             │ 1:N
+            ▼                                 ▼
+   ┌─────────────────┐             ┌─────────────────────┐
+   │      Order      │             │    SupportTicket    │
+   │  (status, etc)  │             │ (subject, priority) │
+   └────────┬────────┘             └─────────────────────┘
+            │
+    ┌───────┼──────────────────────────────┐
+1:N │       │ 1:1                          │ 1:N
+    ▼       ▼                              ▼
+┌──────────────┐  ┌───────────────────┐  ┌───────────────────┐
+│  OrderItem   │  │     Shipment      │  │      Refund       │
+│  (qty, price)│  │(carrier, tracking)│  │  (amount, status) │
+└───────┬──────┘  └───────────────────┘  └───────────────────┘
+        │
+    1:N │ (linked to order & specific order item)
+        ▼
+┌──────────────┐
+│    Return    │
+│(reason, status)
+└──────────────┘
+```
+
+### Detailed Relational Operations:
+1. **Customer → PostgreSQL:**
+   - A customer logs in and establishes their verified identity (`customer_id`).
+   - All relational lookups query records filtered strictly by `customer_id`.
+2. **Customer → Orders:**
+   - A customer has zero or more orders (`orders.customer_id = customers.id`).
+   - Order statuses: `processing`, `shipped`, `delivered`, `cancelled`.
+3. **Order → Order Items:**
+   - Each order has one or more line items (`order_items.order_id = orders.id`), pointing to specific products (`products.id`).
+   - Holds the agreed purchase price and quantity at the time of purchase.
+4. **Order → Shipment:**
+   - Each fulfilled order has a 1:1 linked shipment (`shipments.order_id = orders.id`).
+   - Contains logistics details: carrier (`Blue Dart`, `Delhivery`, `DTDC`), tracking number, delivery status (`in_transit`, `out_for_delivery`, `delivered`), and estimated delivery date.
+5. **Order & Order Item → Return:**
+   - When an eligible item is returned, a return request record is generated (`returns.order_id = orders.id`, `returns.order_item_id = order_items.id`).
+   - The backend checks product `return_window_days` against `orders.order_date` before creating or approving returns.
+   - Return statuses: `requested`, `approved`, `completed`, `rejected`.
+6. **Order → Refund:**
+   - When an order is cancelled or a return reaches `completed`, a refund record is generated (`refunds.order_id = orders.id`).
+   - Refund statuses: `completed`, `pending`, `failed`.
+7. **Customer → Support Tickets:**
+   - Complex inquiries or human escalations generate a support ticket (`support_tickets.customer_id = customers.id`).
+   - Ticket statuses: `open`, `in_progress`, `resolved`, `closed` with priorities (`low`, `medium`, `high`, `urgent`).
+
+---
+
 ## Detailed Component Lifecycle
 
 ### 1. Customer Authentication Flow
@@ -77,6 +137,29 @@ When a customer sends a message in the chat interface, the system processes it t
 ---
 
 ## Phase Changelog
+
+### Phase 1: Database & Synthetic Commerce Data (2026-10-08)
+- **Status:** Completed
+- **Changes Introduced:**
+  - Designed and created 8 relational SQLAlchemy models in `backend/app/models/`:
+    - `Customer`: User profile and credentials.
+    - `Product`: Catalog items with pricing, category, return window, and warranty days.
+    - `Order`: Customer orders with statuses (`delivered`, `shipped`, `processing`, `cancelled`).
+    - `OrderItem`: Line items connecting orders to products with quantities and locked prices.
+    - `Shipment`: Courier tracking and delivery status.
+    - `Return`: Item-level return requests with statuses (`requested`, `approved`, `completed`, `rejected`).
+    - `Refund`: Order-level monetary refunds (`completed`, `pending`, `failed`).
+    - `SupportTicket`: Customer support escalation tickets with priorities.
+  - Created human-readable synthetic datasets in `data/`:
+    - 10 Indian customer personas (`data/customers/customers.json`).
+    - 20 diverse products with varying return/warranty windows (`data/products/products.json`).
+    - 28 realistic orders with items (`data/orders/orders.json`).
+    - 7 logistics shipments (`data/orders/shipments.json`).
+    - 7 returns testing valid and expired return windows (`data/orders/returns.json`).
+    - 7 refund records (`data/orders/refunds.json`).
+    - 8 support tickets (`data/orders/tickets.json`).
+  - Created automated database seed script in `backend/seed.py` that builds tables and seeds data cleanly.
+  - Documented relational data flow and schema decisions.
 
 ### Phase 0: Initial Foundation & Architecture (2026-10-08)
 - **Status:** Completed

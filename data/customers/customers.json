@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "Pushpak Bajanghate",
+    "email": "pushpak.bajanghate@example.com",
+    "phone": "+91-9823011223",
+    "password_hash": "$2b$12$e8F5dJk0v5XFmDk.8vW6U.r7I9yXj0M/3gA8v9Y.r4q1Z9gO3/W6y",
+    "created_at": "2026-01-15T10:30:00"
+  },
+  {
+    "id": 2,
+    "name": "Pranav Tapdiya",
+    "email": "pranav.tapdiya@example.com",
+    "phone": "+91-9876543210",
+    "password_hash": "$2b$12$e8F5dJk0v5XFmDk.8vW6U.r7I9yXj0M/3gA8v9Y.r4q1Z9gO3/W6y",
+    "created_at": "2026-02-01T11:00:00"
+  },
+  {
+    "id": 3,
+    "name": "Prathemsh Rathod",
+    "email": "prathemsh.rathod@example.com",
+    "phone": "+91-9123456780",
+    "password_hash": "$2b$12$e8F5dJk0v5XFmDk.8vW6U.r7I9yXj0M/3gA8v9Y.r4q1Z9gO3/W6y",
+    "created_at": "2026-02-10T14:15:00"
+  },
+  {
+    "id": 4,
+    "name": "Virat Kohli",
+    "email": "virat.kohli@example.com",
+    "phone": "+91-9811122233",
+    "password_hash": "$2b$12$e8F5dJk0v5XFmDk.8vW6U.r7I9yXj0M/3gA8v9Y.r4q1Z9gO3/W6y",
+    "created_at": "2026-02-20T09:45:00"
+  },
+  {
+    "id": 5,
+    "name": "Harvey Specter",
+    "email": "harvey.specter@example.com",
+    "phone": "+91-9822233344",
+    "password_hash": "$2b$12$e8F5dJk0v5XFmDk.8vW6U.r7I9yXj0M/3gA8v9Y.r4q1Z9gO3/W6y",
+    "created_at": "2026-03-01T16:20:00"
+  },
+  {
+    "id": 6,
+    "name": "Akshat Tiwari",
+    "email": "akshat.tiwari@example.com",
+    "phone": "+91-9833344455",
+    "password_hash": "$2b$12$e8F5dJk0v5XFmDk.8vW6U.r7I9yXj0M/3gA8v9Y.r4q1Z9gO3/W6y",
+    "created_at": "2026-03-05T12:00:00"
+  },
+  {
+    "id": 7,
+    "name": "Ritesh Bande",
+    "email": "ritesh.bande@example.com",
+    "phone": "+91-9844455566",
+    "password_hash": "$2b$12$e8F5dJk0v5XFmDk.8vW6U.r7I9yXj0M/3gA8v9Y.r4q1Z9gO3/W6y",
+    "created_at": "2026-03-12T15:30:00"
+  },
+  {
+    "id": 8,
+    "name": "Divayatwa Kirnapure",
+    "email": "divayatwa.kirnapure@example.com",
+    "phone": "+91-9855566677",
+    "password_hash": "$2b$12$e8F5dJk0v5XFmDk.8vW6U.r7I9yXj0M/3gA8v9Y.r4q1Z9gO3/W6y",
+    "created_at": "2026-03-18T17:10:00"
+  },
+  {
+    "id": 9,
+    "name": "Ananya Sharma",
+    "email": "ananya.sharma@example.com",
+    "phone": "+91-9866677788",
+    "password_hash": "$2b$12$e8F5dJk0v5XFmDk.8vW6U.r7I9yXj0M/3gA8v9Y.r4q1Z9gO3/W6y",
+    "created_at": "2026-04-02T10:00:00"
+  },
+  {
+    "id": 10,
+    "name": "Rohit Verma",
+    "email": "rohit.verma@example.com",
+    "phone": "+91-9877788899",
+    "password_hash": "$2b$12$e8F5dJk0v5XFmDk.8vW6U.r7I9yXj0M/3gA8v9Y.r4q1Z9gO3/W6y",
+    "created_at": "2026-04-10T13:40:00"
+  }
+]

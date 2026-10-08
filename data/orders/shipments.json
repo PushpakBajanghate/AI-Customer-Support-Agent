@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "order_id": 1,
+    "carrier": "Blue Dart",
+    "tracking_number": "BLUEDART-98230112",
+    "status": "delivered",
+    "estimated_delivery": "2026-10-01T18:00:00"
+  },
+  {
+    "id": 2,
+    "order_id": 2,
+    "carrier": "Delhivery",
+    "tracking_number": "DEL-48291048",
+    "status": "in_transit",
+    "estimated_delivery": "2026-10-10T17:00:00"
+  },
+  {
+    "id": 3,
+    "order_id": 5,
+    "carrier": "Delhivery",
+    "tracking_number": "DEL-77392019",
+    "status": "delivered",
+    "estimated_delivery": "2026-10-05T14:30:00"
+  },
+  {
+    "id": 4,
+    "order_id": 11,
+    "carrier": "DTDC",
+    "tracking_number": "DTDC-39102847",
+    "status": "in_transit",
+    "estimated_delivery": "2026-10-09T16:00:00"
+  },
+  {
+    "id": 5,
+    "order_id": 17,
+    "carrier": "Blue Dart",
+    "tracking_number": "BLUEDART-48201938",
+    "status": "out_for_delivery",
+    "estimated_delivery": "2026-10-08T19:00:00"
+  },
+  {
+    "id": 6,
+    "order_id": 22,
+    "carrier": "Shadowfax",
+    "tracking_number": "SFX-59102948",
+    "status": "in_transit",
+    "estimated_delivery": "2026-10-10T15:00:00"
+  },
+  {
+    "id": 7,
+    "order_id": 25,
+    "carrier": "Delhivery",
+    "tracking_number": "DEL-99201948",
+    "status": "in_transit",
+    "estimated_delivery": "2026-10-11T13:00:00"
+  }
+]
