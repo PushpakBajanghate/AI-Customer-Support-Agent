@@ -1,33 +1,77 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import Navbar from './components/Navbar';
+import LoginPage from './pages/LoginPage';
+import ChatPage from './pages/ChatPage';
+import { getCurrentCustomer } from './services/api';
 
 function App() {
-  const [apiStatus, setApiStatus] = useState('Checking backend connection...')
+  const [token, setToken] = useState(() => localStorage.getItem('token') || '');
+  const [customer, setCustomer] = useState(() => {
+    const cached = localStorage.getItem('customer');
+    return cached ? JSON.parse(cached) : null;
+  });
+  const [validating, setValidating] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:8000/health')
-      .then(res => res.json())
-      .then(data => setApiStatus(`Connected to backend (${data.status})`))
-      .catch(() => setApiStatus('Backend currently disconnected (Start backend on port 8000)'))
-  }, [])
+    if (token && !customer) {
+      setValidating(true);
+      getCurrentCustomer(token)
+        .then((userData) => {
+          setCustomer(userData);
+          localStorage.setItem('customer', JSON.stringify(userData));
+        })
+        .catch(() => {
+          // Token expired or invalid
+          setToken('');
+          setCustomer(null);
+          localStorage.removeItem('token');
+          localStorage.removeItem('customer');
+        })
+        .finally(() => setValidating(false));
+    }
+  }, [token, customer]);
+
+  const handleAuthSuccess = (newToken, newCustomer) => {
+    setToken(newToken);
+    setCustomer(newCustomer);
+    localStorage.setItem('token', newToken);
+    localStorage.setItem('customer', JSON.stringify(newCustomer));
+  };
+
+  const handleLogout = () => {
+    setToken('');
+    setCustomer(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('customer');
+  };
+
+  if (validating) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        color: '#64748b',
+        fontSize: '16px'
+      }}>
+        Authenticating session...
+      </div>
+    );
+  }
 
   return (
-    <div style={{ maxWidth: '640px', margin: '40px auto', padding: '24px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-      <h1>AI Customer Support Agent</h1>
-      <p style={{ color: '#666' }}>Phase 0: Initial Foundation &amp; Architecture</p>
-      <div style={{ marginTop: '20px', padding: '12px', borderRadius: '4px', backgroundColor: '#eef2f6', fontSize: '14px' }}>
-        <strong>Backend Status:</strong> {apiStatus}
-      </div>
-      <div style={{ marginTop: '24px', textAlign: 'left', fontSize: '14px', lineHeight: '1.6' }}>
-        <h3>Upcoming Milestones:</h3>
-        <ul>
-          <li>Phase 1: Database &amp; Synthetic Commerce Data</li>
-          <li>Phase 2: FastAPI Authentication &amp; Customer Context</li>
-          <li>Phase 3: Real-time Chat UI</li>
-          <li>Phase 4+: AI Support Agent, Tools, and Policy RAG</li>
-        </ul>
-      </div>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f1f5f9', display: 'flex', flexDirection: 'column' }}>
+      <Navbar customer={customer} onLogout={handleLogout} />
+      <main style={{ flex: 1, padding: '16px', boxSizing: 'border-box' }}>
+        {token && customer ? (
+          <ChatPage token={token} customer={customer} />
+        ) : (
+          <LoginPage onAuthSuccess={handleAuthSuccess} />
+        )}
+      </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

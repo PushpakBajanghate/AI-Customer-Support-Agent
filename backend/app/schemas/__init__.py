@@ -5,10 +5,16 @@ from app.schemas.auth import (
     CustomerResponse,
     TokenResponse,
 )
+from app.schemas.chat import (
+    ChatMessageRequest,
+    ChatMessageResponse,
+)
 
 __all__ = [
     "CustomerRegisterRequest",
     "CustomerLoginRequest",
     "CustomerResponse",
     "TokenResponse",
+    "ChatMessageRequest",
+    "ChatMessageResponse",
 ]

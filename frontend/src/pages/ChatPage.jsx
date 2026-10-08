@@ -1,0 +1,254 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { sendChatMessage } from '../services/api';
+
+export default function ChatPage({ token, customer }) {
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      sender: 'assistant',
+      text: `Hello ${customer?.name || 'there'}! I'm your AI Customer Support Assistant. How can I assist you with your orders, tracking, returns, or policy questions today?`,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
+  ]);
+  const [inputText, setInputText] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    const trimmed = inputText.trim();
+    if (!trimmed || loading) return;
+
+    setError('');
+    const userMsg = {
+      id: Date.now(),
+      sender: 'user',
+      text: trimmed,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
+    setInputText('');
+    setLoading(true);
+
+    try {
+      const data = await sendChatMessage(trimmed, token);
+      const assistantMsg = {
+        id: Date.now() + 1,
+        sender: 'assistant',
+        text: data.response,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setMessages((prev) => [...prev, assistantMsg]);
+    } catch (err) {
+      setError(err.message || 'Failed to deliver message. Check backend connectivity.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{
+      maxWidth: '800px',
+      margin: '20px auto',
+      height: 'calc(100vh - 120px)',
+      display: 'flex',
+      flexDirection: 'column',
+      backgroundColor: '#ffffff',
+      borderRadius: '12px',
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
+      border: '1px solid #e2e8f0',
+      overflow: 'hidden'
+    }}>
+      {/* Customer Context Header */}
+      <div style={{
+        padding: '14px 20px',
+        backgroundColor: '#f8fafc',
+        borderBottom: '1px solid #e2e8f0',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{
+            display: 'inline-block',
+            width: '10px',
+            height: '10px',
+            backgroundColor: '#10b981',
+            borderRadius: '50%'
+          }} />
+          <strong style={{ fontSize: '14px', color: '#0f172a' }}>Live Support Assistant</strong>
+        </div>
+        <div style={{ fontSize: '12px', color: '#64748b' }}>
+          Authenticated as: <span style={{ fontWeight: 600, color: '#1e293b' }}>{customer?.name}</span> (ID #{customer?.id})
+        </div>
+      </div>
+
+      {/* Error banner if message failed */}
+      {error && (
+        <div style={{
+          padding: '10px 16px',
+          backgroundColor: '#fef2f2',
+          borderBottom: '1px solid #fecaca',
+          color: '#b91c1c',
+          fontSize: '13px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <span>{error}</span>
+          <button
+            onClick={() => setError('')}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#b91c1c',
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* Message List */}
+      <div style={{
+        flex: 1,
+        overflowY: 'auto',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+        backgroundColor: '#fafbfc'
+      }}>
+        {messages.map((msg) => {
+          const isUser = msg.sender === 'user';
+          return (
+            <div
+              key={msg.id}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: isUser ? 'flex-end' : 'flex-start',
+                maxWidth: '80%',
+                alignSelf: isUser ? 'flex-end' : 'flex-start'
+              }}
+            >
+              <div style={{
+                fontSize: '11px',
+                color: '#94a3b8',
+                marginBottom: '4px',
+                paddingLeft: isUser ? 0 : '4px',
+                paddingRight: isUser ? '4px' : 0
+              }}>
+                {isUser ? 'You' : 'AI Support Agent'} &bull; {msg.timestamp}
+              </div>
+              <div style={{
+                padding: '12px 16px',
+                borderRadius: isUser ? '16px 16px 2px 16px' : '16px 16px 16px 2px',
+                backgroundColor: isUser ? '#2563eb' : '#ffffff',
+                color: isUser ? '#ffffff' : '#1e293b',
+                boxShadow: isUser ? '0 1px 3px rgba(37,99,235,0.2)' : '0 1px 4px rgba(0,0,0,0.06)',
+                border: isUser ? 'none' : '1px solid #e2e8f0',
+                fontSize: '14px',
+                lineHeight: '1.5',
+                wordBreak: 'break-word',
+                whiteSpace: 'pre-wrap'
+              }}>
+                {msg.text}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Loading / Typing State */}
+        {loading && (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            maxWidth: '80%'
+          }}>
+            <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '4px', paddingLeft: '4px' }}>
+              AI Support Agent is typing...
+            </div>
+            <div style={{
+              padding: '10px 16px',
+              borderRadius: '16px 16px 16px 2px',
+              backgroundColor: '#ffffff',
+              border: '1px solid #e2e8f0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span className="typing-dot" style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#64748b' }}></span>
+              <span className="typing-dot" style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#94a3b8' }}></span>
+              <span className="typing-dot" style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#cbd5e1' }}></span>
+            </div>
+          </div>
+        )}
+
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Input & Send Area */}
+      <form
+        onSubmit={handleSendMessage}
+        style={{
+          display: 'flex',
+          gap: '10px',
+          padding: '14px 20px',
+          backgroundColor: '#ffffff',
+          borderTop: '1px solid #e2e8f0'
+        }}
+      >
+        <input
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="Type your message (e.g. 'Where is my order #1?')..."
+          disabled={loading}
+          style={{
+            flex: 1,
+            padding: '12px 16px',
+            borderRadius: '8px',
+            border: '1px solid #cbd5e1',
+            fontSize: '14px',
+            outline: 'none',
+            boxSizing: 'border-box'
+          }}
+        />
+        <button
+          type="submit"
+          disabled={loading || !inputText.trim()}
+          style={{
+            padding: '12px 24px',
+            backgroundColor: inputText.trim() && !loading ? '#2563eb' : '#94a3b8',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '8px',
+            fontWeight: 600,
+            fontSize: '14px',
+            cursor: inputText.trim() && !loading ? 'pointer' : 'not-allowed',
+            transition: 'background-color 0.2s',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
+        >
+          {loading ? 'Sending...' : 'Send'}
+        </button>
+      </form>
+    </div>
+  );
+}

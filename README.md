@@ -144,7 +144,7 @@ The web UI will be available at [http://localhost:3000](http://localhost:3000).
 - [x] **Phase 0:** Project setup, directory structure, architecture documentation & skeletons
 - [x] **Phase 1:** Database models & synthetic commerce data (customers, products, orders, returns)
 - [x] **Phase 2:** FastAPI backend & JWT customer authentication
-- [ ] **Phase 3:** Basic chat interface UI
+- [x] **Phase 3:** Basic chat interface UI
 - [ ] **Phase 4:** Provider-agnostic LLM integration
 - [ ] **Phase 5:** Router Agent (intent classification)
 - [ ] **Phase 6:** Support Agent (LangGraph workflow)

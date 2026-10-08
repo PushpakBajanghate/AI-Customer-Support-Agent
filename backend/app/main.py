@@ -16,6 +16,7 @@ from app.models import (
     SupportTicket,
 )
 from app.api.auth import router as auth_router
+from app.api.chat import router as chat_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -30,7 +31,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="AI Customer Support Agent API",
     description="Backend API for AI Customer Support Agent (Educational & Production-Minded Architecture)",
-    version="0.2.0",
+    version="0.3.0",
     lifespan=lifespan
 )
 
@@ -45,14 +46,15 @@ app.add_middleware(
 
 # Mount API Routers
 app.include_router(auth_router)
+app.include_router(chat_router)
 
 @app.get("/", tags=["General"])
 def read_root():
     return {
         "status": "healthy",
         "service": "AI Customer Support Agent API",
-        "version": "0.2.0",
-        "phase": "Phase 2 - FastAPI Backend & JWT Authentication"
+        "version": "0.3.0",
+        "phase": "Phase 3 - Customer Support Chat Interface"
     }
 
 @app.get("/health", tags=["General"])

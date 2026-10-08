@@ -4,6 +4,40 @@ This document tracks all architectural decisions, technology selections, trade-o
 
 ---
 
+## Record 004: Phase 3 Chat Interface UI & Client-Server Contract
+
+**Date:** 2026-10-08  
+**Status:** Accepted  
+
+### 1. Context & Motivation
+An AI support agent application requires a frictionless interface for customers to authenticate, view their current profile status, and converse in real time. Before introducing complex LangGraph multi-agent routing, we must establish a verified client-server communication contract (`POST /chat`) and clean visual primitives (messages, typing state, error state).
+
+### 2. Key Decisions
+
+#### Decision 1: Functional, Lightweight CSS & Component Architecture
+- **Rationale:** Built with pure React and clean standard CSS instead of heavy component frameworks (e.g. Material UI, AntD) or utility CSS transpilers (Tailwind).
+- **Benefits for Students:**
+  - Zero build step complications or CSS framework version mismatches.
+  - Every styling property is transparent and directly editable in JavaScript objects / `index.css`.
+  - Minimal bundle size (155 kB JS bundle, 0.8 kB CSS).
+
+#### Decision 2: One-Click Demo Account Switching
+- **Rationale:** To make testing simple and educational, `LoginPage.jsx` includes quick-select buttons for seeded accounts (`Pushpak Bajanghate`, `Virat Kohli`, `Pranav Tapdiya`).
+- **Benefit:** Testers can switch accounts within seconds without having to remember mock emails or re-type passwords.
+
+#### Decision 3: Client-Side Session Hydration
+- **Rationale:** JWT tokens and customer profile metadata are preserved in `localStorage`. On page load, `App.jsx` pings `GET /auth/me` to re-validate the token against the backend. If valid, the chat loads immediately; if expired, the storage is wiped and the user is redirected cleanly to `LoginPage`.
+
+#### Decision 4: Phased Chat Contract (`POST /chat`) Before Agent Wiring
+- **Rationale:** The `POST /chat` contract was implemented with a placeholder echo response before integrating LangGraph or LLM APIs.
+- **Benefit:** Isolates network latency, authorization validation, request/response schema serialization, and UI state management from LLM inference latency. Ensures frontend and backend communication is 100% stable first.
+
+### 3. Known Limitations (Phase 3)
+- `POST /chat` currently returns a placeholder response; LangGraph router and support agent nodes will be wired in Phases 4–6.
+- Chat history is currently stored in React client state; persistence to PostgreSQL `messages` table will be enabled alongside conversation session management.
+
+---
+
 ## Record 003: Phase 2 Authentication & Customer Identity Context
 
 **Date:** 2026-10-08  

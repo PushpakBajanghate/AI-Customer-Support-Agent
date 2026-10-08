@@ -175,9 +175,72 @@ A core tenet of this architecture is that **the AI support agent operates strict
 - The backend guarantees that any tool executed (such as order lookup, cancellation, or refund processing) is bound to `customer.id` extracted from the cryptographically verified JWT token.
 - This prevents horizontal privilege escalation where Customer A could attempt to query or cancel Customer B's orders.
 
+## Client-Server Chat Flow (Phase 3)
+
+The complete end-to-end interactive communication between the React chat UI and FastAPI:
+
+```
+Customer (Browser)
+       │
+       │ 1. Submits email + password on LoginPage.jsx (or clicks demo account)
+       ▼
+React Client (api.js)
+       │
+       │ 2. POST /auth/login { email, password }
+       ▼
+FastAPI Backend
+       │
+       │ 3. Verifies bcrypt hash in PostgreSQL, issues signed JWT
+       ▼
+React Client (App.jsx)
+       │
+       │ 4. Stores JWT in localStorage & React state
+       │ 5. Displays Navbar with customer badge and switches to ChatPage.jsx
+       ▼
+Customer (ChatPage.jsx)
+       │
+       │ 6. Types support message (e.g. "Where is my order #1?") and clicks Send
+       ▼
+React Client (api.js)
+       │
+       │ 7. POST /chat
+       │    Headers: Authorization: Bearer <JWT>
+       │    Body: { "message": "Where is my order #1?" }
+       ▼
+FastAPI Backend (`/chat` endpoint)
+       │
+       │ 8. `get_current_customer` dependency decodes token
+       │ 9. Identifies customer (`customer_id=1`, `Pushpak Bajanghate`)
+       │ 10. Returns personalized response acknowledging request
+       ▼
+React Client (ChatPage.jsx)
+       │
+       │ 11. Receives JSON { response, customer_id, customer_name, timestamp }
+       │ 12. Renders assistant message bubble in message list
+       │ 13. Resets loading state & automatically scrolls to bottom
+```
+
 ---
 
 ## Phase Changelog
+
+### Phase 3: Customer Support Chat Interface (2026-10-08)
+- **Status:** Completed
+- **Changes Introduced:**
+  - Designed and built modern, functional React customer-support interface:
+    - `LoginPage.jsx`: Clean sign-in & sign-up forms with 1-click demo account selector (Pushpak, Virat, Pranav).
+    - `Navbar.jsx`: Displays live customer identity (`customer.name`, `customer.id`, email) and sign-out action.
+    - `ChatPage.jsx`: Full messaging interface featuring:
+      - Chronological message list with distinct user and assistant bubble styling.
+      - Dynamic typing indicator (loading state with animated bouncing dots).
+      - Inline error banner for network or backend connectivity issues.
+      - Text input supporting Enter key submission and active/disabled button states.
+      - Automatic smooth scroll to newest message.
+  - Added backend chat route in `backend/app/api/chat.py`:
+    - `POST /chat`: Protected by `get_current_customer` dependency; extracts `customer_id` from JWT Bearer token and returns personalized response.
+  - Updated `backend/app/schemas/chat.py` with `ChatMessageRequest` and `ChatMessageResponse`.
+  - Added automated test suite in `backend/tests/test_chat.py` verifying authorized chat, unauthorized access rejection, and payload validation.
+  - Verified production bundle build with Vite (`npm run build`).
 
 ### Phase 2: FastAPI Backend & JWT Authentication (2026-10-08)
 - **Status:** Completed
