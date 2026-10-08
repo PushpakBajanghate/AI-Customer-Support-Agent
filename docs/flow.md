@@ -220,9 +220,58 @@ React Client (ChatPage.jsx)
        │ 13. Resets loading state & automatically scrolls to bottom
 ```
 
+## Conversational LLM Flow (Phase 4)
+
+In Phase 4, the `/chat` route connects directly to the configured language model (Google Gemini) with customer context and safety instructions:
+
+```
+Customer (React Client)
+       │
+       │ 1. Submits chat message with JWT Authorization header
+       ▼
+FastAPI `/chat` Endpoint
+       │
+       │ 2. `get_current_customer` dependency validates JWT
+       │    Extracts authenticated `current_customer` (e.g. Pushpak Bajanghate, ID #1)
+       ▼
+LLM Service Layer (`app.services.llm`)
+       │
+       │ 3. Formats System Prompt with verified Customer Context:
+       │    - Name: Pushpak Bajanghate
+       │    - ID: 1
+       │    - Guidelines: concise, helpful, never hallucinate orders, no unverified actions
+       │ 4. Constructs prompt messages: [SystemMessage, HumanMessage]
+       ▼
+Language Model (Google Gemini: `gemini-1.5-flash`)
+       │
+       │ 5. Processes prompt and generates natural conversational reply
+       ▼
+FastAPI Response Serialization
+       │
+       │ 6. Packages reply into `ChatMessageResponse` JSON payload
+       ▼
+React Client (ChatPage.jsx)
+       │
+       │ 7. Appends live AI response bubble and scrolls to bottom
+```
+
 ---
 
 ## Phase Changelog
+
+### Phase 4: LLM Integration (Google Gemini) (2026-10-08)
+- **Status:** Completed
+- **Changes Introduced:**
+  - Implemented modular, provider-agnostic LLM service in `backend/app/services/llm.py`:
+    - Reads `LLM_API_KEY` and `LLM_MODEL` from `.env`.
+    - Automatically checks fallbacks for `GEMINI_API_KEY` and `GOOGLE_API_KEY`.
+    - Configures Google Gemini (`gemini-1.5-flash`) via `ChatGoogleGenerativeAI` with temperature `0.3`.
+    - Structured system prompt defining the assistant as: *"An AI customer-support assistant that helps authenticated customers with orders, returns, refunds, shipping and product questions."*
+    - Enforced guidelines: concise, helpful, never invent order information, never claim actions performed unless verified, ask for clarification.
+    - Gracefully handles unconfigured API keys with polite informative notifications without crashing.
+  - Updated `backend/app/api/chat.py` to route customer messages through `generate_support_response`.
+  - Added unit test suite in `backend/tests/test_chat.py` with mock LLM validation ensuring customer identity and system prompt propagation.
+  - Updated `.env.example` to document Google Gemini environment variables.
 
 ### Phase 3: Customer Support Chat Interface (2026-10-08)
 - **Status:** Completed

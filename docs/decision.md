@@ -4,6 +4,46 @@ This document tracks all architectural decisions, technology selections, trade-o
 
 ---
 
+## Record 005: Phase 4 LLM Integration (Google Gemini)
+
+**Date:** 2026-10-08  
+**Status:** Accepted  
+
+### 1. Context & Motivation
+With frontend UI and backend authentication established, the application requires an active language model connection to answer customer inquiries. The LLM connection must be provider-agnostic, secure, and configured strictly via environment variables without hardcoding API keys.
+
+### 2. Key Decisions
+
+#### Decision 1: Selected Primary Provider — Google Gemini (`gemini-1.5-flash`)
+- **Rationale:** Google Gemini provides high throughput, low latency, extensive context windows, and cost-effective performance for production customer support workloads.
+- **Library Selection:** Integrated via `langchain-google-genai` (`ChatGoogleGenerativeAI`), ensuring direct compatibility with upcoming LangGraph multi-agent graphs in Phase 5 and Phase 6.
+
+#### Decision 2: Environment Variable Configuration Strategy
+- **Configuration Keys:** `LLM_PROVIDER=gemini`, `LLM_API_KEY=...`, `LLM_MODEL=gemini-1.5-flash`.
+- **Flexible Key Aliases:** The configuration loader (`app.config.Settings`) automatically checks `LLM_API_KEY`, `GEMINI_API_KEY`, and `GOOGLE_API_KEY`.
+- **Reason for Not Hardcoding Credentials:**
+  1. *Security & Leak Prevention:* Hardcoded keys in source control can be scraped by automated bots, compromising billing and access.
+  2. *Git Hygiene:* Keeping `.env` in `.gitignore` guarantees that repository commits remain entirely free of secrets.
+  3. *Portability & CI Testing:* Allows running automated test suites in continuous integration environments without requiring live API keys.
+  4. *Provider Agnosticism:* Swapping providers or upgrading models (e.g. from `gemini-1.5-flash` to `gemini-1.5-pro` or OpenAI) requires only changing environment variables, without code rewrites.
+
+#### Decision 3: Service Layer Isolation (`backend/app/services/llm.py`)
+- **Rationale:** The API route (`POST /chat`) interacts exclusively with `generate_support_response(customer, message)` rather than directly importing LLM client classes.
+- **Benefit:** When Phase 5 introduces the LangGraph Router Agent, the route logic will simply switch to invoking the compiled graph, keeping API routes clean and decoupled.
+
+#### Decision 4: Safe Conversational System Prompt Foundation
+- **Prompt Guardrails:**
+  - Injects authenticated customer context (`customer.name`, `customer.id`).
+  - Strict instruction never to hallucinate order tracking or invent order numbers.
+  - Strict instruction never to falsely claim an action (e.g. refund or cancellation) was executed before validation.
+  - Non-tool conversational baseline: Establishes a polite, concise conversational tone while preparing for tool integration in Phase 8.
+
+### 3. Known Limitations (Phase 4)
+- Multi-turn conversation state is maintained on the React client side in this phase; server-side graph state checkpointing will be introduced in LangGraph phases.
+- Tool calling is intentionally not yet active until customer support tools are built in Phase 8.
+
+---
+
 ## Record 004: Phase 3 Chat Interface UI & Client-Server Contract
 
 **Date:** 2026-10-08  

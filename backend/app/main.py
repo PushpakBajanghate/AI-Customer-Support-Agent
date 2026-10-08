@@ -31,7 +31,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="AI Customer Support Agent API",
     description="Backend API for AI Customer Support Agent (Educational & Production-Minded Architecture)",
-    version="0.3.0",
+    version="0.4.0",
     lifespan=lifespan
 )
 
@@ -53,8 +53,8 @@ def read_root():
     return {
         "status": "healthy",
         "service": "AI Customer Support Agent API",
-        "version": "0.3.0",
-        "phase": "Phase 3 - Customer Support Chat Interface"
+        "version": "0.4.0",
+        "phase": "Phase 4 - LLM Integration (Google Gemini)"
     }
 
 @app.get("/health", tags=["General"])

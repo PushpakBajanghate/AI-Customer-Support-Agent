@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -35,7 +36,7 @@ class ChatTestCase(unittest.TestCase):
     def tearDown(self):
         Base.metadata.drop_all(bind=self.engine)
 
-    def test_chat_authorized_flow(self):
+    def test_chat_authorized_fallback_flow(self):
         # 1. Register and login
         reg_payload = {
             "name": "Pushpak Bajanghate",
@@ -52,7 +53,7 @@ class ChatTestCase(unittest.TestCase):
         token = login_res.json()["access_token"]
         customer_id = login_res.json()["customer"]["id"]
 
-        # 2. Send chat message
+        # 2. Send chat message (when API key is empty or default)
         headers = {"Authorization": f"Bearer {token}"}
         chat_payload = {"message": "Where is my order #1?"}
         chat_res = self.client.post("/chat", json=chat_payload, headers=headers)
@@ -64,6 +65,46 @@ class ChatTestCase(unittest.TestCase):
         self.assertIn("Pushpak Bajanghate", data["response"])
         self.assertIn("Where is my order #1?", data["response"])
         self.assertIn("timestamp", data)
+
+    @patch("app.services.llm.get_llm")
+    def test_chat_live_llm_invocation(self, mock_get_llm):
+        # Mock LLM instance returning an AIMessage-like response
+        mock_llm_instance = MagicMock()
+        mock_ai_message = MagicMock()
+        mock_ai_message.content = "I would be happy to help you with your order status!"
+        mock_llm_instance.invoke.return_value = mock_ai_message
+        mock_get_llm.return_value = mock_llm_instance
+
+        # Register and login
+        reg_payload = {
+            "name": "Virat Kohli",
+            "email": "virat@example.com",
+            "phone": "+91-9811122233",
+            "password": "securepassword123"
+        }
+        self.client.post("/auth/register", json=reg_payload)
+        login_res = self.client.post("/auth/login", json={
+            "email": "virat@example.com",
+            "password": "securepassword123"
+        })
+        token = login_res.json()["access_token"]
+        headers = {"Authorization": f"Bearer {token}"}
+
+        # Send chat message
+        chat_res = self.client.post("/chat", json={"message": "Can I cancel my recent order?"}, headers=headers)
+        self.assertEqual(chat_res.status_code, 200)
+        data = chat_res.json()
+        self.assertEqual(data["response"], "I would be happy to help you with your order status!")
+
+        # Verify LLM invoke was called with SystemMessage and HumanMessage containing customer context
+        self.assertTrue(mock_llm_instance.invoke.called)
+        called_messages = mock_llm_instance.invoke.call_args[0][0]
+        self.assertEqual(len(called_messages), 2)
+        # Check system prompt contents
+        self.assertIn("Virat Kohli", called_messages[0].content)
+        self.assertIn("customer-support assistant", called_messages[0].content)
+        # Check user message contents
+        self.assertEqual(called_messages[1].content, "Can I cancel my recent order?")
 
     def test_chat_unauthorized(self):
         # Missing auth header
@@ -82,14 +123,14 @@ class ChatTestCase(unittest.TestCase):
     def test_chat_empty_message_validation(self):
         # Register and login
         reg_payload = {
-            "name": "Virat Kohli",
-            "email": "virat@example.com",
-            "phone": "+91-9811122233",
+            "name": "Harvey Specter",
+            "email": "harvey@example.com",
+            "phone": "+91-9822233344",
             "password": "securepassword123"
         }
         self.client.post("/auth/register", json=reg_payload)
         login_res = self.client.post("/auth/login", json={
-            "email": "virat@example.com",
+            "email": "harvey@example.com",
             "password": "securepassword123"
         })
         token = login_res.json()["access_token"]
