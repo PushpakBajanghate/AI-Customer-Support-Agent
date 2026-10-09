@@ -188,6 +188,15 @@ def run_evaluation(mode: str = "calibrated", output_dir: str = "reports") -> dic
     with open(md_path, "w", encoding="utf-8") as f:
         f.write(md_content)
 
+    # Mirror to workspace root reports directory if different
+    root_reports = backend_dir.parent / "reports"
+    if root_reports != out_path.resolve():
+        root_reports.mkdir(parents=True, exist_ok=True)
+        with open(root_reports / "evaluation_report.json", "w", encoding="utf-8") as f:
+            json.dump(serializable_report, f, indent=2)
+        with open(root_reports / "evaluation_report.md", "w", encoding="utf-8") as f:
+            f.write(md_content)
+
     print("\n" + "=" * 80)
     print("AI CUSTOMER SUPPORT AGENT — EVALUATION REPORT")
     print(f"Mode: {mode.upper()} | Test Cases: {report['total_test_cases']} | Overall Index: {report['overall_evaluation_index']*100:.2f}%")
