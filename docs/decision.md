@@ -4,6 +4,40 @@ This document tracks all architectural decisions, technology selections, trade-o
 
 ---
 
+## Record 009: Simple Backend Tool Design and Ownership Security
+
+**Date:** 2026-10-09
+**Status:** Accepted
+
+### Tool design
+
+Support operations are ordinary Python functions in `app.tools.support`. They
+return small structured results (`ok`, an error code when rejected, and data
+when successful). Read tools cover customer orders, a single owned order,
+tracking, products, return eligibility, and refund status. Write tools cover
+eligible cancellation, return creation, refund creation, and support tickets.
+
+The LLM never receives a database session and never executes SQL. Backend
+orchestration invokes tools and passes their structured result back to the
+Support Agent. No MCP server, microservice, or additional tool framework is
+introduced.
+
+### Security decisions
+
+Every order lookup filters by both `order_id` and the authenticated
+`customer_id`. Order-item, return, refund, cancellation, and tracking tools
+reuse that ownership check, so one customer cannot access or mutate another
+customer's order. Product lookup is public catalog data; ticket creation first
+verifies that the customer exists.
+
+Write validation rejects orders that are not cancellable, products outside the
+configured return window, undelivered orders, missing return reasons, and
+orders that are not refund-eligible. Existing returns and refunds are checked
+before insertion so the same operation is not duplicated. PostgreSQL remains
+the source of truth and the tool commits only after validation succeeds.
+
+---
+
 ## Record 008: PostgreSQL Conversation Storage Instead of a Memory Framework
 
 **Date:** 2026-10-09

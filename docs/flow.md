@@ -30,6 +30,26 @@ Support Agent receives the same context and can resolve references such as
 “that order”, product names, or “the one from yesterday” against those records.
 The complete database and unbounded transcript are never sent to the LLM.
 
+## Backend Tool Execution Flow
+
+The Support Agent requests a named backend tool. The model does not receive a
+SQLAlchemy session, database credentials, or permission to execute SQL.
+
+```
+Support Agent
+  → Tool
+  → ownership and business validation
+  → PostgreSQL read/write
+  → structured tool result
+  → Support Agent
+  → customer
+```
+
+Read tools retrieve orders, tracking, products, return eligibility, and refund
+status. Write tools perform cancellation, return, refund, and ticket creation
+only after validating the authenticated customer ownership and relevant business
+rules. Duplicate returns and refunds are rejected before insertion.
+
 ## Support Agent Flow (Phase 6 — LangGraph + approved read tools)
 
 Phase 6 adds the Support Agent after Router classification. The Router selects
