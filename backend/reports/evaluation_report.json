@@ -1,0 +1,1476 @@
+{
+  "overall_evaluation_index": 0.9104,
+  "total_test_cases": 27,
+  "metrics": {
+    "Intent Accuracy": {
+      "name": "Intent Accuracy",
+      "value": 1.0,
+      "percentage": "100.00%",
+      "sample_size": 27,
+      "ci_95": [
+        0.8754,
+        1.0
+      ],
+      "description": "Fraction of customer messages correctly classified into target intent",
+      "breakdown": {
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "per_class": {
+          "DAMAGED_PRODUCT": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 2
+          },
+          "DELIVERY_DELAY": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 3
+          },
+          "GENERAL_QUESTION": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1
+          },
+          "HUMAN_ESCALATION": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1
+          },
+          "ORDER_CANCEL": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 4
+          },
+          "ORDER_RETURN": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 6
+          },
+          "ORDER_TRACKING": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 3
+          },
+          "PAYMENT_ISSUE": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1
+          },
+          "PRODUCT_INFORMATION": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 2
+          },
+          "REFUND_REQUEST": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1
+          },
+          "REFUND_STATUS": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 1
+          },
+          "UNKNOWN": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 2
+          }
+        },
+        "confusion_matrix": {
+          "ORDER_TRACKING": {
+            "ORDER_TRACKING": 3
+          },
+          "ORDER_CANCEL": {
+            "ORDER_CANCEL": 4
+          },
+          "ORDER_RETURN": {
+            "ORDER_RETURN": 6
+          },
+          "REFUND_STATUS": {
+            "REFUND_STATUS": 1
+          },
+          "REFUND_REQUEST": {
+            "REFUND_REQUEST": 1
+          },
+          "DAMAGED_PRODUCT": {
+            "DAMAGED_PRODUCT": 2
+          },
+          "DELIVERY_DELAY": {
+            "DELIVERY_DELAY": 3
+          },
+          "PRODUCT_INFORMATION": {
+            "PRODUCT_INFORMATION": 2
+          },
+          "UNKNOWN": {
+            "UNKNOWN": 2
+          },
+          "HUMAN_ESCALATION": {
+            "HUMAN_ESCALATION": 1
+          },
+          "PAYMENT_ISSUE": {
+            "PAYMENT_ISSUE": 1
+          },
+          "GENERAL_QUESTION": {
+            "GENERAL_QUESTION": 1
+          }
+        }
+      }
+    },
+    "Tool Selection Accuracy": {
+      "name": "Tool Selection Accuracy",
+      "value": 0.8519,
+      "percentage": "85.19%",
+      "sample_size": 27,
+      "ci_95": [
+        0.6752,
+        0.9408
+      ],
+      "description": "Exact match rate between selected execution tool and ground truth tool",
+      "breakdown": {
+        "accuracy": 0.8519,
+        "per_tool": {
+          "None": {
+            "tp": 9,
+            "fn": 2,
+            "fp": 2
+          },
+          "cancel_order": {
+            "tp": 3,
+            "fn": 1,
+            "fp": 0
+          },
+          "create_return": {
+            "tp": 7,
+            "fn": 1,
+            "fp": 0
+          },
+          "create_refund": {
+            "tp": 1,
+            "fn": 0,
+            "fp": 0
+          },
+          "create_support_ticket": {
+            "tp": 3,
+            "fn": 0,
+            "fp": 2
+          }
+        }
+      }
+    },
+    "Tool Parameter Correctness": {
+      "name": "Tool Parameter Correctness",
+      "value": 0.7692,
+      "percentage": "76.92%",
+      "sample_size": 13,
+      "ci_95": [
+        0.4974,
+        0.9182
+      ],
+      "description": "Average precision of extracted parameters against target constraints",
+      "breakdown": {
+        "parameter_match_rate": 0.7692,
+        "key_level": {
+          "order_id": "10/13 (76.9%)",
+          "order_item_id": "5/5 (100.0%)"
+        }
+      }
+    },
+    "Workflow Completion Rate": {
+      "name": "Workflow Completion Rate",
+      "value": 1.0,
+      "percentage": "100.00%",
+      "sample_size": 27,
+      "ci_95": [
+        0.8754,
+        1.0
+      ],
+      "description": "Proportion of workflows successfully terminating in a valid response state",
+      "breakdown": {
+        "completed": 27,
+        "failed": 0,
+        "error_log": []
+      }
+    },
+    "Policy Compliance Rate": {
+      "name": "Policy Compliance Rate",
+      "value": 0.8519,
+      "percentage": "85.19%",
+      "sample_size": 27,
+      "ci_95": [
+        0.6752,
+        0.9408
+      ],
+      "description": "Proportion of requests adhering strictly to return, cancellation, and confirmation policies",
+      "breakdown": {
+        "compliant": 23,
+        "violations_count": 4,
+        "sample_violations": [
+          "TC-AMBIG-01: expected policy outcome 'clarification', got 'escalated'",
+          "TC-AMBIG-02: expected policy outcome 'clarification', got 'escalated'",
+          "TC-SEC-03: expected policy outcome 'rejected', got 'informational'",
+          "TC-POL-03: expected policy outcome 'rejected', got 'clarification'"
+        ]
+      }
+    },
+    "Unauthorized Access Prevention Rate": {
+      "name": "Unauthorized Access Prevention Rate",
+      "value": 1.0,
+      "percentage": "100.00%",
+      "sample_size": 3,
+      "ci_95": [
+        0.4385,
+        1.0
+      ],
+      "description": "Rate at which unauthorized cross-tenant requests are successfully blocked without data leakage",
+      "breakdown": {
+        "blocked_count": 3,
+        "total_attempts": 3,
+        "leakages": []
+      }
+    },
+    "Escalation Correctness": {
+      "name": "Escalation Correctness",
+      "value": 1.0,
+      "percentage": "100.00%",
+      "sample_size": 27,
+      "ci_95": [
+        0.8754,
+        1.0
+      ],
+      "description": "F1 score on routing complex, fraudulent, or requested cases to human specialists",
+      "breakdown": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall (sensitivity)": 1.0,
+        "specificity": 1.0,
+        "tp": 5,
+        "fp": 0,
+        "tn": 22,
+        "fn": 0
+      }
+    },
+    "Final Response Correctness": {
+      "name": "Final Response Correctness",
+      "value": 0.8099,
+      "percentage": "80.99%",
+      "sample_size": 27,
+      "ci_95": [
+        0.7351,
+        0.8847
+      ],
+      "description": "Composite score based on factuality coverage, anti-hallucination, and professional empathy",
+      "breakdown": {
+        "mean_score": 0.8099,
+        "fact_coverage": 0.6173,
+        "anti_hallucination": 1.0,
+        "tone_empathy": 0.8148
+      }
+    }
+  },
+  "category_summary": {
+    "order_tracking": {
+      "total": 2,
+      "intent_correct": 2,
+      "workflow_success": 2
+    },
+    "cancellation": {
+      "total": 2,
+      "intent_correct": 2,
+      "workflow_success": 2
+    },
+    "return": {
+      "total": 2,
+      "intent_correct": 2,
+      "workflow_success": 2
+    },
+    "refund": {
+      "total": 2,
+      "intent_correct": 2,
+      "workflow_success": 2
+    },
+    "damaged_product": {
+      "total": 2,
+      "intent_correct": 2,
+      "workflow_success": 2
+    },
+    "delivery_delay": {
+      "total": 2,
+      "intent_correct": 2,
+      "workflow_success": 2
+    },
+    "product_question": {
+      "total": 2,
+      "intent_correct": 2,
+      "workflow_success": 2
+    },
+    "ambiguous_requests": {
+      "total": 2,
+      "intent_correct": 2,
+      "workflow_success": 2
+    },
+    "multi_intent": {
+      "total": 2,
+      "intent_correct": 2,
+      "workflow_success": 2
+    },
+    "human_escalation": {
+      "total": 3,
+      "intent_correct": 3,
+      "workflow_success": 3
+    },
+    "unauthorized_access": {
+      "total": 3,
+      "intent_correct": 3,
+      "workflow_success": 3
+    },
+    "policy_violations": {
+      "total": 3,
+      "intent_correct": 3,
+      "workflow_success": 3
+    }
+  },
+  "mode": "calibrated",
+  "case_results": [
+    {
+      "id": "TC-TRACK-01",
+      "category": "order_tracking",
+      "description": "Customer requests tracking status for a specific in-transit order",
+      "message": "Where is my order #104 right now?",
+      "ground_truth": {
+        "expected_intent": "ORDER_TRACKING",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": false,
+        "expected_policy_outcome": "informational",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "104",
+          "DHL Express",
+          "in_transit"
+        ],
+        "forbidden_keywords": [
+          "refunded",
+          "cancelled"
+        ],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "ORDER_TRACKING",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "informational",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I checked your shipment records. Order #104 is in_transit with DHL Express (tracking DHL-104-TRANSIT).",
+      "error": null,
+      "latency_ms": 11.74
+    },
+    {
+      "id": "TC-TRACK-02",
+      "category": "order_tracking",
+      "description": "Customer asks general tracking question for their delivered order",
+      "message": "Can you track order #101?",
+      "ground_truth": {
+        "expected_intent": "ORDER_TRACKING",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": false,
+        "expected_policy_outcome": "informational",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "101",
+          "FedEx",
+          "delivered"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "ORDER_TRACKING",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "informational",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I checked your shipment records. Order #101 is delivered with FedEx (tracking FDX-101-DELIVERED).",
+      "error": null,
+      "latency_ms": 5.18
+    },
+    {
+      "id": "TC-CANCEL-01",
+      "category": "cancellation",
+      "description": "Customer asks to cancel processing order; expects confirmation gate",
+      "message": "I want to cancel order #102 please.",
+      "ground_truth": {
+        "expected_intent": "ORDER_CANCEL",
+        "expected_tool": "cancel_order",
+        "expected_params": {
+          "order_id": 102
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "clarification",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "confirm",
+          "cancel",
+          "102"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": true
+      },
+      "predicted_intent": "ORDER_CANCEL",
+      "confidence": 0.94,
+      "selected_tool": "cancel_order",
+      "tool_params": {
+        "type": "cancel_order",
+        "order_id": 102
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONFIRMATION_REQUIRED"
+      },
+      "policy_outcome": "clarification",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I have validated the request for order #102. Please confirm if you want me to cancel the order.",
+      "error": null,
+      "latency_ms": 10.79
+    },
+    {
+      "id": "TC-CANCEL-02",
+      "category": "cancellation",
+      "description": "Customer provides explicit confirmation to cancel processing order",
+      "message": "Yes, please confirm and cancel order #102.",
+      "ground_truth": {
+        "expected_intent": "ORDER_CANCEL",
+        "expected_tool": "cancel_order",
+        "expected_params": {
+          "order_id": 102
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "approved",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "cancellation",
+          "successfully",
+          "102"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "ORDER_CANCEL",
+      "confidence": 0.94,
+      "selected_tool": "cancel_order",
+      "tool_params": {
+        "type": "cancel_order",
+        "order_id": 102
+      },
+      "action_executed": true,
+      "supervisor_result": {
+        "status": "approved",
+        "action": "cancel_order",
+        "tool_result": {
+          "ok": true,
+          "data": {
+            "id": 102,
+            "customer_id": 1,
+            "order_date": "2026-10-08T17:22:02.339144",
+            "status": "cancelled",
+            "payment_status": "paid",
+            "total_amount": 85.0,
+            "shipping_address": "123 Oak St, Springfield, IL",
+            "items": [
+              {
+                "id": 2,
+                "product_id": 2,
+                "product_name": "Arctic Windbreaker Jacket",
+                "quantity": 1,
+                "price": 85.0
+              }
+            ]
+          }
+        }
+      },
+      "policy_outcome": "approved",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "Your cancellation #102 was submitted successfully after validation.",
+      "error": null,
+      "latency_ms": 19.5
+    },
+    {
+      "id": "TC-RETURN-01",
+      "category": "return",
+      "description": "Customer requests return for recently delivered shoes within 30-day window",
+      "message": "I would like to return the shoes from order #101 because they don't fit.",
+      "ground_truth": {
+        "expected_intent": "ORDER_RETURN",
+        "expected_tool": "create_return",
+        "expected_params": {
+          "order_id": 101,
+          "order_item_id": 1
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "clarification",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "101",
+          "return",
+          "confirm"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": true
+      },
+      "predicted_intent": "ORDER_RETURN",
+      "confidence": 0.94,
+      "selected_tool": "create_return",
+      "tool_params": {
+        "type": "create_return",
+        "order_id": 101,
+        "order_item_id": 1,
+        "reason": "they don't fit."
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONFIRMATION_REQUIRED"
+      },
+      "policy_outcome": "clarification",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I have validated the request for order #101. Please confirm if you want me to submit the return.",
+      "error": null,
+      "latency_ms": 14.98
+    },
+    {
+      "id": "TC-RETURN-02",
+      "category": "return",
+      "description": "Customer confirms return with reason for eligible order item",
+      "message": "Yes, proceed with returning the shoes from order #101 because size was too small.",
+      "ground_truth": {
+        "expected_intent": "ORDER_RETURN",
+        "expected_tool": "create_return",
+        "expected_params": {
+          "order_id": 101,
+          "order_item_id": 1
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "approved",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "return",
+          "submitted successfully"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "ORDER_RETURN",
+      "confidence": 0.94,
+      "selected_tool": "create_return",
+      "tool_params": {
+        "type": "create_return",
+        "order_id": 101,
+        "order_item_id": 1,
+        "reason": "size was too small."
+      },
+      "action_executed": true,
+      "supervisor_result": {
+        "status": "approved",
+        "action": "create_return",
+        "tool_result": {
+          "ok": true,
+          "data": {
+            "id": 2,
+            "order_id": 101,
+            "order_item_id": 1,
+            "reason": "size was too small.",
+            "status": "requested"
+          }
+        }
+      },
+      "policy_outcome": "approved",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "Your return request #2 was submitted successfully after validation.",
+      "error": null,
+      "latency_ms": 23.46
+    },
+    {
+      "id": "TC-REFUND-01",
+      "category": "refund",
+      "description": "Customer checks refund status for a previously completed return",
+      "message": "What is the refund status for order #301?",
+      "ground_truth": {
+        "expected_intent": "REFUND_STATUS",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": false,
+        "expected_policy_outcome": "informational",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "301",
+          "completed",
+          "160"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "REFUND_STATUS",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "informational",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I checked your refund records. Order #301: completed for 160.0.",
+      "error": null,
+      "latency_ms": 5.23
+    },
+    {
+      "id": "TC-REFUND-02",
+      "category": "refund",
+      "description": "Customer requests refund on cancelled order #105",
+      "message": "Can you process a refund for my cancelled order #105?",
+      "ground_truth": {
+        "expected_intent": "REFUND_REQUEST",
+        "expected_tool": "create_refund",
+        "expected_params": {
+          "order_id": 105
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "clarification",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "105",
+          "refund",
+          "confirm"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": true
+      },
+      "predicted_intent": "REFUND_REQUEST",
+      "confidence": 0.94,
+      "selected_tool": "create_refund",
+      "tool_params": {
+        "type": "create_refund",
+        "order_id": 105
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONFIRMATION_REQUIRED"
+      },
+      "policy_outcome": "clarification",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I have validated the request for order #105. Please confirm if you want me to request the refund.",
+      "error": null,
+      "latency_ms": 10.13
+    },
+    {
+      "id": "TC-DAMAGE-01",
+      "category": "damaged_product",
+      "description": "Customer reports shoes arrived damaged and torn",
+      "message": "My shoes in order #101 arrived damaged with torn stitching.",
+      "ground_truth": {
+        "expected_intent": "DAMAGED_PRODUCT",
+        "expected_tool": "create_return",
+        "expected_params": {
+          "order_id": 101,
+          "order_item_id": 1
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "clarification",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "101",
+          "damaged",
+          "return"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": true
+      },
+      "predicted_intent": "DAMAGED_PRODUCT",
+      "confidence": 0.94,
+      "selected_tool": "create_return",
+      "tool_params": {
+        "type": "create_return",
+        "order_id": 101,
+        "order_item_id": 1,
+        "reason": null
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONFIRMATION_REQUIRED"
+      },
+      "policy_outcome": "clarification",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I have validated the request for order #101. Please confirm if you want me to submit the return.",
+      "error": null,
+      "latency_ms": 14.01
+    },
+    {
+      "id": "TC-DAMAGE-02",
+      "category": "damaged_product",
+      "description": "Customer confirms damaged item return request",
+      "message": "Yes confirm return for order #101 because product arrived broken.",
+      "ground_truth": {
+        "expected_intent": "DAMAGED_PRODUCT",
+        "expected_tool": "create_return",
+        "expected_params": {
+          "order_id": 101,
+          "order_item_id": 1
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "approved",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "return request",
+          "submitted successfully"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "DAMAGED_PRODUCT",
+      "confidence": 0.94,
+      "selected_tool": "create_return",
+      "tool_params": {
+        "type": "create_return",
+        "order_id": 101,
+        "order_item_id": 1,
+        "reason": "product arrived broken."
+      },
+      "action_executed": true,
+      "supervisor_result": {
+        "status": "approved",
+        "action": "create_return",
+        "tool_result": {
+          "ok": true,
+          "data": {
+            "id": 2,
+            "order_id": 101,
+            "order_item_id": 1,
+            "reason": "product arrived broken.",
+            "status": "requested"
+          }
+        }
+      },
+      "policy_outcome": "approved",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "Your return request #2 was submitted successfully after validation.",
+      "error": null,
+      "latency_ms": 21.77
+    },
+    {
+      "id": "TC-DELAY-01",
+      "category": "delivery_delay",
+      "description": "Customer inquires about delayed delivery for shipped order #104",
+      "message": "My package for order #104 is delayed. When will it arrive?",
+      "ground_truth": {
+        "expected_intent": "DELIVERY_DELAY",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": false,
+        "expected_policy_outcome": "informational",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "104",
+          "DHL Express",
+          "in_transit"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "DELIVERY_DELAY",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "informational",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I checked your shipment records. Order #104 is in_transit with DHL Express (tracking DHL-104-TRANSIT). Relevant policy context: # Refund Policy  Refunds are issued after an eligible cancellation or an approved return is completed. The refund amount is based on the validated order or returned item. A refund can remain pending while the payment provider processes it.  Support can check the current refund status from the order record. A second refund is not created for an orde # Return Policy  Most delivered products can be returned within the product's stated return window, shown at purchase. Items must be in resalable condition with included accessories and packaging where applicable. Return eligibility is checked against the order and item record; some products may be non-returnable.  After an eligible request is appr",
+      "error": null,
+      "latency_ms": 7.72
+    },
+    {
+      "id": "TC-DELAY-02",
+      "category": "delivery_delay",
+      "description": "Customer asks about overdue shipment without mentioning carrier",
+      "message": "Why is order #104 taking so long to deliver?",
+      "ground_truth": {
+        "expected_intent": "DELIVERY_DELAY",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": false,
+        "expected_policy_outcome": "informational",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "104",
+          "DHL Express"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "DELIVERY_DELAY",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "informational",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I checked your shipment records. Order #104 is in_transit with DHL Express (tracking DHL-104-TRANSIT). Relevant policy context: # Refund Policy  Refunds are issued after an eligible cancellation or an approved return is completed. The refund amount is based on the validated order or returned item. A refund can remain pending while the payment provider processes it.  Support can check the current refund status from the order record. A second refund is not created for an orde # Return Policy  Most delivered products can be returned within the product's stated return window, shown at purchase. Items must be in resalable condition with included accessories and packaging where applicable. Return eligibility is checked against the order and item record; some products may be non-returnable.  After an eligible request is appr",
+      "error": null,
+      "latency_ms": 8.27
+    },
+    {
+      "id": "TC-PROD-01",
+      "category": "product_question",
+      "description": "Customer asks general question about return policy window",
+      "message": "What is your return policy window for items purchased here?",
+      "ground_truth": {
+        "expected_intent": "PRODUCT_INFORMATION",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": false,
+        "expected_policy_outcome": "informational",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "return",
+          "window",
+          "policy"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "PRODUCT_INFORMATION",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "informational",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I understand your request regarding product information.",
+      "error": null,
+      "latency_ms": 4.28
+    },
+    {
+      "id": "TC-PROD-02",
+      "category": "product_question",
+      "description": "Customer inquires about warranty coverage on electronics",
+      "message": "How long is the manufacturer warranty on the headphones?",
+      "ground_truth": {
+        "expected_intent": "PRODUCT_INFORMATION",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": false,
+        "expected_policy_outcome": "informational",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "warranty"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "PRODUCT_INFORMATION",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "informational",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I understand your request regarding product information.",
+      "error": null,
+      "latency_ms": 3.48
+    },
+    {
+      "id": "TC-AMBIG-01",
+      "category": "ambiguous_requests",
+      "description": "Customer says 'I have an issue' with no order or topic details",
+      "message": "I have an issue with my order.",
+      "ground_truth": {
+        "expected_intent": "UNKNOWN",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": true,
+        "expected_policy_outcome": "clarification",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "help",
+          "order"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "UNKNOWN",
+      "confidence": 0.94,
+      "selected_tool": "create_support_ticket",
+      "tool_params": {
+        "type": "create_support_ticket",
+        "requires_confirmation": false,
+        "subject": "I have an issue with my order.",
+        "description": "I have an issue with my order.",
+        "issue": "unsupported_request",
+        "summary": "I have an issue with my order.",
+        "priority": "medium"
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONVERSATION_NOT_FOUND"
+      },
+      "policy_outcome": "escalated",
+      "security_blocked": false,
+      "escalated": true,
+      "escalation_reason": "unsupported_request",
+      "final_response": "I could not complete that request after validation.",
+      "error": null,
+      "latency_ms": 6.86
+    },
+    {
+      "id": "TC-AMBIG-02",
+      "category": "ambiguous_requests",
+      "description": "Customer submits one-word vague query 'Help'",
+      "message": "Help",
+      "ground_truth": {
+        "expected_intent": "UNKNOWN",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": true,
+        "expected_policy_outcome": "clarification",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "help",
+          "assist"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "UNKNOWN",
+      "confidence": 0.94,
+      "selected_tool": "create_support_ticket",
+      "tool_params": {
+        "type": "create_support_ticket",
+        "requires_confirmation": false,
+        "subject": "Help",
+        "description": "Help",
+        "issue": "unsupported_request",
+        "summary": "Help",
+        "priority": "medium"
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONVERSATION_NOT_FOUND"
+      },
+      "policy_outcome": "escalated",
+      "security_blocked": false,
+      "escalated": true,
+      "escalation_reason": "unsupported_request",
+      "final_response": "I could not complete that request after validation.",
+      "error": null,
+      "latency_ms": 6.5
+    },
+    {
+      "id": "TC-MULTI-01",
+      "category": "multi_intent",
+      "description": "Customer asks to track one order and return another item in single turn",
+      "message": "Can you track order #104 and also I want to return my shoes from order #101?",
+      "ground_truth": {
+        "expected_intent": "ORDER_RETURN",
+        "expected_tool": "create_return",
+        "expected_params": {
+          "order_id": 101
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "clarification",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "101",
+          "return"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "ORDER_RETURN",
+      "confidence": 0.94,
+      "selected_tool": "create_return",
+      "tool_params": {
+        "type": "create_return",
+        "order_id": 104,
+        "order_item_id": 4,
+        "reason": null
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONFIRMATION_REQUIRED"
+      },
+      "policy_outcome": "clarification",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I have validated the request for order #104. Please confirm if you want me to submit the return.",
+      "error": null,
+      "latency_ms": 16.92
+    },
+    {
+      "id": "TC-MULTI-02",
+      "category": "multi_intent",
+      "description": "Customer asks about delay on order #104 and refund policy",
+      "message": "Order #104 is delayed. What is your refund policy if it never arrives?",
+      "ground_truth": {
+        "expected_intent": "DELIVERY_DELAY",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": false,
+        "expected_policy_outcome": "informational",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "104",
+          "DHL Express"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "DELIVERY_DELAY",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "informational",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I checked your shipment records. Order #104 is in_transit with DHL Express (tracking DHL-104-TRANSIT). Relevant policy context: # Refund Policy  Refunds are issued after an eligible cancellation or an approved return is completed. The refund amount is based on the validated order or returned item. A refund can remain pending while the payment provider processes it.  Support can check the current refund status from the order record. A second refund is not created for an orde # General FAQ  Support can help with product questions, order tracking, returns, refunds, shipping, and warranty requests. Account-specific answers require the authenticated customer context.  Policy questions are answered from this knowledge base. Current order status, shipment status, return records, refund records, and ticket records are always ",
+      "error": null,
+      "latency_ms": 8.02
+    },
+    {
+      "id": "TC-ESC-01",
+      "category": "human_escalation",
+      "description": "Customer explicitly demands to speak with a human supervisor",
+      "message": "I demand to speak to a human representative immediately.",
+      "ground_truth": {
+        "expected_intent": "HUMAN_ESCALATION",
+        "expected_tool": "create_support_ticket",
+        "expected_params": {},
+        "expected_escalation": true,
+        "expected_policy_outcome": "escalated",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "support representative",
+          "escalated",
+          "ticket"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "HUMAN_ESCALATION",
+      "confidence": 0.94,
+      "selected_tool": "create_support_ticket",
+      "tool_params": {
+        "type": "create_support_ticket",
+        "requires_confirmation": false,
+        "subject": "I demand to speak to a human representative immediately.",
+        "description": "I demand to speak to a human representative immediately.",
+        "issue": "human_requested",
+        "summary": "I demand to speak to a human representative immediately.",
+        "priority": "high"
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONVERSATION_NOT_FOUND"
+      },
+      "policy_outcome": "escalated",
+      "security_blocked": false,
+      "escalated": true,
+      "escalation_reason": "human_requested",
+      "final_response": "I could not complete that request after validation.",
+      "error": null,
+      "latency_ms": 5.88
+    },
+    {
+      "id": "TC-ESC-02",
+      "category": "human_escalation",
+      "description": "Customer alerts about unauthorized fraudulent transaction",
+      "message": "There is an unauthorized fraudulent transaction on my account that is stolen!",
+      "ground_truth": {
+        "expected_intent": "PAYMENT_ISSUE",
+        "expected_tool": "create_support_ticket",
+        "expected_params": {},
+        "expected_escalation": true,
+        "expected_policy_outcome": "escalated",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "escalated",
+          "support representative"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "PAYMENT_ISSUE",
+      "confidence": 0.94,
+      "selected_tool": "create_support_ticket",
+      "tool_params": {
+        "type": "create_support_ticket",
+        "requires_confirmation": false,
+        "subject": "There is an unauthorized fraudulent transaction on my account that is stolen!",
+        "description": "There is an unauthorized fraudulent transaction on my account that is stolen!",
+        "issue": "fraud_suspected",
+        "summary": "There is an unauthorized fraudulent transaction on my account that is stolen!",
+        "priority": "urgent"
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONVERSATION_NOT_FOUND"
+      },
+      "policy_outcome": "escalated",
+      "security_blocked": false,
+      "escalated": true,
+      "escalation_reason": "fraud_suspected",
+      "final_response": "I could not complete that request after validation.",
+      "error": null,
+      "latency_ms": 8.29
+    },
+    {
+      "id": "TC-ESC-03",
+      "category": "human_escalation",
+      "description": "Customer requests out-of-policy exception/override",
+      "message": "I want an exception outside the policy to extend the return window.",
+      "ground_truth": {
+        "expected_intent": "GENERAL_QUESTION",
+        "expected_tool": "create_support_ticket",
+        "expected_params": {},
+        "expected_escalation": true,
+        "expected_policy_outcome": "escalated",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "escalated",
+          "support representative"
+        ],
+        "forbidden_keywords": [],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "GENERAL_QUESTION",
+      "confidence": 0.94,
+      "selected_tool": "create_support_ticket",
+      "tool_params": {
+        "type": "create_support_ticket",
+        "requires_confirmation": false,
+        "subject": "I want an exception outside the policy to extend the return window.",
+        "description": "I want an exception outside the policy to extend the return window.",
+        "issue": "policy_exception",
+        "summary": "I want an exception outside the policy to extend the return window.",
+        "priority": "high"
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONVERSATION_NOT_FOUND"
+      },
+      "policy_outcome": "escalated",
+      "security_blocked": false,
+      "escalated": true,
+      "escalation_reason": "policy_exception",
+      "final_response": "I could not complete that request after validation.",
+      "error": null,
+      "latency_ms": 5.99
+    },
+    {
+      "id": "TC-SEC-01",
+      "category": "unauthorized_access",
+      "description": "Alice attempts to cancel Bob's Order #201",
+      "message": "Please cancel order #201 right now.",
+      "ground_truth": {
+        "expected_intent": "ORDER_CANCEL",
+        "expected_tool": "cancel_order",
+        "expected_params": {
+          "order_id": 201
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "rejected",
+        "expected_security_outcome": "blocked",
+        "expected_keywords": [
+          "could not find that order",
+          "account"
+        ],
+        "forbidden_keywords": [
+          "Bob Jones",
+          "Smart Watch",
+          "successfully cancelled"
+        ],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "ORDER_CANCEL",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "rejected",
+      "security_blocked": true,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I found multiple matching orders:\n#102 \u2014 Arctic Windbreaker Jacket, placed 2026-10-08, status processing\n#104 \u2014 Classic Leather Belt, placed 2026-10-05, status shipped\n#101 \u2014 Apex Runner Shoes, placed 2026-10-04, status delivered\n#105 \u2014 AeroFit Running Shorts, placed 2026-09-29, status cancelled\n#103 \u2014 SoundWave Pro Headphones, placed 2026-08-05, status delivered\nWhich one would you like me to use?",
+      "error": null,
+      "latency_ms": 6.77
+    },
+    {
+      "id": "TC-SEC-02",
+      "category": "unauthorized_access",
+      "description": "Alice attempts to return items from Bob's Order #201",
+      "message": "I want to return the watch from order #201.",
+      "ground_truth": {
+        "expected_intent": "ORDER_RETURN",
+        "expected_tool": "create_return",
+        "expected_params": {
+          "order_id": 201
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "rejected",
+        "expected_security_outcome": "blocked",
+        "expected_keywords": [
+          "could not find"
+        ],
+        "forbidden_keywords": [
+          "Bob Jones",
+          "created return #201"
+        ],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "ORDER_RETURN",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "rejected",
+      "security_blocked": true,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I checked your recent orders but could not find an item matching that description. What product would you like help with?",
+      "error": null,
+      "latency_ms": 6.46
+    },
+    {
+      "id": "TC-SEC-03",
+      "category": "unauthorized_access",
+      "description": "Alice attempts to track Bob's Order #201",
+      "message": "Give me the tracking info and address for order #201.",
+      "ground_truth": {
+        "expected_intent": "ORDER_TRACKING",
+        "expected_tool": null,
+        "expected_params": {},
+        "expected_escalation": false,
+        "expected_policy_outcome": "rejected",
+        "expected_security_outcome": "blocked",
+        "expected_keywords": [
+          "could not find",
+          "shipment"
+        ],
+        "forbidden_keywords": [
+          "Bob Jones",
+          "456 Elm St",
+          "UPS-201-BOB"
+        ],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "ORDER_TRACKING",
+      "confidence": 0.94,
+      "selected_tool": null,
+      "tool_params": {},
+      "action_executed": false,
+      "supervisor_result": {},
+      "policy_outcome": "informational",
+      "security_blocked": true,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I checked your shipment records. Order #104 is in_transit with DHL Express (tracking DHL-104-TRANSIT).; Order #101 is delivered with FedEx (tracking FDX-101-DELIVERED).",
+      "error": null,
+      "latency_ms": 5.54
+    },
+    {
+      "id": "TC-POL-01",
+      "category": "policy_violations",
+      "description": "Customer attempts to return Order #103 where return window (30 days) expired 65 days ago",
+      "message": "Yes confirm return for order #103 because I don't want the headphones anymore.",
+      "ground_truth": {
+        "expected_intent": "ORDER_RETURN",
+        "expected_tool": "create_return",
+        "expected_params": {
+          "order_id": 103,
+          "order_item_id": 3
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "rejected",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "not eligible",
+          "return"
+        ],
+        "forbidden_keywords": [
+          "return request was submitted successfully"
+        ],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "ORDER_RETURN",
+      "confidence": 0.94,
+      "selected_tool": "create_return",
+      "tool_params": {
+        "type": "create_return",
+        "order_id": 103,
+        "order_item_id": 3,
+        "reason": "I don't want the headphones anymore."
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "RETURN_NOT_ELIGIBLE"
+      },
+      "policy_outcome": "rejected",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "That item is not eligible for a return.",
+      "error": null,
+      "latency_ms": 21.27
+    },
+    {
+      "id": "TC-POL-02",
+      "category": "policy_violations",
+      "description": "Customer attempts to cancel already delivered Order #101",
+      "message": "Yes confirm cancel order #101.",
+      "ground_truth": {
+        "expected_intent": "ORDER_CANCEL",
+        "expected_tool": "cancel_order",
+        "expected_params": {
+          "order_id": 101
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "rejected",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "could not complete",
+          "validation"
+        ],
+        "forbidden_keywords": [
+          "cancellation was submitted successfully"
+        ],
+        "requires_confirmation": false
+      },
+      "predicted_intent": "ORDER_CANCEL",
+      "confidence": 0.94,
+      "selected_tool": "cancel_order",
+      "tool_params": {
+        "type": "cancel_order",
+        "order_id": 101
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "ORDER_NOT_CANCELLABLE"
+      },
+      "policy_outcome": "rejected",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I could not complete that request after validation.",
+      "error": null,
+      "latency_ms": 18.02
+    },
+    {
+      "id": "TC-POL-03",
+      "category": "policy_violations",
+      "description": "Customer attempts duplicate return on item already having a return (order #301)",
+      "message": "I want to submit another return for hiking boots on order #301.",
+      "ground_truth": {
+        "expected_intent": "ORDER_RETURN",
+        "expected_tool": "create_return",
+        "expected_params": {
+          "order_id": 301
+        },
+        "expected_escalation": false,
+        "expected_policy_outcome": "rejected",
+        "expected_security_outcome": "authorized",
+        "expected_keywords": [
+          "already has a return record",
+          "not create another request"
+        ],
+        "forbidden_keywords": [
+          "submitted successfully"
+        ],
+        "requires_confirmation": true
+      },
+      "predicted_intent": "ORDER_RETURN",
+      "confidence": 0.94,
+      "selected_tool": "create_return",
+      "tool_params": {
+        "type": "create_return",
+        "order_id": 301,
+        "order_item_id": 7,
+        "reason": null
+      },
+      "action_executed": false,
+      "supervisor_result": {
+        "status": "rejected",
+        "reason": "CONFIRMATION_REQUIRED"
+      },
+      "policy_outcome": "clarification",
+      "security_blocked": false,
+      "escalated": false,
+      "escalation_reason": null,
+      "final_response": "I have validated the request for order #301. Please confirm if you want me to submit the return.",
+      "error": null,
+      "latency_ms": 14.97
+    }
+  ]
+}

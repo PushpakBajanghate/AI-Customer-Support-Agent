@@ -4,6 +4,65 @@ This document tracks all architectural decisions, technology selections, trade-o
 
 ---
 
+## Record 012: Phase 12 Evaluation Framework & Mathematical Formulations
+
+**Date:** 2026-10-09  
+**Status:** Accepted  
+
+### 1. Context & Motivation
+Production customer-support applications require continuous benchmarking to ensure that prompt updates, workflow graph revisions, and policy adjustments do not cause regressions. Fine-tuning an LLM creates brittle model weights, high maintenance overhead, and latency issues for evolving enterprise rules. Instead, Decagon and modern enterprise AI architectures rely on **evaluation without fine-tuning**, evaluating the live prompt orchestration, deterministic LangGraph state machine, database safety boundaries, and supervisor validation gates against a comprehensive synthetic ground truth cohort.
+
+### 2. Key Architectural Decisions
+
+#### Decision 1: Evaluation Without Fine-Tuning
+- **Principle:** Evaluate the prompt-engineered and graph-orchestrated agent system in its real operational state.
+- **Benefits:** Fast iteration, transparent reasoning traces, zero training compute cost, and immediate observability into prompt/workflow bottlenecks.
+
+#### Decision 2: 12-Cohort Test Taxonomy
+The evaluation suite covers 12 required customer support categories:
+1. `order_tracking`: Courier tracking and status verification.
+2. `cancellation`: Order cancellation with confirmation gating.
+3. `return`: Item return eligibility and request creation.
+4. `refund`: Refund status tracking and post-cancellation refund requests.
+5. `damaged_product`: Expedited replacement/return for damaged items.
+6. `delivery_delay`: Carrier delay inquiries.
+7. `product_question`: RAG-backed return windows and warranty information.
+8. `ambiguous_requests`: Clarification handling and bounded fallbacks.
+9. `multi_intent`: Compound multi-topic customer requests.
+10. `human_escalation`: Explicit human requests, fraud alerts, and policy exceptions.
+11. `unauthorized_access`: Cross-tenant access rejection and anti-leakage.
+12. `policy_violations`: Window expiration, ineligible order cancellation, duplicate returns.
+
+#### Decision 3: Mathematical Formulations for 8 Evaluation Dimensions
+Performance numbers are never invented; every metric is mathematically computed from test executions:
+
+1. **Intent Accuracy ($A_{\text{intent}}$):**
+   $$A_{\text{intent}} = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(\hat{y}_i = y_i), \quad \text{Macro-}F1 = \frac{1}{|C|} \sum_{c \in C} F1_c$$
+2. **Tool Selection Accuracy ($A_{\text{tool}}$):**
+   $$A_{\text{tool}} = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(\hat{\tau}_i = \tau_i^*)$$
+3. **Tool Parameter Match Rate ($PMR$):**
+   $$PMR = \frac{1}{|N_{\text{tool}}|} \sum_{i=1}^{|N_{\text{tool}}|} \frac{|\{(k, v) \in \mathcal{P}_i^* : \hat{\mathcal{P}}_i[k] = v\}|}{|\mathcal{P}_i^*|}$$
+4. **Workflow Completion Rate ($WCR$):**
+   $$WCR = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(\text{state}.\text{error} = \text{None} \land \text{final\_response} \neq \text{None})$$
+5. **Policy Compliance Rate ($PCR$):**
+   $$PCR = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(\text{action\_complied} \land \neg \text{unconfirmed\_mutation})$$
+6. **Unauthorized Access Prevention Rate ($UAPR$):**
+   $$UAPR = \frac{1}{|N_{\text{sec}}|} \sum_{i=1}^{|N_{\text{sec}}|} \mathbb{I}(\text{blocked}_i \land \neg \text{leakage}_i)$$
+7. **Escalation Correctness ($F1_{\text{esc}}$):**
+   $$F1_{\text{esc}} = \frac{2 \cdot \text{Precision}_{\text{esc}} \cdot \text{Recall}_{\text{esc}}}{\text{Precision}_{\text{esc}} + \text{Recall}_{\text{esc}}}$$
+8. **Final Response Correctness ($S_{\text{final}}$):**
+   $$S_{\text{final}} = 0.4 \cdot S_{\text{facts}} + 0.4 \cdot S_{\text{safety}} + 0.2 \cdot S_{\text{tone}}$$
+
+#### Decision 4: Statistical Rigor with Wilson Score Confidence Intervals
+All binomial proportions report 95% confidence intervals via the Wilson score formula:
+$$CI_{95\%} = \frac{p + \frac{z^2}{2N} \pm z \sqrt{\frac{p(1-p)}{N} + \frac{z^2}{4N^2}}}{1 + \frac{z^2}{N}}$$
+
+#### Decision 5: Dual Execution Modes (Live & Calibrated)
+- `calibrated`: Runs deterministic simulations with in-memory SQLite fixtures for instant CI/CD validation without network or API quota flakiness.
+- `live`: Runs live inference against Google Gemini (`gemini-3.8-flash`) for real-world prompt validation.
+
+---
+
 ## Record 011: Lightweight Supervisor Safety Gate
 
 **Date:** 2026-10-09

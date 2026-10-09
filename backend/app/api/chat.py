@@ -69,6 +69,8 @@ def send_chat_message(
 
     conversation = get_or_create_conversation(db, current_customer.id, payload.conversation_id)
     conversation_history = load_conversation_history(db, conversation.id)
+    if not conversation_history and payload.conversation_history:
+        conversation_history = payload.conversation_history
     customer_context = load_customer_context(db, current_customer.id)
     save_message(db, conversation.id, "user", payload.message)
 

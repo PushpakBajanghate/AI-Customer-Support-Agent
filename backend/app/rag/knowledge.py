@@ -63,8 +63,35 @@ def retrieve_knowledge(query: str, limit: int = 3) -> list[dict[str, Any]]:
             for hit in hits if hit.payload
         ]
     except Exception as exc:
-        logger.warning("RAG retrieval unavailable: %s", exc)
+        logger.warning("RAG vector retrieval unavailable: %s; using local policy index", exc)
+        return _fallback_local_policy_search(query, limit)
+
+
+def _fallback_local_policy_search(query: str, limit: int = 3) -> list[dict[str, Any]]:
+    """Lexical fallback search against markdown files in KNOWLEDGE_DIR."""
+    if not KNOWLEDGE_DIR.exists():
         return []
+    query_tokens = set(re.findall(r"[a-z0-9]+", query.lower()))
+    scored_docs = []
+    for path in sorted(KNOWLEDGE_DIR.glob("*.md")):
+        if path.name.startswith("."):
+            continue
+        try:
+            content = path.read_text(encoding="utf-8")
+            doc_tokens = set(re.findall(r"[a-z0-9]+", content.lower()))
+            overlap = query_tokens & doc_tokens
+            if overlap:
+                score = len(overlap) / (len(query_tokens) + 1e-5)
+                scored_docs.append({
+                    "source": path.name,
+                    "title": path.stem.replace("_", " ").title(),
+                    "content": content.strip(),
+                    "score": round(score, 4),
+                })
+        except Exception:
+            continue
+    scored_docs.sort(key=lambda x: x["score"], reverse=True)
+    return scored_docs[:limit]
 
 
 def rag_node(state: dict[str, Any]) -> dict[str, Any]:

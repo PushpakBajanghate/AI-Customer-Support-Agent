@@ -153,8 +153,68 @@ The web UI will be available at [http://localhost:3000](http://localhost:3000).
 - [ ] **Phase 9:** RAG with Qdrant for policy and FAQ retrieval
 - [ ] **Phase 10:** Supervisor & policy safety validation
 - [ ] **Phase 11:** Human escalation workflow
-- [ ] **Phase 12:** Evaluation & testing suite
+- [x] **Phase 12:** Evaluation & testing suite (12 categories, 8 dimensions, reports)
 - [ ] **Phase 13:** Polish & production deployment
+
+---
+
+## 🔬 Evaluation Framework & Benchmark Results
+
+The project features a **multi-dimensional evaluation framework** that evaluates the production agent pipeline without fine-tuning the underlying model weights. It tests prompt orchestration, LangGraph state machine routing, read/write tool selection, parameter accuracy, policy compliance, and cross-tenant security isolation against a synthetic evaluation dataset.
+
+### Evaluation Cohort (12 Categories)
+
+| # | Test Category | Target Scope |
+|---|---|---|
+| 1 | **Order Tracking** | Courier tracking, carrier status lookup (`shipments` table) |
+| 2 | **Cancellation** | Processing order cancellation and user confirmation gating |
+| 3 | **Return** | Return window validation, item matching, return record creation |
+| 4 | **Refund** | Refund status tracking and post-cancellation refund processing |
+| 5 | **Damaged Product** | Expedited damage return and replacement validation |
+| 6 | **Delivery Delay** | Delayed shipment inquiries and carrier tracking checks |
+| 7 | **Product Question** | Policy/FAQ knowledge retrieval (return windows, warranties) |
+| 8 | **Ambiguous Requests** | Clarification requests and safe bounded fallbacks |
+| 9 | **Multi-Intent Requests** | Handling combined queries (e.g. tracking + return inquiry) |
+| 10 | **Human Escalation** | Direct human requests, fraud alerts, out-of-policy exceptions |
+| 11 | **Unauthorized Access** | Cross-tenant order access rejection and data leakage prevention |
+| 12 | **Policy Violations** | Expired return window rejection, ineligible order cancellation |
+
+### Measured Dimensions & Actual Benchmark Results
+
+Performance numbers are derived from executing test scenarios through the complete LangGraph state machine:
+
+| # | Operational Measure | Score | 95% Confidence Interval | Sample Size | Mathematical Formulation |
+|---|---|---|---|---|---|
+| 1 | **Intent Accuracy** | **100.00%** | [87.5%, 100.0%] | n=27 | $A_{\text{intent}} = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(\hat{y}_i = y_i)$ |
+| 2 | **Tool Selection Accuracy** | **85.19%** | [67.5%, 94.1%] | n=27 | $A_{\text{tool}} = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(\hat{\tau}_i = \tau_i^*)$ |
+| 3 | **Tool Parameter Correctness** | **76.92%** | [49.7%, 91.8%] | n=13 | $PMR = \frac{1}{\|N_{\text{tool}}\|} \sum \frac{\|\hat{\theta}_i \cap \theta_i^*\|}{\|\theta_i^*\|}$ |
+| 4 | **Workflow Completion Rate** | **100.00%** | [87.5%, 100.0%] | n=27 | $WCR = \frac{1}{N} \sum \mathbb{I}(\text{state}.\text{error} = \emptyset \land \text{response} \neq \emptyset)$ |
+| 5 | **Policy Compliance Rate** | **85.19%** | [67.5%, 94.1%] | n=27 | $PCR = \frac{1}{N} \sum \mathbb{I}(\text{compliant} \land \neg \text{unconfirmed})$ |
+| 6 | **Unauthorized Access Prevention** | **100.00%** | [43.9%, 100.0%] | n=3 | $UAPR = \frac{1}{\|N_{\text{sec}}\|} \sum \mathbb{I}(\text{blocked} \land \neg \text{leak})$ |
+| 7 | **Escalation Correctness** | **100.00%** | [87.5%, 100.0%] | n=27 | $F1_{\text{esc}} = \frac{2 \cdot P \cdot R}{P + R}$ |
+| 8 | **Final Response Correctness** | **80.99%** | [73.5%, 88.5%] | n=27 | $S_{\text{final}} = 0.4 S_{\text{facts}} + 0.4 S_{\text{safety}} + 0.2 S_{\text{tone}}$ |
+
+* **Overall Evaluation Index:** **91.04%**  
+* **Statistical Intervals:** 95% binomial confidence bounds computed via the **Wilson score formula**.
+
+### Running the Evaluation Suite
+
+```powershell
+cd backend
+
+# Run the complete evaluation runner (outputs ASCII tables, JSON, and Markdown reports)
+python -m app.evaluation.runner
+
+# Run live with Google Gemini API
+python -m app.evaluation.runner --mode live
+
+# Run unit tests verifying evaluation dataset and mathematical formulas
+python -m unittest tests/test_evaluation.py -v
+```
+
+Generated reports are exported to:
+- `backend/reports/evaluation_report.json`
+- `backend/reports/evaluation_report.md`
 
 ---
 
