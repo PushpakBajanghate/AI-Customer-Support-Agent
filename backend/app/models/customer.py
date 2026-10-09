@@ -16,6 +16,7 @@ class Customer(Base):
     # Relationships
     orders = relationship("Order", back_populates="customer", cascade="all, delete-orphan")
     support_tickets = relationship("SupportTicket", back_populates="customer", cascade="all, delete-orphan")
+    conversations = relationship("Conversation", back_populates="customer", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Customer(id={self.id}, name='{self.name}', email='{self.email}')>"

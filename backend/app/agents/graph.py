@@ -67,6 +67,7 @@ def run_support_graph(
     message: str,
     conversation_history: list | None = None,
     db_session=None,
+    customer_context: dict | None = None,
 ) -> AgentState:
     """
     Initializes and runs the LangGraph support graph for a single request.
@@ -101,6 +102,7 @@ def run_support_graph(
         "error": None,
         "db_session": db_session,
         "support_context": None,
+        "customer_context": customer_context,
     }
 
     logger.info(

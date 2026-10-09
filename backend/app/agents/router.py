@@ -89,6 +89,8 @@ Rules:
 - acknowledgement: A warm, brief response that acknowledges the customer's request without making promises or performing actions.
 
 Customer context:
+Relevant customer context (use only to understand references; do not invent beyond it):
+{customer_context}
 - Name: {customer_name}
 - Customer ID: {customer_id} (this is authenticated — never ask the customer for their ID)
 
@@ -111,6 +113,12 @@ def _format_conversation_history(history: list[dict[str, Any]]) -> str:
         content = turn.get("content", "")
         lines.append(f"{role}: {content}")
     return "\n".join(lines)
+
+
+def _format_customer_context(context: dict[str, Any] | None) -> str:
+    if not context:
+        return "(No customer context loaded)"
+    return json.dumps(context, ensure_ascii=False, separators=(",", ":"))[:6000]
 
 
 def _parse_router_output(raw_text: str) -> dict[str, Any]:
@@ -200,6 +208,7 @@ def router_node(state: AgentState) -> AgentState:
         intents="\n".join(f"  - {i}" for i in SUPPORTED_INTENTS),
         customer_name=state["customer_name"],
         customer_id=state["customer_id"],
+        customer_context=_format_customer_context(state.get("customer_context")),
         conversation_history=_format_conversation_history(
             state.get("conversation_history", [])
         ),

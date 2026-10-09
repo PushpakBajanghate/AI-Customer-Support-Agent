@@ -1,7 +1,7 @@
 """LangGraph Support Agent: context inspection and safe next-step decisions."""
 
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from app.agents.state import AgentState
 from app.agents.support_tools import (
@@ -24,11 +24,13 @@ def support_agent_node(state: AgentState) -> AgentState:
     customer_id = state["customer_id"]
     intent = state.get("intent") or "UNKNOWN"
     message = state["message"]
-    customer = get_customer_information(db, customer_id)
-    orders = get_recent_orders(db, customer_id)
-    context = {"customer": customer, "orders": orders}
+    loaded_context = state.get("customer_context") or {}
+    customer = loaded_context.get("customer") or get_customer_information(db, customer_id)
+    orders = loaded_context.get("recent_orders") or get_recent_orders(db, customer_id, limit=5)
+    context = dict(loaded_context) if loaded_context else {"customer": customer, "recent_orders": orders}
+    context["orders"] = orders
 
-    order_id = _mentioned_order_id(message, orders)
+    order_id = _referenced_order_id(message, orders, state.get("conversation_history", []))
     if intent in {"ORDER_RETURN", "DAMAGED_PRODUCT", "WRONG_PRODUCT"}:
         matches = _matching_orders(message, orders)
         if order_id:
@@ -71,8 +73,11 @@ def support_agent_node(state: AgentState) -> AgentState:
 
 def _matching_orders(message: str, orders: list[dict]) -> list[dict]:
     words = {_normalise(word) for word in re.findall(r"[\w-]+", message.lower())}
-    ignored = {"i", "me", "my", "a", "an", "the", "want", "to", "return", "replace", "received", "wrong", "damaged", "item", "product"}
+    ignored = {"i", "me", "my", "a", "an", "the", "want", "to", "return", "replace", "received", "wrong", "damaged", "item", "product", "one", "from", "yesterday", "today"}
     terms = {word for word in words if word not in ignored and len(word) > 2}
+    if "yesterday" in message.lower():
+        yesterday = datetime.now(timezone.utc).date() - timedelta(days=1)
+        return [order for order in orders if order.get("order_date", "")[:10] == yesterday.isoformat()]
     if not terms:
         return orders
     matches = []
@@ -91,6 +96,18 @@ def _mentioned_order_id(message: str, orders: list[dict]) -> int | None:
     return None
 
 
+def _referenced_order_id(message: str, orders: list[dict], history: list[dict]) -> int | None:
+    direct = _mentioned_order_id(message, orders)
+    if direct:
+        return direct
+    if re.search(r"\b(that|this|the one|it)\b", message.lower()):
+        for turn in reversed(history):
+            previous = _mentioned_order_id(str(turn.get("content", "")), orders)
+            if previous:
+                return previous
+    return None
+
+
 def _normalise(value: str) -> str:
     value = re.sub(r"[^a-z0-9]", "", value.lower())
     return value[:-1] if value.endswith("s") else value
@@ -106,4 +123,3 @@ def _single_order_response(order: dict, intent: str, returns: list[dict]) -> str
 def _multiple_order_response(orders: list[dict], intent: str) -> str:
     lines = [f"#{order['id']} — {', '.join(item['product_name'] for item in order['items'])}, placed {order['order_date'][:10]}, status {order['status']}" for order in orders]
     return "I found multiple matching orders:\n" + "\n".join(lines) + "\nWhich one would you like me to use?"
-

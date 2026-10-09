@@ -4,6 +4,29 @@ This document tracks all architectural decisions, technology selections, trade-o
 
 ---
 
+## Record 008: PostgreSQL Conversation Storage Instead of a Memory Framework
+
+**Date:** 2026-10-09
+**Status:** Accepted
+
+We store `conversations` and `conversation_messages` in PostgreSQL. Each
+message has the conversation id, role, content, and timestamp, and every
+conversation is owned by the authenticated customer.
+
+This is intentionally simple. PostgreSQL is already the system of record for
+customer and support data, gives us durable history and ownership checks, and
+lets us retrieve a small recent window with ordinary indexed queries. A
+separate memory framework would add abstractions, state synchronization, and
+another persistence boundary without improving this support workflow.
+
+The application loads only five recent orders, five open returns, five recent
+refunds, five open tickets, and the latest twelve conversation messages. This
+bounded context is enough to resolve references while keeping prompts small.
+The client-provided history is not trusted as the source of memory; history is
+loaded by conversation id and customer id from PostgreSQL.
+
+---
+
 ## Record 007: Phase 6 Support Agent and Read-Only Tool Boundary
 
 **Date:** 2026-10-09

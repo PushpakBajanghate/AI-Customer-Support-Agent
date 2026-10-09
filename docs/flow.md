@@ -4,6 +4,32 @@ This document describes the operational flow of the AI Customer Support Agent ap
 
 ---
 
+## Conversation Memory and Customer Context (Phase 7)
+
+The chat lifecycle now uses a small relational memory path:
+
+```
+Login
+  → authenticated customer_id
+  → customer context (bounded PostgreSQL queries)
+  → conversation history (latest persisted messages)
+  → Router
+  → Support Agent
+  → persist user and assistant messages
+```
+
+At the start of a chat, the backend retrieves the customer profile, five recent
+orders, five open returns, five recent refunds, and five open/in-progress
+support tickets. It loads only the latest twelve messages for the selected
+conversation. The current user message and generated assistant response are
+stored in `conversation_messages` with `conversation_id`, `role`, `content`,
+and `timestamp`.
+
+The Router receives a compact serialized context and bounded history. The
+Support Agent receives the same context and can resolve references such as
+“that order”, product names, or “the one from yesterday” against those records.
+The complete database and unbounded transcript are never sent to the LLM.
+
 ## Support Agent Flow (Phase 6 — LangGraph + approved read tools)
 
 Phase 6 adds the Support Agent after Router classification. The Router selects

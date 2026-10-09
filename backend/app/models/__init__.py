@@ -7,6 +7,8 @@ from app.models.shipment import Shipment
 from app.models.return_model import Return
 from app.models.refund import Refund
 from app.models.ticket import SupportTicket
+from app.models.conversation import Conversation
+from app.models.conversation_message import ConversationMessage
 
 __all__ = [
     "Customer",
@@ -17,4 +19,6 @@ __all__ = [
     "Return",
     "Refund",
     "SupportTicket",
+    "Conversation",
+    "ConversationMessage",
 ]

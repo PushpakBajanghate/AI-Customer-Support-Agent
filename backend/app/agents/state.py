@@ -43,3 +43,4 @@ class AgentState(TypedDict):
     error: Optional[str]               # Non-None when a node encounters an error
     db_session: Any
     support_context: Optional[dict[str, Any]]
+    customer_context: Optional[dict[str, Any]]

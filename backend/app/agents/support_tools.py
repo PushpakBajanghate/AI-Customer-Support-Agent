@@ -76,24 +76,38 @@ def get_shipments(db: Session, customer_id: int, order_id: int | None = None) ->
     ]
 
 
-def get_returns(db: Session, customer_id: int, order_id: int | None = None) -> list[dict[str, Any]]:
+def get_returns(db: Session, customer_id: int, order_id: int | None = None, statuses: set[str] | None = None, limit: int | None = None) -> list[dict[str, Any]]:
     query = db.query(Return).join(Order).filter(Order.customer_id == customer_id)
     if order_id is not None:
         query = query.filter(Return.order_id == order_id)
+    if statuses:
+        query = query.filter(Return.status.in_(statuses))
+    query = query.order_by(Return.id.desc())
+    if limit:
+        query = query.limit(limit)
     return [{"id": r.id, "order_id": r.order_id, "order_item_id": r.order_item_id, "reason": r.reason,
-             "status": r.status, "created_at": _iso(r.created_at)} for r in query.order_by(Return.id.desc()).all()]
+             "status": r.status, "created_at": _iso(r.created_at)} for r in query.all()]
 
 
-def get_refunds(db: Session, customer_id: int, order_id: int | None = None) -> list[dict[str, Any]]:
+def get_refunds(db: Session, customer_id: int, order_id: int | None = None, limit: int | None = None) -> list[dict[str, Any]]:
     query = db.query(Refund).join(Order).filter(Order.customer_id == customer_id)
     if order_id is not None:
         query = query.filter(Refund.order_id == order_id)
+    query = query.order_by(Refund.created_at.desc(), Refund.id.desc())
+    if limit:
+        query = query.limit(limit)
     return [{"id": r.id, "order_id": r.order_id, "amount": r.amount, "status": r.status,
-             "created_at": _iso(r.created_at)} for r in query.order_by(Refund.id.desc()).all()]
+             "created_at": _iso(r.created_at)} for r in query.all()]
 
 
-def get_support_tickets(db: Session, customer_id: int) -> list[dict[str, Any]]:
-    tickets = db.query(SupportTicket).filter(SupportTicket.customer_id == customer_id).order_by(SupportTicket.created_at.desc()).all()
+def get_support_tickets(db: Session, customer_id: int, statuses: set[str] | None = None, limit: int | None = None) -> list[dict[str, Any]]:
+    query = db.query(SupportTicket).filter(SupportTicket.customer_id == customer_id)
+    if statuses:
+        query = query.filter(SupportTicket.status.in_(statuses))
+    query = query.order_by(SupportTicket.created_at.desc())
+    if limit:
+        query = query.limit(limit)
+    tickets = query.all()
     return [{"id": t.id, "subject": t.subject, "description": t.description, "status": t.status,
              "priority": t.priority, "created_at": _iso(t.created_at)} for t in tickets]
 
@@ -109,4 +123,3 @@ def _order_dict(order: Order) -> dict[str, Any]:
                    "category": item.product.category, "quantity": item.quantity, "price": item.price}
                   for item in order.order_items],
     }
-

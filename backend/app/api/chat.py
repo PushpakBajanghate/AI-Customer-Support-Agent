@@ -23,6 +23,12 @@ from app.schemas.router import IntentType
 from app.services.auth import get_current_customer
 from app.database import get_db
 from app.agents.graph import run_support_graph
+from app.services.conversation import (
+    get_or_create_conversation,
+    load_conversation_history,
+    load_customer_context,
+    save_message,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -61,14 +67,20 @@ def send_chat_message(
         payload.message[:80],
     )
 
-    # Run the full LangGraph support graph
+    conversation = get_or_create_conversation(db, current_customer.id, payload.conversation_id)
+    conversation_history = load_conversation_history(db, conversation.id)
+    customer_context = load_customer_context(db, current_customer.id)
+    save_message(db, conversation.id, "user", payload.message)
+
+    # Run the full LangGraph support graph with bounded persisted context.
     final_state = run_support_graph(
         customer_id=current_customer.id,
         customer_name=current_customer.name,
         customer_email=current_customer.email,
         message=payload.message,
-        conversation_history=payload.conversation_history or [],
+        conversation_history=conversation_history,
         db_session=db,
+        customer_context=customer_context,
     )
 
     # Extract the final response — always dynamically generated
@@ -88,6 +100,9 @@ def send_chat_message(
                 f"Error: {final_state.get('error', 'Unknown error')}"
             ),
         )
+
+    save_message(db, conversation.id, "assistant", final_response)
+    db.commit()
 
     # Build the RouterInfo from graph state
     intent_str = final_state.get("intent") or "UNKNOWN"
@@ -112,6 +127,7 @@ def send_chat_message(
 
     return ChatMessageResponse(
         response=final_response,
+        conversation_id=conversation.id,
         customer_id=current_customer.id,
         customer_name=current_customer.name,
         timestamp=datetime.now(timezone.utc),

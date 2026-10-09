@@ -57,6 +57,7 @@ class ChatMessageResponse(BaseModel):
     All values are dynamically generated at runtime by the LangGraph graph.
     """
     response: str = Field(..., description="AI-generated conversational response")
+    conversation_id: str = Field(..., description="Persisted conversation identifier")
     customer_id: int = Field(..., description="Authenticated customer's database ID")
     customer_name: str = Field(..., description="Authenticated customer's display name")
     timestamp: datetime = Field(
