@@ -43,6 +43,11 @@ def register_customer(payload: CustomerRegisterRequest, db: Session = Depends(ge
     db.add(new_customer)
     db.commit()
     db.refresh(new_customer)
+
+    # Automatically provision active orders so newly registered customers have immediate data to interact with
+    from app.services.conversation import ensure_customer_demo_orders
+    ensure_customer_demo_orders(db, new_customer.id)
+
     return new_customer
 
 @router.post(
@@ -59,6 +64,10 @@ def login_customer(payload: CustomerLoginRequest, db: Session = Depends(get_db))
             detail="Invalid email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+    # Ensure this customer has interactive orders in database
+    from app.services.conversation import ensure_customer_demo_orders
+    ensure_customer_demo_orders(db, customer.id)
 
     token = create_access_token(data={"sub": str(customer.id), "email": customer.email})
     return {
