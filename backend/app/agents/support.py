@@ -39,13 +39,34 @@ def support_agent_node(state: AgentState) -> AgentState:
             selected = matches[0]
             context.update({"items": get_order_items(db, customer_id, selected["id"]),
                             "returns": get_returns(db, customer_id, selected["id"])})
-            state = {**state, "support_context": context}
+            state = {**state, "support_context": context,
+                     "requested_action": {"type": "create_return", "order_id": selected["id"],
+                                           "order_item_id": context["items"][0]["id"],
+                                           "reason": _reason_from_message(message)}}
             return {**state, "final_response": _single_order_response(selected, intent, context["returns"]) + _policy_suffix(state.get("knowledge_context"))}
         if len(matches) > 1:
             state = {**state, "support_context": context}
             return {**state, "final_response": _multiple_order_response(matches, intent) + _policy_suffix(state.get("knowledge_context"))}
         return {**state, "support_context": context,
                 "final_response": "I checked your recent orders but could not find an item matching that description. What product would you like help with?"}
+
+    if intent == "ORDER_CANCEL":
+        matches = [order for order in orders if not order_id or order["id"] == order_id]
+        if len(matches) == 1:
+            state = {**state, "support_context": context,
+                     "requested_action": {"type": "cancel_order", "order_id": matches[0]["id"]}}
+            return {**state, "final_response": state.get("router_response") or "I found the order and will validate the cancellation."}
+        response = _multiple_order_response(matches, intent) if matches else "I could not identify which order you want to cancel. Which order should I check?"
+        return {**state, "support_context": context, "final_response": response}
+
+    if intent == "REFUND_REQUEST":
+        matches = [order for order in orders if not order_id or order["id"] == order_id]
+        if len(matches) == 1:
+            state = {**state, "support_context": context,
+                     "requested_action": {"type": "create_refund", "order_id": matches[0]["id"]}}
+            return {**state, "final_response": state.get("router_response") or "I found the order and will validate the refund."}
+        response = _multiple_order_response(matches, intent) if matches else "I could not identify which order you want refunded. Which order should I check?"
+        return {**state, "support_context": context, "final_response": response}
 
     if intent in {"ORDER_TRACKING", "DELIVERY_DELAY"}:
         shipments = get_shipments(db, customer_id, order_id)
@@ -60,7 +81,7 @@ def support_agent_node(state: AgentState) -> AgentState:
         response += _policy_suffix(state.get("knowledge_context"))
         return {**state, "support_context": context, "final_response": response}
 
-    if intent in {"REFUND_STATUS", "REFUND_REQUEST"}:
+    if intent == "REFUND_STATUS":
         refunds = get_refunds(db, customer_id, order_id)
         context["refunds"] = refunds
         response = ("I checked your refund records, but found none for your account."
@@ -70,6 +91,11 @@ def support_agent_node(state: AgentState) -> AgentState:
         return {**state, "support_context": context, "final_response": response}
 
     context["tickets"] = get_support_tickets(db, customer_id)
+    if intent == "HUMAN_ESCALATION":
+        state = {**state, "support_context": context, "requested_action": {
+            "type": "create_support_ticket", "subject": message[:120], "description": message,
+        }}
+        return {**state, "final_response": "I can create a support ticket for a human specialist after your confirmation."}
     return {**state, "support_context": context, "final_response": state.get("router_response") or "I’m checking your support records now. Please tell me what you need help with."}
 
 
@@ -132,3 +158,8 @@ def _policy_suffix(knowledge: list[dict] | None) -> str:
         return ""
     excerpts = [item.get("content", "").replace("\n", " ")[:350] for item in knowledge[:2]]
     return " Relevant policy context: " + " ".join(excerpts)
+
+
+def _reason_from_message(message: str) -> str | None:
+    match = re.search(r"(?:because|reason is|reason:)\s+(.+)", message, re.IGNORECASE)
+    return match.group(1).strip() if match else None

@@ -46,3 +46,5 @@ class AgentState(TypedDict):
     customer_context: Optional[dict[str, Any]]
     knowledge_context: Optional[list[dict[str, Any]]]
     rag_used: bool
+    requested_action: Optional[dict[str, Any]]
+    supervisor_result: Optional[dict[str, Any]]

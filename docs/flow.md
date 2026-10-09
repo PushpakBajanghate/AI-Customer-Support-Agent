@@ -4,6 +4,29 @@ This document describes the operational flow of the AI Customer Support Agent ap
 
 ---
 
+## Three-Agent Architecture (Supervisor)
+
+Sensitive operations now use an explicit safety gate:
+
+```
+Customer
+  → Router Agent (intent)
+  → Support Agent (reasoning and workflow)
+  → requested action
+  → Supervisor Agent (safety and validation)
+  → approved/rejected
+  → backend tool
+  → tool result
+  → Support Agent
+  → customer
+```
+
+The Supervisor runs only when the Support Agent has identified a state-changing
+request such as a cancellation, return, refund, or human-support ticket. It
+verifies authentication, order ownership, action eligibility, policy checks,
+and confirmation before invoking a write tool. Simple knowledge questions and
+read-only lookups bypass the Supervisor.
+
 ## Conversation Memory and Customer Context (Phase 7)
 
 The chat lifecycle now uses a small relational memory path:

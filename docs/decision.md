@@ -4,6 +4,34 @@ This document tracks all architectural decisions, technology selections, trade-o
 
 ---
 
+## Record 011: Lightweight Supervisor Safety Gate
+
+**Date:** 2026-10-09
+**Status:** Accepted
+
+The system has three focused agent roles:
+
+- **Router Agent = intent.** It classifies what the customer wants and selects
+  the workflow without accessing transactional data or executing actions.
+- **Support Agent = reasoning/workflow.** It uses customer context, history,
+  RAG policy context, and read tools to identify the relevant record and build
+  a requested action when needed.
+- **Supervisor Agent = safety/validation.** It runs only for requested state
+  changes. It verifies the authenticated customer, ownership, action and policy
+  eligibility, and whether the customer explicitly confirmed the action before
+  calling a write tool.
+
+The Supervisor is a small LangGraph node with ordinary Python validation; it is
+not a second planning framework. Simple policy questions, order lookups, and
+tracking requests do not pass through it. Rejected actions return a structured
+reason and no write tool is called. Approved actions return the backend tool
+result to the customer flow.
+
+This preserves the security boundary: the LLM can reason about a requested
+operation, but only the backend Supervisor can approve a validated tool call.
+
+---
+
 ## Record 009: Simple Backend Tool Design and Ownership Security
 
 **Date:** 2026-10-09
