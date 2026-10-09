@@ -60,12 +60,14 @@ function App() {
     );
   }
 
+  const [chatSessionKey, setChatSessionKey] = useState(0);
+
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f1f5f9', display: 'flex', flexDirection: 'column' }}>
-      <Navbar customer={customer} onLogout={handleLogout} />
+      <Navbar customer={customer} onLogout={handleLogout} onNewChat={() => setChatSessionKey((k) => k + 1)} />
       <main style={{ flex: 1, padding: '16px', boxSizing: 'border-box' }}>
         {token && customer ? (
-          <ChatPage token={token} customer={customer} />
+          <ChatPage key={chatSessionKey} token={token} customer={customer} />
         ) : (
           <LoginPage onAuthSuccess={handleAuthSuccess} />
         )}

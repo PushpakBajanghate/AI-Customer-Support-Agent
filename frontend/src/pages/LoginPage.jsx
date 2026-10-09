@@ -196,6 +196,30 @@ export default function LoginPage({ onAuthSuccess }) {
           {isRegister ? 'Sign In' : 'Register Here'}
         </button>
       </div>
+
+      {/* Demo helper card for interview / portfolio evaluators */}
+      <div style={{
+        marginTop: '24px',
+        padding: '14px',
+        backgroundColor: '#f8fafc',
+        borderRadius: '8px',
+        border: '1px dashed #cbd5e1',
+        fontSize: '12px',
+        color: '#475569'
+      }}>
+        <div style={{ fontWeight: 600, color: '#1e293b', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span>💡</span> <span>Evaluator & Interview Demo Credentials</span>
+        </div>
+        <p style={{ margin: '0 0 4px 0' }}>
+          <strong>Seeded Account:</strong> <code style={{ backgroundColor: '#e2e8f0', padding: '1px 5px', borderRadius: '4px' }}>pushpak.bajanghate@example.com</code>
+        </p>
+        <p style={{ margin: '0 0 6px 0' }}>
+          <strong>Password:</strong> <code style={{ backgroundColor: '#e2e8f0', padding: '1px 5px', borderRadius: '4px' }}>password123</code>
+        </p>
+        <p style={{ margin: 0, color: '#64748b', fontSize: '11px' }}>
+          Or register any new customer account dynamically. The system maintains strict customer data isolation.
+        </p>
+      </div>
     </div>
   );
 }

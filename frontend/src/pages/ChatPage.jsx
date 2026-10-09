@@ -73,7 +73,7 @@ export default function ChatPage({ token, customer }) {
     }}>
       {/* Customer Context Header */}
       <div style={{
-        padding: '14px 20px',
+        padding: '12px 20px',
         backgroundColor: '#f8fafc',
         borderBottom: '1px solid #e2e8f0',
         display: 'flex',
@@ -88,10 +88,34 @@ export default function ChatPage({ token, customer }) {
             backgroundColor: '#10b981',
             borderRadius: '50%'
           }} />
-          <strong style={{ fontSize: '14px', color: '#0f172a' }}>Live AI Support (Google Gemini)</strong>
+          <strong style={{ fontSize: '13px', color: '#0f172a' }}>LangGraph Orchestration (Gemini & PostgreSQL)</strong>
         </div>
-        <div style={{ fontSize: '12px', color: '#64748b' }}>
-          Authenticated: <span style={{ fontWeight: 600, color: '#1e293b' }}>{customer?.name}</span> (ID #{customer?.id})
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ fontSize: '12px', color: '#64748b' }}>
+            Authenticated: <span style={{ fontWeight: 600, color: '#1e293b' }}>{customer?.name}</span> (ID #{customer?.id})
+          </div>
+          {messages.length > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                setMessages([]);
+                setConversationId(null);
+                setError('');
+              }}
+              style={{
+                fontSize: '11px',
+                padding: '4px 8px',
+                borderRadius: '4px',
+                backgroundColor: '#ffffff',
+                border: '1px solid #cbd5e1',
+                color: '#64748b',
+                cursor: 'pointer'
+              }}
+              title="Start a new conversation session"
+            >
+              Reset Chat
+            </button>
+          )}
         </div>
       </div>
 
@@ -136,14 +160,74 @@ export default function ChatPage({ token, customer }) {
         {messages.length === 0 && !loading && (
           <div style={{
             textAlign: 'center',
-            color: '#94a3b8',
-            marginTop: '80px',
-            fontSize: '14px'
+            color: '#64748b',
+            margin: '40px auto 20px auto',
+            maxWidth: '560px'
           }}>
-            <p style={{ margin: 0, fontWeight: 500, color: '#64748b' }}>No messages yet</p>
-            <p style={{ margin: '4px 0 0 0', fontSize: '13px' }}>
-              Type any question below to chat directly with your AI support assistant.
+            <div style={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              backgroundColor: '#eff6ff',
+              color: '#2563eb',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '22px',
+              margin: '0 auto 12px auto'
+            }}>
+              💬
+            </div>
+            <h3 style={{ margin: '0 0 6px 0', fontSize: '17px', color: '#0f172a', fontWeight: 600 }}>
+              AI Customer Support Agent
+            </h3>
+            <p style={{ margin: '0 0 20px 0', fontSize: '13px', color: '#64748b', lineHeight: '1.5' }}>
+              Authenticated as <strong>{customer?.name}</strong>. Ask about orders, returns, refunds, policy questions, or test security and supervisor workflows.
             </p>
+
+            <div style={{
+              textAlign: 'left',
+              backgroundColor: '#ffffff',
+              padding: '14px 16px',
+              borderRadius: '10px',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+            }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
+                Quick Test Scenarios (Click to try):
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {[
+                  { label: '📦 Track Order #104', query: 'Where is my order #104 right now?' },
+                  { label: '❌ Cancel Order #102', query: 'I want to cancel order #102 please.' },
+                  { label: '🔄 Return Shoes (#101)', query: 'I would like to return the shoes from order #101 because they do not fit.' },
+                  { label: '❓ Return Policy (RAG)', query: 'What is your return policy window for items purchased here?' },
+                  { label: '🧑‍💼 Human Escalation', query: 'I demand to speak to a human representative immediately.' },
+                  { label: '🛡️ Unauthorized Access Check', query: 'Please cancel order #201 right now.' },
+                ].map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setInputText(item.query)}
+                    style={{
+                      padding: '6px 11px',
+                      fontSize: '12px',
+                      backgroundColor: '#f8fafc',
+                      color: '#334155',
+                      border: '1px solid #cbd5e1',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'all 0.15s'
+                    }}
+                    onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#eff6ff'; e.currentTarget.style.borderColor = '#93c5fd'; }}
+                    onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#f8fafc'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
