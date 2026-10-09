@@ -102,6 +102,9 @@ Customer context:
 
 The customer's intent has been classified as: {intent} (confidence: {confidence:.0%})
 
+Retrieved knowledge context (policy/FAQ only; transactional truth comes from PostgreSQL):
+{knowledge_context}
+
 Guidance for this intent:
 {intent_guidance}
 
@@ -133,7 +136,7 @@ def conversational_node(state: AgentState) -> AgentState:
     # Use the router's acknowledgement as the primary response if available
     # and confidence is high enough — avoids a second LLM call for high-confidence cases
     router_response = state.get("router_response", "")
-    if router_response and confidence >= 0.8 and not needs_clarification:
+    if router_response and confidence >= 0.8 and not needs_clarification and not state.get("knowledge_context"):
         logger.info(
             "Conversational node using Router acknowledgement directly "
             "(intent=%s, confidence=%.2f)",
@@ -164,6 +167,10 @@ def conversational_node(state: AgentState) -> AgentState:
     )
 
     intent_guidance = INTENT_GUIDANCE.get(intent, INTENT_GUIDANCE["UNKNOWN"])
+    knowledge_context = "\n\n".join(
+        f"[{item.get('title', item.get('source', 'knowledge'))}]\n{item.get('content', '')}"
+        for item in (state.get("knowledge_context") or [])
+    ) or "(No retrieved policy context)"
 
     system_content = CONVERSATIONAL_SYSTEM_PROMPT.format(
         customer_name=state["customer_name"],
@@ -172,6 +179,7 @@ def conversational_node(state: AgentState) -> AgentState:
         confidence=confidence,
         intent_guidance=intent_guidance,
         needs_clarification_note=needs_clarification_note,
+        knowledge_context=knowledge_context[:6000],
     )
 
     messages = [

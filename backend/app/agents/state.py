@@ -44,3 +44,5 @@ class AgentState(TypedDict):
     db_session: Any
     support_context: Optional[dict[str, Any]]
     customer_context: Optional[dict[str, Any]]
+    knowledge_context: Optional[list[dict[str, Any]]]
+    rag_used: bool

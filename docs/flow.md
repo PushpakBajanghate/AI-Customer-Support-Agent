@@ -30,6 +30,31 @@ Support Agent receives the same context and can resolve references such as
 “that order”, product names, or “the one from yesterday” against those records.
 The complete database and unbounded transcript are never sent to the LLM.
 
+## Knowledge RAG Flow (Qdrant)
+
+RAG is limited to the checked-in policy and FAQ documents. After the Router
+classifies the message, the graph decides whether semantic knowledge retrieval
+is needed. If so, the backend embeds the customer question, retrieves the top
+policy passages from the configured Qdrant collection, and passes only those
+passages to the Support Agent/conversational responder.
+
+```
+Customer question
+  → knowledge-needed decision
+  → Qdrant policy/FAQ retrieval
+  → relevant context
+  → Support Agent answer
+```
+
+Transactional examples remain PostgreSQL-backed: “Where is my order?” uses
+order and shipment tools. A mixed question such as “Can I return order
+ORD1002?” uses the owned PostgreSQL order/item records together with the
+retrieved return policy. Qdrant never stores or replaces order, shipment,
+return, refund, or ticket state.
+
+Run `python backend/seed_knowledge.py` after configuring Qdrant and the
+embedding credentials to index the five documents in `data/policies`.
+
 ## Backend Tool Execution Flow
 
 The Support Agent requests a named backend tool. The model does not receive a

@@ -61,6 +61,34 @@ loaded by conversation id and customer id from PostgreSQL.
 
 ---
 
+## Record 010: PostgreSQL Transactional Truth and Qdrant Knowledge Retrieval
+
+**Date:** 2026-10-09
+**Status:** Accepted
+
+PostgreSQL remains the source of truth for mutable, customer-specific data:
+orders, order items, shipments, returns, refunds, support tickets, customers,
+conversations, and messages. Exact ownership and current status require
+relational queries and backend validation, so RAG must never answer questions
+such as “Where is my order?” from a vector similarity result.
+
+Qdrant is used only for semantic retrieval over short, checked-in knowledge
+documents: return, refund, shipping, warranty, and general FAQ policies. The
+graph decides whether retrieval is needed after intent classification. Retrieved
+passages are bounded and passed as context; they do not become transactional
+records and cannot authorize an action.
+
+For mixed questions, the Support Agent combines both sources: PostgreSQL
+provides the owned order/item facts and Qdrant provides the applicable policy.
+If Qdrant is unavailable, transactional workflows can still use PostgreSQL and
+the agent must not invent policy details.
+
+The implementation uses the existing Qdrant client and embedding provider with
+a small ingestion script. No MCP server, microservice, or complex RAG
+framework is introduced.
+
+---
+
 ## Record 007: Phase 6 Support Agent and Read-Only Tool Boundary
 
 **Date:** 2026-10-09

@@ -37,6 +37,8 @@ class Settings(BaseSettings):
     # Vector DB (Qdrant)
     QDRANT_URL: str = os.getenv("QDRANT_URL", "http://localhost:6333")
     QDRANT_API_KEY: str = os.getenv("QDRANT_API_KEY", "")
+    QDRANT_COLLECTION: str = os.getenv("QDRANT_COLLECTION", "support_knowledge")
+    RAG_EMBEDDING_MODEL: str = os.getenv("RAG_EMBEDDING_MODEL", "models/embedding-001")
 
     # Security & JWT
     JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "default_secret_key_change_in_production")

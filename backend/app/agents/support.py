@@ -40,10 +40,10 @@ def support_agent_node(state: AgentState) -> AgentState:
             context.update({"items": get_order_items(db, customer_id, selected["id"]),
                             "returns": get_returns(db, customer_id, selected["id"])})
             state = {**state, "support_context": context}
-            return {**state, "final_response": _single_order_response(selected, intent, context["returns"])}
+            return {**state, "final_response": _single_order_response(selected, intent, context["returns"]) + _policy_suffix(state.get("knowledge_context"))}
         if len(matches) > 1:
             state = {**state, "support_context": context}
-            return {**state, "final_response": _multiple_order_response(matches, intent)}
+            return {**state, "final_response": _multiple_order_response(matches, intent) + _policy_suffix(state.get("knowledge_context"))}
         return {**state, "support_context": context,
                 "final_response": "I checked your recent orders but could not find an item matching that description. What product would you like help with?"}
 
@@ -57,6 +57,7 @@ def support_agent_node(state: AgentState) -> AgentState:
                 f"Order #{s['order_id']} is {s['status']} with {s['carrier']} (tracking {s['tracking_number']})."
                 for s in shipments
             )
+        response += _policy_suffix(state.get("knowledge_context"))
         return {**state, "support_context": context, "final_response": response}
 
     if intent in {"REFUND_STATUS", "REFUND_REQUEST"}:
@@ -65,6 +66,7 @@ def support_agent_node(state: AgentState) -> AgentState:
         response = ("I checked your refund records, but found none for your account."
                     if not refunds else "I checked your refund records. " + "; ".join(
                         f"Order #{r['order_id']}: {r['status']} for {r['amount']}." for r in refunds))
+        response += _policy_suffix(state.get("knowledge_context"))
         return {**state, "support_context": context, "final_response": response}
 
     context["tickets"] = get_support_tickets(db, customer_id)
@@ -123,3 +125,10 @@ def _single_order_response(order: dict, intent: str, returns: list[dict]) -> str
 def _multiple_order_response(orders: list[dict], intent: str) -> str:
     lines = [f"#{order['id']} — {', '.join(item['product_name'] for item in order['items'])}, placed {order['order_date'][:10]}, status {order['status']}" for order in orders]
     return "I found multiple matching orders:\n" + "\n".join(lines) + "\nWhich one would you like me to use?"
+
+
+def _policy_suffix(knowledge: list[dict] | None) -> str:
+    if not knowledge:
+        return ""
+    excerpts = [item.get("content", "").replace("\n", " ")[:350] for item in knowledge[:2]]
+    return " Relevant policy context: " + " ".join(excerpts)

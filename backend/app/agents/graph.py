@@ -20,6 +20,7 @@ from app.agents.state import AgentState
 from app.agents.router import router_node
 from app.agents.conversational import conversational_node
 from app.agents.support import support_agent_node
+from app.rag.knowledge import knowledge_retrieval_needed, rag_node
 
 logger = logging.getLogger(__name__)
 
@@ -36,16 +37,26 @@ def _build_graph() -> any:
     graph.add_node("router", router_node)
     graph.add_node("conversational", conversational_node)
     graph.add_node("support", support_agent_node)
+    graph.add_node("rag", rag_node)
 
     # Define edges
     graph.set_entry_point("router")
-    graph.add_conditional_edges(
-        "router",
-        lambda state: "support" if state.get("intent") in {
+    def route_to_agent(state):
+        return "support" if state.get("intent") in {
             "ORDER_TRACKING", "ORDER_CANCEL", "ORDER_RETURN", "REFUND_STATUS",
             "REFUND_REQUEST", "DAMAGED_PRODUCT", "WRONG_PRODUCT", "DELIVERY_DELAY",
             "PAYMENT_ISSUE",
-        } else "conversational",
+        } else "conversational"
+
+    def route_after_router(state):
+        return "rag" if knowledge_retrieval_needed(state) else route_to_agent(state)
+
+    graph.add_conditional_edges(
+        "router", route_after_router,
+        {"rag": "rag", "support": "support", "conversational": "conversational"},
+    )
+    graph.add_conditional_edges(
+        "rag", route_to_agent,
         {"support": "support", "conversational": "conversational"},
     )
     graph.add_edge("support", END)
@@ -103,6 +114,8 @@ def run_support_graph(
         "db_session": db_session,
         "support_context": None,
         "customer_context": customer_context,
+        "knowledge_context": [],
+        "rag_used": False,
     }
 
     logger.info(
