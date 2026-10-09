@@ -1,9 +1,9 @@
 """LangGraph StateGraph definition for AI Customer Support Agent.
 
-Phase 5: Defines and compiles the LangGraph graph.
+Phase 6: Defines and compiles the LangGraph graph.
 
-Current graph topology (Phase 5):
-  START → router_node → conversational_node → END
+Current graph topology (Phase 6):
+  START → router_node → (support_agent_node | conversational_node) → END
 
 In Phase 6+, conditional edges will be added to route from
 router_node to specialized support tool nodes based on intent.
@@ -19,6 +19,7 @@ from langgraph.graph import StateGraph, END
 from app.agents.state import AgentState
 from app.agents.router import router_node
 from app.agents.conversational import conversational_node
+from app.agents.support import support_agent_node
 
 logger = logging.getLogger(__name__)
 
@@ -34,14 +35,24 @@ def _build_graph() -> any:
     # Register nodes
     graph.add_node("router", router_node)
     graph.add_node("conversational", conversational_node)
+    graph.add_node("support", support_agent_node)
 
     # Define edges
     graph.set_entry_point("router")
-    graph.add_edge("router", "conversational")
+    graph.add_conditional_edges(
+        "router",
+        lambda state: "support" if state.get("intent") in {
+            "ORDER_TRACKING", "ORDER_CANCEL", "ORDER_RETURN", "REFUND_STATUS",
+            "REFUND_REQUEST", "DAMAGED_PRODUCT", "WRONG_PRODUCT", "DELIVERY_DELAY",
+            "PAYMENT_ISSUE",
+        } else "conversational",
+        {"support": "support", "conversational": "conversational"},
+    )
+    graph.add_edge("support", END)
     graph.add_edge("conversational", END)
 
     compiled = graph.compile()
-    logger.info("LangGraph state machine compiled successfully (Phase 5 topology)")
+    logger.info("LangGraph state machine compiled successfully (Phase 6 topology)")
     return compiled
 
 
@@ -55,6 +66,7 @@ def run_support_graph(
     customer_email: str,
     message: str,
     conversation_history: list | None = None,
+    db_session=None,
 ) -> AgentState:
     """
     Initializes and runs the LangGraph support graph for a single request.
@@ -87,6 +99,8 @@ def run_support_graph(
         "router_response": None,
         "final_response": None,
         "error": None,
+        "db_session": db_session,
+        "support_context": None,
     }
 
     logger.info(

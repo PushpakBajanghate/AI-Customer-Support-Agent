@@ -41,3 +41,5 @@ class AgentState(TypedDict):
     router_response: Optional[str]     # Router's acknowledgement to the customer
     final_response: Optional[str]      # Completed response (set by final node)
     error: Optional[str]               # Non-None when a node encounters an error
+    db_session: Any
+    support_context: Optional[dict[str, Any]]

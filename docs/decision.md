@@ -4,6 +4,38 @@ This document tracks all architectural decisions, technology selections, trade-o
 
 ---
 
+## Record 007: Phase 6 Support Agent and Read-Only Tool Boundary
+
+**Date:** 2026-10-09
+**Status:** Accepted
+
+### Key decisions
+
+1. Use a conditional LangGraph edge from Router to Support Agent. The Router
+   remains responsible only for intent classification; transactional intents
+   enter the Support Agent and general/unknown intents retain the conversational
+   path. Supervisor orchestration is deferred.
+
+2. Expose seven approved read tools instead of giving the agent database access:
+   customer information, recent orders, order items, shipments, returns,
+   refunds, and support tickets. Every query is constrained by authenticated
+   `customer_id`; order-specific lookups also verify ownership.
+
+3. Resolve product references from database data. Return matching compares
+   message terms with real product names/categories. One match is selected
+   automatically; multiple matches are shown and require a selection. The
+   agent does not ask for an order id when records already identify the order.
+
+4. Keep Phase 6 read-only. No create/cancel/refund/update tool is registered;
+   the agent cannot mutate the database or claim an action succeeded.
+
+The Router answers “what kind of help is this?” The Support Agent answers “what
+records and information are needed?” Keeping those responsibilities separate
+makes authorization and tool use auditable. Action execution and Supervisor
+orchestration remain future phases.
+
+---
+
 ## Record 006: Phase 5 LangGraph Router Agent (Intent Classification)
 
 **Date:** 2026-10-08  

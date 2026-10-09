@@ -15,11 +15,13 @@ import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
 
 from app.models.customer import Customer
 from app.schemas.chat import ChatMessageRequest, ChatMessageResponse, RouterInfo
 from app.schemas.router import IntentType
 from app.services.auth import get_current_customer
+from app.database import get_db
 from app.agents.graph import run_support_graph
 
 logger = logging.getLogger(__name__)
@@ -40,6 +42,7 @@ router = APIRouter(prefix="/chat", tags=["Chat"])
 def send_chat_message(
     payload: ChatMessageRequest,
     current_customer: Customer = Depends(get_current_customer),
+    db: Session = Depends(get_db),
 ):
     """
     Processes a customer's runtime chat message through the LangGraph pipeline.
@@ -65,6 +68,7 @@ def send_chat_message(
         customer_email=current_customer.email,
         message=payload.message,
         conversation_history=payload.conversation_history or [],
+        db_session=db,
     )
 
     # Extract the final response — always dynamically generated

@@ -4,6 +4,53 @@ This document describes the operational flow of the AI Customer Support Agent ap
 
 ---
 
+## Support Agent Flow (Phase 6 — LangGraph + approved read tools)
+
+Phase 6 adds the Support Agent after Router classification. The Router selects
+the workflow; the Support Agent inspects verified customer context using only
+approved, read-only tools. The authenticated customer id is passed from the
+JWT-backed API state into every database query.
+
+```
+POST /chat
+   │
+   ▼
+Router Agent ── general/unknown ──► Conversational response
+   │
+   └─ transactional intent
+          │
+          ▼
+Support Agent
+  ├─ get_customer_information
+  ├─ get_recent_orders
+  ├─ get_order_items
+  ├─ get_shipments
+  ├─ get_returns
+  ├─ get_refunds
+  └─ get_support_tickets
+          │
+          ▼
+Verified context → select one order, ask for selection, or ask one necessary question
+```
+
+For a return request, the Support Agent searches recent orders and their real
+product names/categories. One matching order is selected automatically. Multiple
+matches are displayed with order date/status and the customer is asked which
+one to use. It never asks for an order id when records already identify the
+order. No write tool exists in this phase, so the agent cannot modify the
+database or claim that a return, refund, or cancellation was executed.
+
+### Router Agent vs Support Agent
+
+| Agent | Responsibility | Database access | Output |
+|---|---|---|---|
+| Router Agent | Classifies the customer goal and selects the workflow | None | Intent, confidence, acknowledgement |
+| Support Agent | Inspects verified context, resolves ambiguity, and determines the next safe step | Approved read-only tools scoped by authenticated customer id | Verified context and response or necessary clarification |
+
+The Router does not inspect orders, and the Support Agent does not classify
+intent. A future Supervisor may coordinate multiple agents, but it is not part
+of Phase 6.
+
 ## High-Level Message Processing Flow (Target Architecture)
 
 When a customer sends a message in the chat interface, the system processes it through a strict, safety-bounded flow:
