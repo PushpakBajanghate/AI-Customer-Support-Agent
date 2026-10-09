@@ -32,6 +32,29 @@ operation, but only the backend Supervisor can approve a validated tool call.
 
 ---
 
+## Record 012: Human Escalation Rules and Conversation Preservation
+
+Human escalation is a deterministic graph decision before RAG or ordinary
+Support Agent handling. It triggers for explicit human-support requests,
+suspected fraud, policy exceptions, repeated tool failures, low-confidence or
+unsupported requests, and ambiguous payment state. Simple policy questions and
+read-only order lookups do not escalate.
+
+The escalation node creates a structured support-ticket action. The Supervisor
+verifies the authenticated customer and invokes the backend ticket tool with
+the current conversation id, issue reason, customer message summary, and a
+priority derived from severity. Fraud and ambiguous payment cases are urgent;
+human requests and policy exceptions are high priority; unresolved unsupported
+requests are medium priority.
+
+The ticket stores the conversation id rather than copying an unbounded
+transcript. The human agent can load the persisted conversation and messages
+using that link, preserving context without sending the entire history to the
+LLM. The customer-facing success response is emitted only after the validated
+ticket tool succeeds.
+
+---
+
 ## Record 009: Simple Backend Tool Design and Ownership Security
 
 **Date:** 2026-10-09

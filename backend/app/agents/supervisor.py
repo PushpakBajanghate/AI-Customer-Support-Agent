@@ -36,7 +36,7 @@ def supervisor_node(state: AgentState) -> AgentState:
         if not ownership.get("ok"):
             return _rejected(state, "ORDER_NOT_FOUND", "I could not find that order in your account.")
 
-    if not _is_confirmed(state):
+    if action.get("requires_confirmation", True) and not _is_confirmed(state):
         return _rejected(state, "CONFIRMATION_REQUIRED", _confirmation_prompt(action_type, order_id))
 
     if action_type == "cancel_order":
@@ -52,7 +52,16 @@ def supervisor_node(state: AgentState) -> AgentState:
     elif action_type == "create_refund":
         result = create_refund(order_id, customer_id, db=db)
     else:
-        result = create_support_ticket(customer_id, action["subject"], action["description"], db=db)
+        result = create_support_ticket(
+            customer_id,
+            action["subject"],
+            action["description"],
+            db=db,
+            conversation_id=state.get("conversation_id"),
+            issue=action.get("issue"),
+            summary=action.get("summary"),
+            priority=action.get("priority", "medium"),
+        )
 
     if not result.get("ok"):
         return _rejected(state, result.get("error", "ACTION_REJECTED"), "I could not complete that request after validation.")
@@ -88,6 +97,8 @@ def _confirmation_prompt(action_type: str, order_id: int | None) -> str:
 
 
 def _success_message(action_type: str, result: dict) -> str:
+    if action_type == "create_support_ticket":
+        return "Your issue has been escalated to a support representative."
     labels = {"cancel_order": "cancellation", "create_return": "return request", "create_refund": "refund request", "create_support_ticket": "support ticket"}
     identifier = result.get("data", {}).get("id")
     suffix = f" #{identifier}" if identifier else ""

@@ -22,6 +22,7 @@ from app.agents.conversational import conversational_node
 from app.agents.support import support_agent_node
 from app.rag.knowledge import knowledge_retrieval_needed, rag_node
 from app.agents.supervisor import supervisor_node
+from app.agents.escalation import escalation_needed, escalation_node
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +41,7 @@ def _build_graph() -> any:
     graph.add_node("support", support_agent_node)
     graph.add_node("rag", rag_node)
     graph.add_node("supervisor", supervisor_node)
+    graph.add_node("escalation", escalation_node)
 
     # Define edges
     graph.set_entry_point("router")
@@ -51,12 +53,15 @@ def _build_graph() -> any:
         } else "conversational"
 
     def route_after_router(state):
+        if escalation_needed(state):
+            return "escalation"
         return "rag" if knowledge_retrieval_needed(state) else route_to_agent(state)
 
     graph.add_conditional_edges(
         "router", route_after_router,
-        {"rag": "rag", "support": "support", "conversational": "conversational"},
+        {"rag": "rag", "support": "support", "conversational": "conversational", "escalation": "escalation"},
     )
+    graph.add_edge("escalation", "supervisor")
     graph.add_conditional_edges(
         "rag", route_to_agent,
         {"support": "support", "conversational": "conversational"},
@@ -80,6 +85,7 @@ support_graph = _build_graph()
 
 def run_support_graph(
     customer_id: int,
+    conversation_id: str,
     customer_name: str,
     customer_email: str,
     message: str,
@@ -105,6 +111,7 @@ def run_support_graph(
     """
     initial_state: AgentState = {
         "customer_id": customer_id,
+        "conversation_id": conversation_id,
         "customer_name": customer_name,
         "customer_email": customer_email,
         "message": message,
@@ -125,6 +132,9 @@ def run_support_graph(
         "rag_used": False,
         "requested_action": None,
         "supervisor_result": None,
+        "escalation_reason": None,
+        "escalation_priority": None,
+        "tool_failures": 0,
     }
 
     logger.info(

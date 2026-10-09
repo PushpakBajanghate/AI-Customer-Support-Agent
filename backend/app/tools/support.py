@@ -19,6 +19,7 @@ from app.models.refund import Refund
 from app.models.return_model import Return
 from app.models.shipment import Shipment
 from app.models.ticket import SupportTicket
+from app.models.conversation import Conversation
 
 
 def get_customer_orders(customer_id: int, db: Session | None = None) -> dict[str, Any]:
@@ -149,18 +150,31 @@ def create_refund(order_id: int, customer_id: int, db: Session | None = None) ->
     return _write(db, command)
 
 
-def create_support_ticket(customer_id: int, subject: str, description: str, db: Session | None = None) -> dict[str, Any]:
+def create_support_ticket(customer_id: int, subject: str, description: str, db: Session | None = None,
+                          conversation_id: str | None = None, issue: str | None = None,
+                          summary: str | None = None, priority: str = "medium") -> dict[str, Any]:
     def command(session: Session) -> dict[str, Any]:
         customer = session.query(Customer).filter(Customer.id == customer_id).first()
         if not customer:
             return _failure("CUSTOMER_NOT_FOUND")
         if not subject or not subject.strip() or not description or not description.strip():
             return _failure("TICKET_CONTENT_REQUIRED")
+        if conversation_id:
+            conversation = (session.query(Conversation)
+                            .filter(Conversation.id == conversation_id, Conversation.customer_id == customer_id)
+                            .first())
+            if not conversation:
+                return _failure("CONVERSATION_NOT_FOUND")
+        if priority not in {"low", "medium", "high", "urgent"}:
+            return _failure("INVALID_PRIORITY")
         ticket = SupportTicket(customer_id=customer_id, subject=subject.strip(), description=description.strip(),
-                               status="open", priority="medium")
+                               conversation_id=conversation_id, issue=(issue or subject).strip(),
+                               summary=(summary or description).strip(), status="open", priority=priority)
         session.add(ticket)
         session.commit()
-        return {"ok": True, "data": {"id": ticket.id, "customer_id": customer_id, "subject": ticket.subject,
+        return {"ok": True, "data": {"id": ticket.id, "customer_id": customer_id,
+                                      "conversation_id": ticket.conversation_id, "issue": ticket.issue,
+                                      "summary": ticket.summary, "subject": ticket.subject,
                                       "description": ticket.description, "status": ticket.status, "priority": ticket.priority}}
     return _write(db, command)
 

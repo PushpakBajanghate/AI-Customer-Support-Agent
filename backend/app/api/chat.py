@@ -75,6 +75,7 @@ def send_chat_message(
     # Run the full LangGraph support graph with bounded persisted context.
     final_state = run_support_graph(
         customer_id=current_customer.id,
+        conversation_id=conversation.id,
         customer_name=current_customer.name,
         customer_email=current_customer.email,
         message=payload.message,

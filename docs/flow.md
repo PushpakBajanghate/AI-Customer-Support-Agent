@@ -27,6 +27,20 @@ verifies authentication, order ownership, action eligibility, policy checks,
 and confirmation before invoking a write tool. Simple knowledge questions and
 read-only lookups bypass the Supervisor.
 
+## Human Escalation Flow
+
+The escalation decision checks for an explicit human request, suspected fraud,
+policy exceptions, repeated tool failures, low-confidence or unsupported
+requests, and ambiguous payment state. When one condition matches, the
+Supervisor validates the authenticated customer and creates an `open` support
+ticket containing `customer_id`, `conversation_id`, `issue`, `summary`,
+`priority`, and `status`. The existing conversation and messages remain linked
+through `conversation_id` so a human representative can recover the context.
+
+After a successful ticket tool result, the customer receives:
+
+> Your issue has been escalated to a support representative.
+
 ## Conversation Memory and Customer Context (Phase 7)
 
 The chat lifecycle now uses a small relational memory path:

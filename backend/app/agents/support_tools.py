@@ -108,8 +108,9 @@ def get_support_tickets(db: Session, customer_id: int, statuses: set[str] | None
     if limit:
         query = query.limit(limit)
     tickets = query.all()
-    return [{"id": t.id, "subject": t.subject, "description": t.description, "status": t.status,
-             "priority": t.priority, "created_at": _iso(t.created_at)} for t in tickets]
+    return [{"id": t.id, "conversation_id": t.conversation_id, "issue": t.issue,
+             "summary": t.summary, "subject": t.subject, "description": t.description,
+             "status": t.status, "priority": t.priority, "created_at": _iso(t.created_at)} for t in tickets]
 
 
 def _order_dict(order: Order) -> dict[str, Any]:

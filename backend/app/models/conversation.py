@@ -16,3 +16,4 @@ class Conversation(Base):
 
     customer = relationship("Customer", back_populates="conversations")
     messages = relationship("ConversationMessage", back_populates="conversation", cascade="all, delete-orphan", order_by="ConversationMessage.timestamp")
+    support_tickets = relationship("SupportTicket", back_populates="conversation")

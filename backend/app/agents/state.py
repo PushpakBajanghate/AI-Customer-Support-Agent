@@ -26,6 +26,7 @@ class AgentState(TypedDict):
     - error: any runtime error captured during graph execution
     """
     customer_id: int
+    conversation_id: str
     customer_name: str
     customer_email: str
     message: str
@@ -48,3 +49,6 @@ class AgentState(TypedDict):
     rag_used: bool
     requested_action: Optional[dict[str, Any]]
     supervisor_result: Optional[dict[str, Any]]
+    escalation_reason: Optional[str]
+    escalation_priority: Optional[str]
+    tool_failures: int
