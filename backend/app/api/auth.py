@@ -78,3 +78,55 @@ def get_me(current_customer: Customer = Depends(get_current_customer)):
     The customer_id from this authentication context will be injected into later AI agent workflows.
     """
     return current_customer
+
+
+@router.get(
+    "/context",
+    summary="Get customer context including orders, shipments, returns, and tickets"
+)
+def get_customer_full_context(
+    current_customer: Customer = Depends(get_current_customer),
+    db: Session = Depends(get_db)
+):
+    """Returns the bounded relational context for the authenticated customer."""
+    from app.services.conversation import load_customer_context
+    return load_customer_context(db, current_customer.id)
+
+
+@router.get(
+    "/demo-customers",
+    summary="List available customer profiles for testing"
+)
+def get_demo_customers(db: Session = Depends(get_db)):
+    """Returns top customer profiles from database for quick profile switching."""
+    customers = db.query(Customer).order_by(Customer.id).limit(10).all()
+    return [
+        {
+            "id": c.id,
+            "name": c.name,
+            "email": c.email,
+            "phone": c.phone
+        }
+        for c in customers
+    ]
+
+
+@router.post(
+    "/demo-login/{customer_id}",
+    response_model=TokenResponse,
+    summary="Quick-login as a customer for testing and evaluation"
+)
+def demo_login(customer_id: int, db: Session = Depends(get_db)):
+    """Generates a real JWT token for the specified customer ID without password typing."""
+    customer = db.query(Customer).filter(Customer.id == customer_id).first()
+    if not customer:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Customer with ID {customer_id} not found."
+        )
+    token = create_access_token(data={"sub": str(customer.id), "email": customer.email})
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "customer": customer
+    }

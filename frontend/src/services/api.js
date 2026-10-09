@@ -68,3 +68,36 @@ export async function sendChatMessage(message, token, conversationId = null) {
   }
   return data;
 }
+
+export async function fetchCustomerContext(token) {
+  const response = await fetch(`${API_BASE_URL}/auth/context`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.detail || 'Failed to fetch customer context');
+  }
+  return data;
+}
+
+export async function fetchDemoCustomers() {
+  const response = await fetch(`${API_BASE_URL}/auth/demo-customers`);
+  if (!response.ok) {
+    throw new Error('Failed to load customer profiles');
+  }
+  return response.json();
+}
+
+export async function quickLoginDemo(customerId) {
+  const response = await fetch(`${API_BASE_URL}/auth/demo-login/${customerId}`, {
+    method: 'POST',
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.detail || 'Failed to switch profile');
+  }
+  return data;
+}
