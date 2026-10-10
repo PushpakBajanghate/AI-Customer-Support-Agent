@@ -224,7 +224,7 @@ def router_node(state: AgentState) -> AgentState:
     for attempt in range(2):
         try:
             # On retry if model is experiencing spikes, try fast secondary model
-            current_llm = llm if attempt == 0 else get_llm(model_override="gemini-3.5-flash", timeout=8)
+            current_llm = llm if attempt == 0 else get_llm(model_override="gemini-3.5-flash", timeout=10)
             response = current_llm.invoke(messages)
             raw_text = _extract_content_text(response.content)
 

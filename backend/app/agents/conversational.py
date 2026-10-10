@@ -190,7 +190,7 @@ def conversational_node(state: AgentState) -> AgentState:
     last_error = None
     for attempt in range(2):
         try:
-            current_llm = llm if attempt == 0 else get_llm(model_override="gemini-3.5-flash", timeout=8)
+            current_llm = llm if attempt == 0 else get_llm(model_override="gemini-3.5-flash", timeout=10)
             response = current_llm.invoke(messages)
             text_reply = _extract_content_text(response.content)
             if not text_reply:

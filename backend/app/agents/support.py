@@ -23,9 +23,6 @@ logger = logging.getLogger(__name__)
 def support_agent_node(state: AgentState) -> AgentState:
     """Grounds support responses in real PostgreSQL records and invokes Gemini dynamically."""
     db = state.get("db_session")
-    if db is None:
-        return {**state, "final_response": "I cannot access your support records right now. Please try again shortly."}
-
     customer_id = state["customer_id"]
     customer_name = state.get("customer_name") or "Valued Customer"
     customer_email = state.get("customer_email") or ""
@@ -236,7 +233,7 @@ STRICT MULTI-TURN CONVERSATION MEMORY & GROUNDING INSTRUCTIONS:
     except Exception as exc:
         logger.warning(f"Support agent primary LLM call encountered {exc}, attempting fast secondary call...")
         try:
-            fallback_llm = get_llm(model_override="gemini-3.5-flash", timeout=8)
+            fallback_llm = get_llm(model_override="gemini-3.5-flash", timeout=10)
             ai_msg = fallback_llm.invoke([
                 SystemMessage(content=support_system_prompt),
                 HumanMessage(content=message)

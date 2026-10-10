@@ -30,7 +30,41 @@ from app.services.conversation import (
     save_message,
 )
 
+from collections import defaultdict, deque
+import threading
+import time
+from app.config import settings
+
 logger = logging.getLogger(__name__)
+
+# Production in-memory sliding window rate limiter per customer
+_customer_request_windows: dict[int, deque[float]] = defaultdict(deque)
+_rate_limit_lock = threading.Lock()
+
+
+def check_chat_rate_limit(customer_id: int):
+    """Enforces configurable sliding window rate limit per customer to protect LLM quotas."""
+    max_requests = settings.CHAT_RATE_LIMIT_PER_MINUTE
+    if max_requests <= 0:
+        return  # Disabled
+
+    now = time.time()
+    window_seconds = 60.0
+
+    with _rate_limit_lock:
+        window = _customer_request_windows[customer_id]
+        while window and window[0] <= now - window_seconds:
+            window.popleft()
+
+        if len(window) >= max_requests:
+            retry_after = int(window_seconds - (now - window[0])) + 1
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail=f"Rate limit exceeded: You can send at most {max_requests} messages per minute. Please try again in {retry_after} seconds.",
+                headers={"Retry-After": str(retry_after)},
+            )
+        window.append(now)
+
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
 
@@ -55,11 +89,14 @@ def send_chat_message(
 
     Flow:
     1. FastAPI dependency extracts and validates JWT → customer_id
-    2. LangGraph graph initialized with runtime customer context
-    3. Router node classifies intent via Google Gemini (never hardcoded)
-    4. Conversational node generates intent-aware response (never hardcoded)
-    5. Response returned with full Router classification metadata
+    2. Rate limiter checks per-customer request budget
+    3. LangGraph graph initialized with runtime customer context
+    4. Router node classifies intent via Google Gemini (never hardcoded)
+    5. Conversational node generates intent-aware response (never hardcoded)
+    6. Response returned with full Router classification metadata
     """
+    check_chat_rate_limit(current_customer.id)
+
     logger.info(
         "Chat request from customer_id=%d (%s), message_preview='%s'",
         current_customer.id,
@@ -82,7 +119,7 @@ def send_chat_message(
         customer_email=current_customer.email,
         message=payload.message,
         conversation_history=conversation_history,
-        db_session=db,
+        db_session=None,
         customer_context=customer_context,
     )
 

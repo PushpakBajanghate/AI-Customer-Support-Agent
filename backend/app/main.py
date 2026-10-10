@@ -20,11 +20,26 @@ from app.api.chat import router as chat_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Ensure database tables exist
+    # Startup: Ensure database schema is migrated via Alembic or initialized
     try:
-        Base.metadata.create_all(bind=engine)
+        from alembic.config import Config
+        from alembic import command
+        from pathlib import Path
+
+        backend_dir = Path(__file__).resolve().parent.parent
+        alembic_ini_path = backend_dir / "alembic.ini"
+        if alembic_ini_path.exists():
+            alembic_cfg = Config(str(alembic_ini_path))
+            alembic_cfg.set_main_option("script_location", str(backend_dir / "alembic"))
+            command.upgrade(alembic_cfg, "head")
+        else:
+            Base.metadata.create_all(bind=engine)
     except Exception as exc:
-        print(f"[Warning] Could not initialize database tables on startup: {exc}")
+        print(f"[Notice] Alembic migration notice / fallback to create_all: {exc}")
+        try:
+            Base.metadata.create_all(bind=engine)
+        except Exception as inner_exc:
+            print(f"[Warning] Could not initialize database tables: {inner_exc}")
     yield
     # Shutdown logic if needed
 

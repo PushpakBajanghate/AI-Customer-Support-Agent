@@ -1,8 +1,11 @@
 """Lightweight safety gate for state-changing support actions."""
 
+import logging
 import re
 
+from langchain_core.messages import SystemMessage, HumanMessage
 from app.agents.state import AgentState
+from app.services.llm import get_llm, _extract_content_text
 from app.tools.support import (
     cancel_order,
     check_return_eligibility,
@@ -14,6 +17,7 @@ from app.tools.support import (
 )
 from app.agents.support_tools import get_customer_information
 
+logger = logging.getLogger(__name__)
 
 SENSITIVE_ACTIONS = {"cancel_order", "create_return", "create_refund", "create_support_ticket"}
 
@@ -26,7 +30,7 @@ def supervisor_node(state: AgentState) -> AgentState:
 
     db = state.get("db_session")
     customer_id = state.get("customer_id")
-    if not db or not customer_id or not get_customer_information(db, customer_id):
+    if not customer_id or not get_customer_information(db, customer_id):
         return _rejected(state, "AUTHENTICATION_REQUIRED", "I could not verify your customer account for this action.")
 
     action_type = action["type"]
@@ -91,7 +95,24 @@ def _rejected(state: AgentState, reason: str, response: str) -> AgentState:
 
 def _is_confirmed(state: AgentState) -> bool:
     message = state.get("message", "").strip().lower()
-    return bool(re.search(r"\b(confirm|confirmed|yes|go ahead|do it|proceed)\b", message))
+    if not message:
+        return False
+
+    # 1. Targeted check for sarcasm or explicit negation directed at confirmation
+    sarcasm_or_negation = re.compile(
+        r"(?:as if|yeah right|why would i|no way|hell no|never|not going to|refuse to|won'?t|wouldn'?t|"
+        r"don'?t\s+confirm|do\s+not\s+confirm|not\s+confirm|never\s+confirm)",
+        re.IGNORECASE,
+    )
+    if sarcasm_or_negation.search(message):
+        return False
+
+    # 2. Check for explicit standalone negation (e.g. 'no', 'nope', 'stop')
+    if re.match(r"^(no|nope|nah|never|cancel that|stop)[.!]?$", message, re.IGNORECASE):
+        return False
+
+    # 3. Check for genuine affirmative confirmation cues
+    return bool(re.search(r"\b(confirm|confirmed|yes|go ahead|do it|proceed|approved)\b", message))
 
 
 def _reason_from_history(state: AgentState) -> str | None:

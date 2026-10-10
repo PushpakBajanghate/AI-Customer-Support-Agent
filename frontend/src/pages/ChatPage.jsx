@@ -57,7 +57,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
 
     fetchDemoCustomers()
       .then((data) => setDemoCustomers(data || []))
-      .catch(() => {});
+      .catch(() => { });
   }, [token]);
 
   useEffect(() => {
@@ -95,7 +95,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
       // Refresh customer context in case an order was cancelled or returned
       fetchCustomerContext(token)
         .then((data) => setCustomerContext(data))
-        .catch(() => {});
+        .catch(() => { });
     } catch (requestError) {
       setFailedMessage(content);
       setInputText(content);
@@ -170,7 +170,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
             </svg>
           </div>
           <div className="sidebar-brand-text">
-            <strong>SupportAI</strong>
+            <strong>Donna</strong>
             <span>Enterprise Multi-Agent</span>
           </div>
           <button

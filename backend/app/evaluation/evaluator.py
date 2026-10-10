@@ -69,7 +69,8 @@ class AgentEvaluator:
             mock_llm.invoke.return_value = MagicMock(content=router_mock_content)
 
             with patch("app.agents.router.get_llm", return_value=mock_llm), \
-                 patch("app.agents.conversational.get_llm", return_value=mock_llm):
+                 patch("app.agents.conversational.get_llm", return_value=mock_llm), \
+                 patch("app.agents.support.get_llm", return_value=mock_llm):
                 try:
                     final_state = run_support_graph(
                         customer_id=case.customer_id,
