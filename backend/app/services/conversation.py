@@ -24,74 +24,123 @@ HISTORY_LIMIT = 12
 
 
 def ensure_customer_demo_orders(db: Session, customer_id: int):
-    """Ensures accounts with 0 orders are provisioned with realistic active orders."""
-    order_count = db.query(Order).filter(Order.customer_id == customer_id).count()
-    if order_count > 0:
-        return
-
-    products = db.query(Product).order_by(Product.id).limit(4).all()
-    if not products:
+    """Ensures accounts are provisioned with realistic active and historical orders for policy reviews."""
+    all_products = db.query(Product).order_by(Product.id).all()
+    if not all_products:
         return
 
     now = datetime.now(timezone.utc)
+    existing_orders = db.query(Order).filter(Order.customer_id == customer_id).all()
+    existing_order_count = len(existing_orders)
 
-    # 1. Delivered order (delivered 4 days ago) - eligible for return
-    p1 = products[0]
-    o1 = Order(
-        customer_id=customer_id,
-        order_date=now - timedelta(days=6),
-        status="delivered",
-        payment_status="paid",
-        total_amount=p1.price,
-        shipping_address="Main Delivery Address, Pune, MH 411045",
-    )
-    db.add(o1)
-    db.flush()
-    db.add(OrderItem(order_id=o1.id, product_id=p1.id, quantity=1, price=p1.price))
-    db.add(Shipment(
-        order_id=o1.id,
-        carrier="FedEx",
-        tracking_number=f"FDX-{o1.id}82-DELIV",
-        status="delivered",
-        estimated_delivery=now - timedelta(days=2),
-    ))
-
-    # 2. Shipped order (in transit)
-    if len(products) > 1:
-        p2 = products[1]
-        o2 = Order(
+    # 1. Provision active orders if account has none
+    if existing_order_count == 0:
+        p1 = all_products[0]
+        o1 = Order(
             customer_id=customer_id,
-            order_date=now - timedelta(days=2),
-            status="shipped",
+            order_date=now - timedelta(days=6),
+            status="delivered",
             payment_status="paid",
-            total_amount=p2.price,
+            total_amount=p1.price,
             shipping_address="Main Delivery Address, Pune, MH 411045",
         )
-        db.add(o2)
+        db.add(o1)
         db.flush()
-        db.add(OrderItem(order_id=o2.id, product_id=p2.id, quantity=1, price=p2.price))
+        db.add(OrderItem(order_id=o1.id, product_id=p1.id, quantity=1, price=p1.price))
         db.add(Shipment(
-            order_id=o2.id,
-            carrier="DHL Express",
-            tracking_number=f"DHL-{o2.id}93-TRANSIT",
-            status="in_transit",
-            estimated_delivery=now + timedelta(days=1),
+            order_id=o1.id,
+            carrier="FedEx",
+            tracking_number=f"FDX-{o1.id}82-DELIV",
+            status="delivered",
+            estimated_delivery=now - timedelta(days=2),
         ))
 
-    # 3. Processing order (placed today) - eligible for cancellation
-    if len(products) > 2:
-        p3 = products[2]
-        o3 = Order(
+        if len(all_products) > 1:
+            p2 = all_products[1]
+            o2 = Order(
+                customer_id=customer_id,
+                order_date=now - timedelta(days=2),
+                status="shipped",
+                payment_status="paid",
+                total_amount=p2.price,
+                shipping_address="Main Delivery Address, Pune, MH 411045",
+            )
+            db.add(o2)
+            db.flush()
+            db.add(OrderItem(order_id=o2.id, product_id=p2.id, quantity=1, price=p2.price))
+            db.add(Shipment(
+                order_id=o2.id,
+                carrier="DHL Express",
+                tracking_number=f"DHL-{o2.id}93-TRANSIT",
+                status="in_transit",
+                estimated_delivery=now + timedelta(days=1),
+            ))
+
+        if len(all_products) > 6:
+            p3 = all_products[6]
+            o3 = Order(
+                customer_id=customer_id,
+                order_date=now - timedelta(hours=4),
+                status="processing",
+                payment_status="paid",
+                total_amount=p3.price,
+                shipping_address="Main Delivery Address, Pune, MH 411045",
+            )
+            db.add(o3)
+            db.flush()
+            db.add(OrderItem(order_id=o3.id, product_id=p3.id, quantity=1, price=p3.price))
+
+    # 2. Ensure customer has an expired return order for Return Policy Review testing
+    has_expired_order = any(
+        o.status == "delivered" and (now - (o.order_date.replace(tzinfo=timezone.utc) if o.order_date.tzinfo is None else o.order_date)).days > 30
+        for o in existing_orders
+    )
+    if not has_expired_order and len(all_products) > 5:
+        p_expired = all_products[5]  # ApexFit Smart Fitness Tracker Band (10-day return window)
+        o_exp = Order(
             customer_id=customer_id,
-            order_date=now - timedelta(hours=4),
-            status="processing",
+            order_date=now - timedelta(days=50),
+            status="delivered",
             payment_status="paid",
-            total_amount=p3.price,
+            total_amount=p_expired.price,
             shipping_address="Main Delivery Address, Pune, MH 411045",
         )
-        db.add(o3)
+        db.add(o_exp)
         db.flush()
-        db.add(OrderItem(order_id=o3.id, product_id=p3.id, quantity=1, price=p3.price))
+        db.add(OrderItem(order_id=o_exp.id, product_id=p_expired.id, quantity=1, price=p_expired.price))
+        db.add(Shipment(
+            order_id=o_exp.id,
+            carrier="FedEx",
+            tracking_number=f"FDX-{o_exp.id}10-PAST",
+            status="delivered",
+            estimated_delivery=now - timedelta(days=45),
+        ))
+
+    # 3. Ensure customer has an active warranty order for Warranty Policy Review testing
+    has_warranty_order = any(
+        any("Monitor" in (item.product.name if item.product else "") for item in o.order_items)
+        for o in existing_orders
+    )
+    if not has_warranty_order and len(all_products) > 2:
+        p_warranty = all_products[2]  # UltraView 27-inch 4K IPS Monitor (730-day warranty)
+        o_war = Order(
+            customer_id=customer_id,
+            order_date=now - timedelta(days=70),
+            status="delivered",
+            payment_status="paid",
+            total_amount=p_warranty.price,
+            shipping_address="Main Delivery Address, Pune, MH 411045",
+        )
+        db.add(o_war)
+        db.flush()
+        db.add(OrderItem(order_id=o_war.id, product_id=p_warranty.id, quantity=1, price=p_warranty.price))
+        db.add(Shipment(
+            order_id=o_war.id,
+            carrier="BlueDart",
+            tracking_number=f"BLU-{o_war.id}44-WARR",
+            status="delivered",
+            estimated_delivery=now - timedelta(days=65),
+        ))
 
     db.commit()
 

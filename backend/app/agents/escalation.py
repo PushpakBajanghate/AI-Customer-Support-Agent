@@ -23,11 +23,12 @@ def escalation_needed(state: AgentState) -> bool:
     explicit_human = bool(re.search(r"\b(human|representative|live agent|support agent|person)\b", message))
     fraud = bool(re.search(r"\b(fraud|fraudulent|unauthorized|not mine|stolen|scam|chargeback)\b", message))
     policy_exception = bool(re.search(r"\b(exception|override|outside the policy|extend the return|waive)\b", message))
-    payment_ambiguous = intent == "PAYMENT_ISSUE" or (
-        "payment" in message and bool(re.search(r"\b(unclear|ambiguous|unknown|pending|missing|charged twice)\b", message))
+    payment_ambiguous = intent == "PAYMENT_ISSUE" and bool(
+        re.search(r"\b(unclear|ambiguous|unknown|pending|missing|charged twice|dispute)\b", message)
     )
-    unsupported = intent == "UNKNOWN" or confidence < 0.55 or bool(state.get("needs_clarification"))
-    return explicit_human or fraud or policy_exception or failure_count >= 2 or payment_ambiguous or unsupported
+    # Normal inquiries, clarifications, and questions about orders or returns
+    # must route to RAG and Support Agent to check the database, NOT escalate.
+    return explicit_human or fraud or policy_exception or failure_count >= 2 or payment_ambiguous
 
 
 def escalation_node(state: AgentState) -> AgentState:

@@ -36,15 +36,28 @@ def supervisor_node(state: AgentState) -> AgentState:
         if not ownership.get("ok"):
             return _rejected(state, "ORDER_NOT_FOUND", "I could not find that order in your account.")
 
+    if action_type == "create_return":
+        eligibility = check_return_eligibility(order_id, action["order_item_id"], customer_id, db=db)
+        if not eligibility.get("ok") or not eligibility.get("data", {}).get("eligible"):
+            reason = eligibility.get("data", {}).get("reason", "RETURN_NOT_ELIGIBLE")
+            window = eligibility.get("data", {}).get("return_window_days", 14)
+            days = eligibility.get("data", {}).get("days_since_order", 0)
+            if reason == "RETURN_WINDOW_EXPIRED":
+                msg = f"Order #{order_id} was placed {days} days ago, which exceeds our {window}-day return policy window. Per company policy, this item is no longer eligible for return."
+            elif reason == "ORDER_NOT_DELIVERED":
+                msg = f"Order #{order_id} is not yet delivered. Per store policy, returns can only be requested after delivery."
+            elif reason == "RETURN_ALREADY_EXISTS":
+                msg = f"A return request has already been filed for order #{order_id}."
+            else:
+                msg = f"Order #{order_id} is not eligible for return under company return policy."
+            return _rejected(state, reason, msg)
+
     if action.get("requires_confirmation", True) and not _is_confirmed(state):
         return _rejected(state, "CONFIRMATION_REQUIRED", _confirmation_prompt(action_type, order_id))
 
     if action_type == "cancel_order":
         result = cancel_order(order_id, customer_id, db=db)
     elif action_type == "create_return":
-        eligibility = check_return_eligibility(order_id, action["order_item_id"], customer_id, db=db)
-        if not eligibility.get("ok") or not eligibility.get("data", {}).get("eligible"):
-            return _rejected(state, eligibility.get("error", "RETURN_NOT_ELIGIBLE"), "That item is not eligible for a return.")
         reason = action.get("reason") or _reason_from_history(state)
         if not reason:
             return _rejected(state, "RETURN_REASON_REQUIRED", "Please provide the reason for the return before I submit it.")

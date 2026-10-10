@@ -49,7 +49,7 @@ def _build_graph() -> any:
         return "support" if state.get("intent") in {
             "ORDER_TRACKING", "ORDER_CANCEL", "ORDER_RETURN", "REFUND_STATUS",
             "REFUND_REQUEST", "DAMAGED_PRODUCT", "WRONG_PRODUCT", "DELIVERY_DELAY",
-            "PAYMENT_ISSUE", "HUMAN_ESCALATION",
+            "PAYMENT_ISSUE", "HUMAN_ESCALATION", "PRODUCT_INFORMATION", "GENERAL_QUESTION",
         } else "conversational"
 
     def route_after_router(state):

@@ -120,7 +120,17 @@ def _order_dict(order: Order) -> dict[str, Any]:
         "status": order.status,
         "payment_status": order.payment_status,
         "total_amount": order.total_amount,
-        "items": [{"id": item.id, "product_id": item.product_id, "product_name": item.product.name,
-                   "category": item.product.category, "quantity": item.quantity, "price": item.price}
-                  for item in order.order_items],
+        "items": [
+            {
+                "id": item.id,
+                "product_id": item.product_id,
+                "product_name": item.product.name,
+                "category": item.product.category,
+                "quantity": item.quantity,
+                "price": item.price,
+                "return_window_days": getattr(item.product, "return_window_days", 14),
+                "warranty_days": getattr(item.product, "warranty_days", 365),
+            }
+            for item in order.order_items
+        ],
     }

@@ -11,8 +11,14 @@ from app.config import settings
 logger = logging.getLogger(__name__)
 
 KNOWLEDGE_DIR = Path(__file__).resolve().parents[3] / "data" / "policies"
-POLICY_TERMS = {"policy", "return", "refund", "shipping", "ship", "delivery", "warranty", "guarantee", "faq", "exchange", "cancel"}
-POLICY_INTENTS = {"ORDER_RETURN", "REFUND_REQUEST", "ORDER_CANCEL", "DELIVERY_DELAY", "DAMAGED_PRODUCT", "WRONG_PRODUCT"}
+POLICY_TERMS = {
+    "policy", "return", "refund", "shipping", "ship", "delivery", "warranty",
+    "guarantee", "faq", "exchange", "cancel", "replace", "window", "rules", "condition", "packaging"
+}
+POLICY_INTENTS = {
+    "ORDER_RETURN", "REFUND_REQUEST", "REFUND_STATUS", "ORDER_CANCEL",
+    "DELIVERY_DELAY", "DAMAGED_PRODUCT", "WRONG_PRODUCT", "PRODUCT_INFORMATION"
+}
 
 
 def knowledge_retrieval_needed(state: dict[str, Any]) -> bool:
@@ -21,9 +27,7 @@ def knowledge_retrieval_needed(state: dict[str, Any]) -> bool:
     intent = state.get("intent")
     if intent in POLICY_INTENTS:
         return True
-    if intent in {"GENERAL_QUESTION", "UNKNOWN"}:
-        return bool(message_terms & POLICY_TERMS)
-    return False
+    return bool(message_terms & POLICY_TERMS)
 
 
 def retrieve_knowledge(query: str, limit: int = 3) -> list[dict[str, Any]]:

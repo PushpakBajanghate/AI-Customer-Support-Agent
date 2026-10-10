@@ -76,11 +76,16 @@ def support_agent_node(state: AgentState) -> AgentState:
             }
             return state
 
+    has_specific_product_query = bool({
+        _normalise(word) for word in re.findall(r"[\w-]+", message.lower())
+        if _normalise(word) not in {"i", "me", "my", "a", "an", "the", "want", "to", "return", "replace", "received", "wrong", "damaged", "item", "product", "one", "from", "yesterday", "today", "order", "can", "please", "help"} and len(word) > 2
+    })
+
     if intent in {"ORDER_RETURN", "DAMAGED_PRODUCT", "WRONG_PRODUCT"}:
         matches = _matching_orders(message, orders)
         if target_order:
             matches = [target_order]
-        elif not matches and len(orders) == 1:
+        elif not matches and not has_specific_product_query and len(orders) == 1:
             matches = orders
 
         if len(matches) == 1 and matches[0]["status"].lower() == "delivered":
@@ -128,7 +133,7 @@ def support_agent_node(state: AgentState) -> AgentState:
     else:
         for o in orders:
             item_desc = ", ".join(
-                f"{it['product_name']} (Qty: {it['quantity']}, ${it['price']:.2f})"
+                f"{it['product_name']} (Qty: {it['quantity']}, ${it['price']:.2f}, Return Window: {it.get('return_window_days', 14)} days, Warranty: {it.get('warranty_days', 365)} days)"
                 for it in o.get("items", [])
             )
             ship = shipments_by_order.get(o["id"])
@@ -167,13 +172,13 @@ def support_agent_node(state: AgentState) -> AgentState:
         for h in history[-6:]
     ) or "(New conversation)"
 
-    support_system_prompt = f"""You are SupportAI, an intelligent and helpful customer support specialist.
+    support_system_prompt = f"""You are SupportAI, an intelligent, empathetic, and factual customer support specialist.
 You are communicating in real time with authenticated customer: {customer_name} (Email: {customer_email}, ID: #{customer_id}).
 
 ACTUAL POSTGRESQL DATABASE RECORDS FOR THIS CUSTOMER:
 {database_records_text}
 
-OFFICIAL COMPANY POLICY KNOWLEDGE:
+OFFICIAL COMPANY POLICY KNOWLEDGE (RETRIEVED VIA RAG):
 {policy_text}
 
 CONVERSATION HISTORY:
@@ -181,19 +186,26 @@ CONVERSATION HISTORY:
 
 CLASSIFIED INTENT: {intent} (Confidence: {confidence:.0%})
 
-STRICT INSTRUCTIONS:
-1. Ground your response 100% in the real customer orders and policy documents above.
-2. If the customer asks about order status, tracking, or delivery:
-   - Accurately mention their Order ID, the product name(s), status (processing, shipped, delivered), carrier (e.g. FedEx, DHL Express), and tracking number.
-3. If the customer asks what orders they have or what they bought:
-   - Provide a clean, friendly bulleted summary of their orders.
-4. If the customer wants to cancel an order:
-   - If the order is already 'shipped' or 'delivered', explain empathetically why it cannot be cancelled per policy, and mention they can return it once received.
-   - If the order is 'processing', offer to cancel it and ask for their confirmation.
-5. If the customer wants to return an item:
-   - Check if the item was delivered and if it falls within the return window. Explain the next steps clearly.
-6. Never fabricate order numbers, dates, or tracking codes not listed in the database records.
-7. Be polite, concise, professional, and conversational.
+STRICT GROUNDING & VERIFICATION INSTRUCTIONS:
+1. Ground your response 100% in the real customer orders and official policy documents above. Never fabricate data or assume orders that do not exist.
+2. REAL-TIME ITEM & ORDER VERIFICATION:
+   - When the customer asks to return, cancel, track, replace, or inquire about any product or order:
+   - Check the ACTUAL POSTGRESQL DATABASE RECORDS above in real-time.
+   - If the customer does NOT have an order for that product name or order number in their database records:
+     * Inform the customer clearly and politely that you searched their account records in real-time and there is no order under that name or order ID found on their account.
+     * List the actual orders and items they DO currently have on their account so they can verify.
+     * Cite the relevant policy from the OFFICIAL COMPANY POLICY KNOWLEDGE above (e.g. store return window conditions, resalable packaging rules, or cancellation policies) to explain how policies apply.
+     * Do NOT escalate to a human representative simply because the customer asked about an unpurchased item.
+3. FOR ORDERS/ITEMS FOUND IN DATABASE RECORDS:
+   - Order Status / Tracking: State Order ID, product name, status, carrier name, tracking code, and delivery estimate.
+   - Return Requests: Check if the order status is 'DELIVERED'.
+     * If delivered within the product's return window days: explain the return process and policy requirements (original packaging, resalable condition).
+     * If delivered beyond the return window days: explain empathetically that the delivery date exceeds the store return window under company policy, and mention warranty coverage if applicable.
+   - Cancellations:
+     * If status is 'PROCESSING': offer cancellation and request their confirmation.
+     * If status is 'SHIPPED' or 'DELIVERED': explain that in-transit or delivered orders cannot be cancelled mid-delivery per shipping/cancellation policy, but can be returned once received.
+   - Policy / Warranty Inquiries: Fully review and cite the relevant policy from the OFFICIAL COMPANY POLICY KNOWLEDGE above.
+4. Be polite, concise, professional, and conversational.
 """
 
     try:
