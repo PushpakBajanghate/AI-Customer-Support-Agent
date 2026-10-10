@@ -56,19 +56,18 @@ def support_agent_node(state: AgentState) -> AgentState:
     order_id = _referenced_order_id(message, orders, history)
     target_order = next((o for o in orders if o["id"] == order_id), None) if order_id else None
 
-    # Handle state mutations (cancellation, returns, refunds, human escalations)
-    if intent == "ORDER_CANCEL":
-        # If there's an unambiguous target order, check if eligible for cancellation
-        if target_order:
-            if target_order["status"].lower() == "processing":
-                state = {
-                    **state,
-                    "support_context": context,
-                    "requested_action": {"type": "cancel_order", "order_id": target_order["id"]},
-                }
-                # Supervisor gate will handle confirmation/execution
-                return state
-        elif len(orders) == 1 and orders[0]["status"].lower() == "processing":
+    # Handle state mutations ONLY when the user explicitly requests an action:
+    # 1. ORDER_CANCEL: Only propose cancellation if user explicitly requests to cancel an order
+    is_explicit_cancel = bool(re.search(r"\b(cancel|cancellation|stop order)\b", message, re.IGNORECASE))
+    if intent == "ORDER_CANCEL" and is_explicit_cancel:
+        if target_order and target_order["status"].lower() == "processing":
+            state = {
+                **state,
+                "support_context": context,
+                "requested_action": {"type": "cancel_order", "order_id": target_order["id"]},
+            }
+            return state
+        elif not target_order and len(orders) == 1 and orders[0]["status"].lower() == "processing":
             state = {
                 **state,
                 "support_context": context,
@@ -76,16 +75,20 @@ def support_agent_node(state: AgentState) -> AgentState:
             }
             return state
 
-    has_specific_product_query = bool({
-        _normalise(word) for word in re.findall(r"[\w-]+", message.lower())
-        if _normalise(word) not in {"i", "me", "my", "a", "an", "the", "want", "to", "return", "replace", "received", "wrong", "damaged", "item", "product", "one", "from", "yesterday", "today", "order", "can", "please", "help"} and len(word) > 2
-    })
+    # 2. ORDER_RETURN: Only trigger automated return creation if the user explicitly requests a return/refund
+    # and NOT for general inquiries, technical issues, service/check visits, or complaints about prior responses
+    is_explicit_return_request = bool(
+        re.search(r"\b(want to return|initiate return|start return|return this|create return|send back|return request)\b", message, re.IGNORECASE)
+    )
+    is_service_or_defect_query = bool(
+        re.search(r"\b(visit|check|technician|inspection|repair|fix|glitch|screen|display|flicker|not working|broken|warranty)\b", message, re.IGNORECASE)
+    )
 
-    if intent in {"ORDER_RETURN", "DAMAGED_PRODUCT", "WRONG_PRODUCT"}:
+    if intent == "ORDER_RETURN" and is_explicit_return_request and not is_service_or_defect_query:
         matches = _matching_orders(message, orders)
         if target_order:
             matches = [target_order]
-        elif not matches and not has_specific_product_query and len(orders) == 1:
+        elif not matches and len(orders) == 1:
             matches = orders
 
         if len(matches) == 1 and matches[0]["status"].lower() == "delivered":
@@ -104,16 +107,18 @@ def support_agent_node(state: AgentState) -> AgentState:
                 }
                 return state
 
-    if intent == "REFUND_REQUEST":
-        if target_order:
-            state = {
-                **state,
-                "support_context": context,
-                "requested_action": {"type": "create_refund", "order_id": target_order["id"]},
-            }
-            return state
+    # 3. REFUND_REQUEST: Only if explicitly asking for refund processing
+    is_explicit_refund = bool(re.search(r"\b(process refund|issue refund|give my money back|refund request)\b", message, re.IGNORECASE))
+    if intent == "REFUND_REQUEST" and is_explicit_refund and target_order:
+        state = {
+            **state,
+            "support_context": context,
+            "requested_action": {"type": "create_refund", "order_id": target_order["id"]},
+        }
+        return state
 
-    if intent == "HUMAN_ESCALATION":
+    # 4. HUMAN_ESCALATION: Only if explicit agent requested
+    if intent == "HUMAN_ESCALATION" and bool(re.search(r"\b(human|representative|live agent|person|supervisor)\b", message, re.IGNORECASE)):
         state = {
             **state,
             "support_context": context,
@@ -166,13 +171,13 @@ def support_agent_node(state: AgentState) -> AgentState:
         for k in knowledge
     ) or "Standard Store Policy: 14-day return window for delivered items in original packaging. Cancellations permitted only while status is 'Processing'."
 
-    # History formatting
+    # History formatting: provide full recent context (up to 10 turns) so agent retains context across turns
     history_text = "\n".join(
         f"{h.get('role', 'user').capitalize()}: {h.get('content', '')}"
-        for h in history[-6:]
+        for h in history[-10:]
     ) or "(New conversation)"
 
-    support_system_prompt = f"""You are SupportAI, an intelligent, empathetic, and factual customer support specialist.
+    support_system_prompt = f"""You are SupportAI, an intelligent, empathetic, fact-grounded customer support specialist.
 You are communicating in real time with authenticated customer: {customer_name} (Email: {customer_email}, ID: #{customer_id}).
 
 ACTUAL POSTGRESQL DATABASE RECORDS FOR THIS CUSTOMER:
@@ -181,31 +186,43 @@ ACTUAL POSTGRESQL DATABASE RECORDS FOR THIS CUSTOMER:
 OFFICIAL COMPANY POLICY KNOWLEDGE (RETRIEVED VIA RAG):
 {policy_text}
 
-CONVERSATION HISTORY:
+CONVERSATION HISTORY (PAST TURNS IN THIS SESSION):
 {history_text}
+
+CURRENT CUSTOMER MESSAGE:
+{message}
 
 CLASSIFIED INTENT: {intent} (Confidence: {confidence:.0%})
 
-STRICT GROUNDING & VERIFICATION INSTRUCTIONS:
-1. Ground your response 100% in the real customer orders and official policy documents above. Never fabricate data or assume orders that do not exist.
+STRICT MULTI-TURN CONVERSATION MEMORY & GROUNDING INSTRUCTIONS:
+1. CONVERSATIONAL MEMORY & CONTEXT RESOLUTION:
+   - Carefully review the CONVERSATION HISTORY to track the ongoing context and what product or topic was being discussed.
+   - For example, if a previous message discussed a TV, monitor, or display (such as the UltraView Monitor), and the customer follows up with "i am having a glitch in the screen of tv and want to request a check visit help me" or refers to "it", understand that they are referring to the product discussed in context.
+   - If the customer corrects you (e.g. "I was talking about the TV, why are you showing me another order?"), acknowledge the correction immediately with an apology, pivot to the correct product/order from their database records, and address their actual concern directly.
+   - Do NOT repeat past rejected actions or canned refusal messages from previous turns. Answer their current query fresh and accurately in real time.
+
 2. REAL-TIME ITEM & ORDER VERIFICATION:
-   - When the customer asks to return, cancel, track, replace, or inquire about any product or order:
+   - When the customer asks about any item, product, or order number:
    - Check the ACTUAL POSTGRESQL DATABASE RECORDS above in real-time.
-   - If the customer does NOT have an order for that product name or order number in their database records:
-     * Inform the customer clearly and politely that you searched their account records in real-time and there is no order under that name or order ID found on their account.
+   - If the customer does NOT have an order for that item on their account (e.g. Saree, jacket, etc.):
+     * Inform the customer clearly and politely that you searched their account records in real-time and there is no order under that name found on their account.
      * List the actual orders and items they DO currently have on their account so they can verify.
-     * Cite the relevant policy from the OFFICIAL COMPANY POLICY KNOWLEDGE above (e.g. store return window conditions, resalable packaging rules, or cancellation policies) to explain how policies apply.
-     * Do NOT escalate to a human representative simply because the customer asked about an unpurchased item.
-3. FOR ORDERS/ITEMS FOUND IN DATABASE RECORDS:
-   - Order Status / Tracking: State Order ID, product name, status, carrier name, tracking code, and delivery estimate.
-   - Return Requests: Check if the order status is 'DELIVERED'.
-     * If delivered within the product's return window days: explain the return process and policy requirements (original packaging, resalable condition).
-     * If delivered beyond the return window days: explain empathetically that the delivery date exceeds the store return window under company policy, and mention warranty coverage if applicable.
-   - Cancellations:
-     * If status is 'PROCESSING': offer cancellation and request their confirmation.
-     * If status is 'SHIPPED' or 'DELIVERED': explain that in-transit or delivered orders cannot be cancelled mid-delivery per shipping/cancellation policy, but can be returned once received.
-   - Policy / Warranty Inquiries: Fully review and cite the relevant policy from the OFFICIAL COMPANY POLICY KNOWLEDGE above.
-4. Be polite, concise, professional, and conversational.
+     * Cite the relevant policy from OFFICIAL COMPANY POLICY KNOWLEDGE (e.g. return window, packaging requirements) to explain standard rules.
+     * Do NOT escalate to a human representative simply because an unpurchased item was mentioned.
+
+3. HARDWARE DEFECTS, GLITCHES, AND SERVICE / CHECK VISITS:
+   - If the customer reports a technical issue (e.g., glitch, screen lines, hardware defect) or requests a technician / check visit:
+   - Correlate the issue with the relevant product in their orders (e.g. UltraView 27-inch 4K IPS Monitor, Order #33).
+   - Check the product's WARRANTY coverage in their database record (e.g., 730 days warranty coverage).
+   - Empathize with the defect, confirm that their item is well within its active warranty period, explain the warranty coverage, and offer next steps to schedule a service visit or inspection ticket rather than treating it as an expired return.
+
+4. RETURN AND CANCELLATION REQUESTS:
+   - Return requests: Check if the order is DELIVERED. If within the return window days, guide them through return steps. If past the return window days, explain politely citing policy and mention warranty if applicable.
+   - Cancellation requests: If status is 'PROCESSING', offer cancellation. If 'SHIPPED' or 'DELIVERED', explain that shipped orders cannot be cancelled mid-transit.
+
+5. Tone & Style:
+   - Professional, empathetic, direct, and conversational.
+   - Never hallucinate non-existent items, and never confuse one order with another.
 """
 
     try:
@@ -217,7 +234,6 @@ STRICT GROUNDING & VERIFICATION INSTRUCTIONS:
         final_text = _extract_content_text(ai_msg.content)
     except Exception as exc:
         logger.error(f"Failed to generate support response with LLM: {exc}")
-        # Graceful fallback that still references real database orders
         if orders:
             order_summaries = "; ".join(f"Order #{o['id']} ({o['status']})" for o in orders)
             final_text = f"I've retrieved your account details. You currently have: {order_summaries}. How can I assist you with this?"
@@ -232,21 +248,34 @@ STRICT GROUNDING & VERIFICATION INSTRUCTIONS:
 
 
 def _matching_orders(message: str, orders: list[dict]) -> list[dict]:
+    """Finds orders whose item names or categories match words in the message."""
     words = {_normalise(word) for word in re.findall(r"[\w-]+", message.lower())}
-    ignored = {"i", "me", "my", "a", "an", "the", "want", "to", "return", "replace", "received", "wrong", "damaged", "item", "product", "one", "from", "yesterday", "today", "order", "can"}
+    ignored = {
+        "i", "me", "my", "a", "an", "the", "want", "to", "return", "replace",
+        "received", "wrong", "damaged", "item", "product", "one", "from",
+        "yesterday", "today", "order", "can", "please", "help", "showing", "about"
+    }
     terms = {word for word in words if word not in ignored and len(word) > 2}
     if not terms:
         return orders
     matches = []
     for order in orders:
-        searchable = {_normalise(x) for item in order.get("items", []) for x in (item.get("product_name", ""), item.get("category", ""))}
+        searchable = {
+            _normalise(x) for item in order.get("items", [])
+            for x in (item.get("product_name", ""), item.get("category", ""))
+        }
+        # Add common aliases for tech products (e.g. tv -> monitor/display)
+        if any("monitor" in s or "display" in s for s in searchable):
+            searchable.update({"tv", "television", "screen"})
         if any(term in token or token in term for term in terms for token in searchable):
             matches.append(order)
     return matches
 
 
 def _mentioned_order_id(message: str, orders: list[dict]) -> int | None:
-    ids = {int(value) for value in re.findall(r"(?:order\s*#?\s*|#)(\d+)", message.lower())}
+    # Exclude negated or complaint patterns like "showing me about order 32", "why order 32", "not order 32"
+    cleaned = re.sub(r"(?:showing me|why are you showing|not|instead of)\s+(?:about\s+)?(?:order\s*#?\s*|#)\d+", "", message, flags=re.IGNORECASE)
+    ids = {int(value) for value in re.findall(r"(?:order\s*#?\s*|#)(\d+)", cleaned.lower())}
     for order in orders:
         if order["id"] in ids:
             return order["id"]
@@ -254,15 +283,29 @@ def _mentioned_order_id(message: str, orders: list[dict]) -> int | None:
 
 
 def _referenced_order_id(message: str, orders: list[dict], history: list[dict]) -> int | None:
+    # 1. Direct mention in the current turn
     direct = _mentioned_order_id(message, orders)
     if direct:
         return direct
-    if re.search(r"\b(that|this|the one|it)\b", message.lower()):
-        for turn in reversed(history):
-            previous = _mentioned_order_id(str(turn.get("content", "")), orders)
-            if previous:
-                return previous
-    # If customer has only 1 order in total, associate it directly
+
+    # 2. Match order by product name or keywords in current message
+    current_matches = _matching_orders(message, orders)
+    if len(current_matches) == 1:
+        return current_matches[0]["id"]
+
+    # 3. Contextual resolution from conversation history
+    # Search backwards for product mentions or order mentions in prior conversation turns
+    for turn in reversed(history):
+        content = str(turn.get("content", ""))
+        # Check if previous turn mentioned a specific order
+        prev_order_id = _mentioned_order_id(content, orders)
+        if prev_order_id:
+            return prev_order_id
+        # Check if previous turn mentioned a product matching one of our orders
+        prev_matches = _matching_orders(content, orders)
+        if len(prev_matches) == 1:
+            return prev_matches[0]["id"]
+
     if len(orders) == 1:
         return orders[0]["id"]
     return None

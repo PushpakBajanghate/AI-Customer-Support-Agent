@@ -13,11 +13,13 @@ logger = logging.getLogger(__name__)
 KNOWLEDGE_DIR = Path(__file__).resolve().parents[3] / "data" / "policies"
 POLICY_TERMS = {
     "policy", "return", "refund", "shipping", "ship", "delivery", "warranty",
-    "guarantee", "faq", "exchange", "cancel", "replace", "window", "rules", "condition", "packaging"
+    "guarantee", "faq", "exchange", "cancel", "replace", "window", "rules",
+    "condition", "packaging", "repair", "service", "technician", "defect", "glitch", "broken", "visit"
 }
 POLICY_INTENTS = {
     "ORDER_RETURN", "REFUND_REQUEST", "REFUND_STATUS", "ORDER_CANCEL",
-    "DELIVERY_DELAY", "DAMAGED_PRODUCT", "WRONG_PRODUCT", "PRODUCT_INFORMATION"
+    "DELIVERY_DELAY", "DAMAGED_PRODUCT", "WRONG_PRODUCT", "PRODUCT_INFORMATION",
+    "GENERAL_QUESTION"
 }
 
 
@@ -101,7 +103,14 @@ def _fallback_local_policy_search(query: str, limit: int = 3) -> list[dict[str, 
 def rag_node(state: dict[str, Any]) -> dict[str, Any]:
     if not knowledge_retrieval_needed(state):
         return {**state, "knowledge_context": [], "rag_used": False}
-    results = retrieve_knowledge(state["message"])
+    # Formulate query incorporating message and recent context for multi-turn coherence
+    query = state.get("message", "")
+    history = state.get("conversation_history", [])
+    if history:
+        recent_turns = [turn.get("content", "") for turn in history[-2:] if turn.get("content")]
+        if recent_turns:
+            query = f"{' '.join(recent_turns)} {query}".strip()
+    results = retrieve_knowledge(query)
     return {**state, "knowledge_context": results, "rag_used": bool(results)}
 
 
