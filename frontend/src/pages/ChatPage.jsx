@@ -5,6 +5,7 @@ import {
   fetchDemoCustomers,
   quickLoginDemo,
 } from '../services/api';
+import ThemeToggle from '../components/ThemeToggle';
 
 const defaultSuggestions = [
   { label: 'Track an order', text: 'Where is my order right now?' },
@@ -33,7 +34,7 @@ function MessageText({ children }) {
     ));
 }
 
-export default function ChatPage({ token, customer, onLogout, onNewChat }) {
+export default function ChatPage({ token, customer, onLogout, onNewChat, theme, onToggleTheme }) {
   const [messages, setMessages] = useState([]);
   const [conversationId, setConversationId] = useState(null);
   const [inputText, setInputText] = useState('');
@@ -311,6 +312,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat }) {
             </p>
           </div>
           <div className="header-right">
+            {onToggleTheme && <ThemeToggle theme={theme} onToggle={onToggleTheme} />}
             <div className="connection-status-pill">
               <span className="pulse-dot" />
               <span>Real-Time Model Connected</span>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { loginCustomer, registerCustomer, fetchDemoCustomers, quickLoginDemo } from '../services/api';
+import ThemeToggle from '../components/ThemeToggle';
 
-export default function LoginPage({ onAuthSuccess }) {
+export default function LoginPage({ onAuthSuccess, theme, onToggleTheme }) {
   const [tab, setTab] = useState('demo'); // 'demo' | 'login' | 'register'
   const [demoCustomers, setDemoCustomers] = useState([]);
   const [form, setForm] = useState({ name: '', phone: '', email: '', password: '' });
@@ -107,8 +108,11 @@ export default function LoginPage({ onAuthSuccess }) {
 
       <section className="auth-panel">
         <div className="auth-card">
-          <div className="auth-header-block">
+          <div className="auth-header-top">
             <span className="auth-badge">Secure Customer Portal</span>
+            {onToggleTheme && <ThemeToggle theme={theme} onToggle={onToggleTheme} />}
+          </div>
+          <div className="auth-header-block">
             <h2>Sign in to SupportAI</h2>
             <p className="auth-subtitle">
               Select a pre-loaded customer profile with active orders or use your account credentials.

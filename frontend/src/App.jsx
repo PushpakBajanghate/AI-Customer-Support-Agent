@@ -5,6 +5,7 @@ import { getCurrentCustomer } from './services/api';
 
 const TOKEN_KEY = 'token';
 const CUSTOMER_KEY = 'customer';
+const THEME_KEY = 'app-theme';
 
 function readStoredCustomer() {
   try {
@@ -21,6 +22,16 @@ export default function App() {
   const [customer, setCustomer] = useState(readStoredCustomer);
   const [checkingSession, setCheckingSession] = useState(Boolean(localStorage.getItem(TOKEN_KEY)));
   const [chatKey, setChatKey] = useState(0);
+  const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || 'light');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(THEME_KEY, theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
 
   useEffect(() => {
     if (!token) {
@@ -69,7 +80,13 @@ export default function App() {
   }
 
   if (!token || !customer) {
-    return <LoginPage onAuthSuccess={handleAuthenticated} />;
+    return (
+      <LoginPage
+        onAuthSuccess={handleAuthenticated}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+    );
   }
 
   return (
@@ -79,6 +96,8 @@ export default function App() {
       customer={customer}
       onLogout={handleLogout}
       onNewChat={() => setChatKey((value) => value + 1)}
+      theme={theme}
+      onToggleTheme={toggleTheme}
     />
   );
 }
