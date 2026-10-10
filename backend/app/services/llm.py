@@ -22,10 +22,10 @@ SYSTEM_PROMPT = (
     "- Ask for clarification when necessary."
 )
 
-def get_llm():
+def get_llm(model_override: str | None = None, timeout: int = 15):
     """Initializes and returns the configured Google Gemini LLM client."""
     api_key = settings.LLM_API_KEY.strip() if settings.LLM_API_KEY else ""
-    model_name = settings.LLM_MODEL.strip() if settings.LLM_MODEL else ""
+    model_name = (model_override or settings.LLM_MODEL).strip()
 
     if not api_key:
         raise HTTPException(
@@ -42,7 +42,9 @@ def get_llm():
     return ChatGoogleGenerativeAI(
         model=model_name,
         google_api_key=api_key,
-        temperature=0.3,
+        temperature=0.2,
+        timeout=timeout,
+        max_retries=1,
     )
 
 def _extract_content_text(content) -> str:

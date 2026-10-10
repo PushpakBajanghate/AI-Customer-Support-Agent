@@ -225,20 +225,30 @@ STRICT MULTI-TURN CONVERSATION MEMORY & GROUNDING INSTRUCTIONS:
    - Never hallucinate non-existent items, and never confuse one order with another.
 """
 
+    final_text = None
     try:
-        llm = get_llm()
+        llm = get_llm(timeout=15)
         ai_msg = llm.invoke([
             SystemMessage(content=support_system_prompt),
             HumanMessage(content=message)
         ])
         final_text = _extract_content_text(ai_msg.content)
     except Exception as exc:
-        logger.error(f"Failed to generate support response with LLM: {exc}")
-        if orders:
-            order_summaries = "; ".join(f"Order #{o['id']} ({o['status']})" for o in orders)
-            final_text = f"I've retrieved your account details. You currently have: {order_summaries}. How can I assist you with this?"
-        else:
-            final_text = "I've checked your account, but there are no active orders placed yet. How else can I help you today?"
+        logger.warning(f"Support agent primary LLM call encountered {exc}, attempting fast secondary call...")
+        try:
+            fallback_llm = get_llm(model_override="gemini-3.5-flash", timeout=8)
+            ai_msg = fallback_llm.invoke([
+                SystemMessage(content=support_system_prompt),
+                HumanMessage(content=message)
+            ])
+            final_text = _extract_content_text(ai_msg.content)
+        except Exception as fallback_exc:
+            logger.error(f"Failed to generate support response with LLM: {fallback_exc}")
+            if orders:
+                order_summaries = "; ".join(f"Order #{o['id']} ({o['status']})" for o in orders)
+                final_text = f"I've retrieved your account details. You currently have: {order_summaries}. How can I assist you with this?"
+            else:
+                final_text = "I've checked your account, but there are no active orders placed yet. How else can I help you today?"
 
     return {
         **state,

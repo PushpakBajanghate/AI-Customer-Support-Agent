@@ -223,7 +223,9 @@ def router_node(state: AgentState) -> AgentState:
     last_error = None
     for attempt in range(2):
         try:
-            response = llm.invoke(messages)
+            # On retry if model is experiencing spikes, try fast secondary model
+            current_llm = llm if attempt == 0 else get_llm(model_override="gemini-3.5-flash", timeout=8)
+            response = current_llm.invoke(messages)
             raw_text = _extract_content_text(response.content)
 
             parsed = _parse_router_output(raw_text)
@@ -250,9 +252,8 @@ def router_node(state: AgentState) -> AgentState:
             break
         except Exception as exc:
             last_error = exc
-            if "503" in str(exc) and attempt == 0:
-                logger.warning("Router: Gemini 503, retrying after 1.5s...")
-                time.sleep(1.5)
+            if attempt == 0 and ("503" in str(exc) or "timeout" in str(exc).lower() or "deadline" in str(exc).lower()):
+                logger.warning("Router: primary model experienced delay or 503 spike, trying secondary model...")
                 continue
             break
 

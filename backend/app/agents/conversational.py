@@ -190,7 +190,8 @@ def conversational_node(state: AgentState) -> AgentState:
     last_error = None
     for attempt in range(2):
         try:
-            response = llm.invoke(messages)
+            current_llm = llm if attempt == 0 else get_llm(model_override="gemini-3.5-flash", timeout=8)
+            response = current_llm.invoke(messages)
             text_reply = _extract_content_text(response.content)
             if not text_reply:
                 raise ValueError("Empty response from Gemini")
@@ -205,9 +206,8 @@ def conversational_node(state: AgentState) -> AgentState:
             raise
         except Exception as exc:
             last_error = exc
-            if "503" in str(exc) and attempt == 0:
-                logger.warning("Conversational node: Gemini 503, retrying after 1.5s...")
-                time.sleep(1.5)
+            if attempt == 0 and ("503" in str(exc) or "timeout" in str(exc).lower() or "deadline" in str(exc).lower()):
+                logger.warning("Conversational node: primary model experienced delay, trying secondary model...")
                 continue
             break
 
