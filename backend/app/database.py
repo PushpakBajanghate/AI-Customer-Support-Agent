@@ -5,7 +5,9 @@ from app.config import settings
 # Engine setup
 # For SQLite compatibility in local tests if needed, or PostgreSQL in development/production
 db_url = settings.DATABASE_URL
-if db_url.startswith("postgresql://"):
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql+psycopg2://", 1)
+elif db_url.startswith("postgresql://"):
     db_url = db_url.replace("postgresql://", "postgresql+psycopg2://", 1)
 
 connect_args = {"check_same_thread": False} if db_url.startswith("sqlite") else {}

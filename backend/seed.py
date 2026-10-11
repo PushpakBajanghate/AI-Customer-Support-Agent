@@ -53,8 +53,17 @@ def load_json_file(file_path: Path):
     with open(file_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
+
+def normalize_database_url(database_url: str) -> str:
+    """Use the PostgreSQL driver installed by requirements.txt."""
+    if database_url.startswith("postgres://"):
+        return database_url.replace("postgres://", "postgresql+psycopg2://", 1)
+    if database_url.startswith("postgresql://"):
+        return database_url.replace("postgresql://", "postgresql+psycopg2://", 1)
+    return database_url
+
 def seed_database(db_url: str = None):
-    target_url = db_url or settings.DATABASE_URL
+    target_url = normalize_database_url(db_url or settings.DATABASE_URL)
     print(f"Connecting to database: {target_url.split('@')[-1] if '@' in target_url else target_url}")
 
     connect_args = {"check_same_thread": False} if target_url.startswith("sqlite") else {}
