@@ -73,37 +73,17 @@ export default function LoginPage({ onAuthSuccess, theme, onToggleTheme }) {
                 <path d="m12 12 5 9" />
               </svg>
             </div>
-            <span>SupportAI Enterprise</span>
+            <span>Donna </span>
           </div>
 
           <div className="auth-copy">
-            <p className="eyebrow">Production AI Customer Support</p>
-            <h1>Real-Time Autonomous Support Grounded in Live Data</h1>
-            <p>
-              Connects directly to PostgreSQL transactional records and LangGraph state machines.
-              Grounds order lookups, tracking, returns, and safety gates in real-time.
-            </p>
+            <p className="eyebrow">Donna AI Customer Support</p>
+            <h1>Real-Time Autonomous  Customer Support</h1>
+
           </div>
         </div>
 
-        <div className="auth-benefits">
-          <div className="auth-benefit">
-            <strong>PostgreSQL Grounded</strong>
-            <span>Verified order & shipment records</span>
-          </div>
-          <div className="auth-benefit">
-            <strong>Supervisor Gate</strong>
-            <span>Safe order cancellation & returns</span>
-          </div>
-          <div className="auth-benefit">
-            <strong>Hybrid Policy RAG</strong>
-            <span>Instant policy citations & warranty rules</span>
-          </div>
-          <div className="auth-benefit">
-            <strong>Google Gemini LLM</strong>
-            <span>Dynamic, real-time reasoning</span>
-          </div>
-        </div>
+
       </section>
 
       <section className="auth-panel">
@@ -113,10 +93,8 @@ export default function LoginPage({ onAuthSuccess, theme, onToggleTheme }) {
             {onToggleTheme && <ThemeToggle theme={theme} onToggle={onToggleTheme} />}
           </div>
           <div className="auth-header-block">
-            <h2>Sign in to SupportAI</h2>
-            <p className="auth-subtitle">
-              Select a pre-loaded customer profile with active orders or use your account credentials.
-            </p>
+            <h2>Sign in to Donna</h2>
+
           </div>
 
           <div className="auth-tabs">
@@ -247,7 +225,7 @@ export default function LoginPage({ onAuthSuccess, theme, onToggleTheme }) {
           )}
 
           <div className="auth-footer-note">
-            <span className="dot-live" /> All conversations are protected with JWT HS256 tokens and tenant isolation.
+
           </div>
         </div>
       </section>
