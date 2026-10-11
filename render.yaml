@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: ai-customer-support-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python boot.py && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-customer-support-db
+          property: connectionString
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: LLM_MODEL
+        value: gemini-2.5-flash
+      - key: LLM_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: RAG_VECTOR_ENABLED
+        value: "false"
+      - key: CHAT_RATE_LIMIT_PER_MINUTE
+        value: "20"
+
+databases:
+  - name: ai-customer-support-db
+    plan: free
+    databaseName: customer_support_db
+    user: customer_support

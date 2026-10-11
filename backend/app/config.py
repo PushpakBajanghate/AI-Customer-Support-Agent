@@ -53,6 +53,9 @@ class Settings(BaseSettings):
     # Production Rate Limiting
     CHAT_RATE_LIMIT_PER_MINUTE: int = int(os.getenv("CHAT_RATE_LIMIT_PER_MINUTE", 20))
 
+    # Comma-separated browser origins allowed to call the API.
+    CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "http://localhost:3000")
+
     class Config:
         env_file = ".env"
         extra = "ignore"
