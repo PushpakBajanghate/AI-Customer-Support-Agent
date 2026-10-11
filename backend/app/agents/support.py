@@ -57,11 +57,11 @@ def support_agent_node(state: AgentState) -> AgentState:
     # 1. ORDER_CANCEL: Only propose cancellation if user explicitly requests to cancel an order
     is_explicit_cancel = bool(re.search(r"\b(cancel|cancellation|stop order)\b", message, re.IGNORECASE))
     if intent == "ORDER_CANCEL" and is_explicit_cancel:
-        if target_order and target_order["status"].lower() == "processing":
+        if target_order or order_id:
             state = {
                 **state,
                 "support_context": context,
-                "requested_action": {"type": "cancel_order", "order_id": target_order["id"]},
+                "requested_action": {"type": "cancel_order", "order_id": target_order["id"] if target_order else order_id},
             }
             return state
         elif not target_order and len(orders) == 1 and orders[0]["status"].lower() == "processing":
@@ -75,42 +75,50 @@ def support_agent_node(state: AgentState) -> AgentState:
     # 2. ORDER_RETURN: Only trigger automated return creation if the user explicitly requests a return/refund
     # and NOT for general inquiries, technical issues, service/check visits, or complaints about prior responses
     is_explicit_return_request = bool(
-        re.search(r"\b(want to return|initiate return|start return|return this|create return|send back|return request)\b", message, re.IGNORECASE)
+        re.search(
+            r"\b(return(?:ing|ed)?|send back|ship back|create return|initiate return|start return|replace|replacement)\b",
+            message,
+            re.IGNORECASE,
+        )
     )
-    is_service_or_defect_query = bool(
-        re.search(r"\b(visit|check|technician|inspection|repair|fix|glitch|screen|display|flicker|not working|broken|warranty)\b", message, re.IGNORECASE)
+    is_service_visit_query = bool(
+        re.search(r"\b(visit|check visit|technician|inspection|repair|service call)\b", message, re.IGNORECASE)
+    )
+    is_damage_workflow = intent in {"DAMAGED_PRODUCT", "WRONG_PRODUCT"} and bool(
+        re.search(r"\b(damaged|broken|wrong|torn|defect|faulty)\b", message, re.IGNORECASE)
     )
 
-    if intent == "ORDER_RETURN" and is_explicit_return_request and not is_service_or_defect_query:
+    if intent in {"ORDER_RETURN", "DAMAGED_PRODUCT", "WRONG_PRODUCT"} and (is_explicit_return_request or is_damage_workflow) and not is_service_visit_query:
         matches = _matching_orders(message, orders)
         if target_order:
             matches = [target_order]
         elif not matches and len(orders) == 1:
             matches = orders
 
-        if len(matches) == 1 and matches[0]["status"].lower() == "delivered":
-            selected = matches[0]
-            items = get_order_items(db, customer_id, selected["id"])
-            if items:
-                state = {
-                    **state,
-                    "support_context": context,
-                    "requested_action": {
-                        "type": "create_return",
-                        "order_id": selected["id"],
-                        "order_item_id": items[0]["id"],
-                        "reason": _reason_from_message(message) or "Customer requested return",
-                    },
-                }
-                return state
+        if len(matches) == 1 or order_id:
+            selected = matches[0] if len(matches) == 1 else target_order
+            items = get_order_items(db, customer_id, selected["id"]) if selected else []
+            state = {
+                **state,
+                "support_context": context,
+                "requested_action": {
+                    "type": "create_return",
+                    "order_id": selected["id"] if selected else order_id,
+                    "order_item_id": items[0]["id"] if items else None,
+                    "reason": _reason_from_message(message) or "Customer requested return",
+                },
+            }
+            return state
 
     # 3. REFUND_REQUEST: Only if explicitly asking for refund processing
-    is_explicit_refund = bool(re.search(r"\b(process refund|issue refund|give my money back|refund request)\b", message, re.IGNORECASE))
-    if intent == "REFUND_REQUEST" and is_explicit_refund and target_order:
+    is_explicit_refund = bool(
+        re.search(r"\b(process|issue|request|apply for)\b(?:\s+\w+){0,3}\s+\brefund\b|\bgive my money back\b", message, re.IGNORECASE)
+    )
+    if intent == "REFUND_REQUEST" and is_explicit_refund and (target_order or order_id):
         state = {
             **state,
             "support_context": context,
-            "requested_action": {"type": "create_refund", "order_id": target_order["id"]},
+            "requested_action": {"type": "create_refund", "order_id": target_order["id"] if target_order else order_id},
         }
         return state
 
@@ -166,7 +174,7 @@ def support_agent_node(state: AgentState) -> AgentState:
     policy_text = "\n\n".join(
         f"[{k.get('title', k.get('source', 'Policy'))}]: {k.get('content', '')[:600]}"
         for k in knowledge
-    ) or "Standard Store Policy: 14-day return window for delivered items in original packaging. Cancellations permitted only while status is 'Processing'."
+    ) or "(No policy passage matched this request; do not infer policy details.)"
 
     # History formatting: provide full recent context (up to 10 turns) so agent retains context across turns
     history_text = "\n".join(
@@ -233,7 +241,9 @@ STRICT MULTI-TURN CONVERSATION MEMORY & GROUNDING INSTRUCTIONS:
     except Exception as exc:
         logger.warning(f"Support agent primary LLM call encountered {exc}, attempting fast secondary call...")
         try:
-            fallback_llm = get_llm(model_override="gemini-3.5-flash", timeout=10)
+            from app.config import settings
+            fallback_model = settings.LLM_FAST_MODEL.strip() or settings.LLM_MODEL
+            fallback_llm = get_llm(model_override=fallback_model, timeout=10)
             ai_msg = fallback_llm.invoke([
                 SystemMessage(content=support_system_prompt),
                 HumanMessage(content=message)
@@ -283,10 +293,9 @@ def _mentioned_order_id(message: str, orders: list[dict]) -> int | None:
     # Exclude negated or complaint patterns like "showing me about order 32", "why order 32", "not order 32"
     cleaned = re.sub(r"(?:showing me|why are you showing|not|instead of)\s+(?:about\s+)?(?:order\s*#?\s*|#)\d+", "", message, flags=re.IGNORECASE)
     ids = {int(value) for value in re.findall(r"(?:order\s*#?\s*|#)(\d+)", cleaned.lower())}
-    for order in orders:
-        if order["id"] in ids:
-            return order["id"]
-    return None
+    # Return the referenced number even when it is not owned by this customer;
+    # the supervisor must receive it so ownership validation can reject it.
+    return next(iter(ids), None)
 
 
 def _referenced_order_id(message: str, orders: list[dict], history: list[dict]) -> int | None:

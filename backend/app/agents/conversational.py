@@ -20,6 +20,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 
 from app.agents.state import AgentState
 from app.services.llm import get_llm, _extract_content_text
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -190,7 +191,8 @@ def conversational_node(state: AgentState) -> AgentState:
     last_error = None
     for attempt in range(2):
         try:
-            current_llm = llm if attempt == 0 else get_llm(model_override="gemini-3.5-flash", timeout=10)
+            retry_model = settings.LLM_FAST_MODEL.strip() or settings.LLM_MODEL
+            current_llm = llm if attempt == 0 else get_llm(model_override=retry_model, timeout=10)
             response = current_llm.invoke(messages)
             text_reply = _extract_content_text(response.content)
             if not text_reply:

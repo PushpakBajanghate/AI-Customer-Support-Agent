@@ -119,12 +119,21 @@ def send_chat_message(
         customer_email=current_customer.email,
         message=payload.message,
         conversation_history=conversation_history,
-        db_session=None,
+        db_session=db,
         customer_context=customer_context,
     )
 
     # Extract the final response — always dynamically generated
     final_response = final_state.get("final_response") or final_state.get("router_response")
+
+    # Do not present a generated-looking fallback as an accurate answer when
+    # the live provider failed. The client can show a retry state instead.
+    if final_state.get("error") and (final_state.get("confidence") or 0.0) <= 0.0:
+        logger.error("Chat graph failed for customer_id=%d: %s", current_customer.id, final_state["error"])
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="The AI support provider is temporarily unavailable. Please retry shortly.",
+        )
 
     if not final_response:
         # This should only happen if both LLM nodes completely failed

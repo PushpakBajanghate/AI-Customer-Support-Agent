@@ -105,9 +105,9 @@ class ChatRouterTestCase(unittest.TestCase):
     # Test 1: Full pipeline — Router classifies intent and response is returned
     # -----------------------------------------------------------------------
     @patch("app.agents.router.get_llm")
-    @patch("app.agents.conversational.get_llm")
+    @patch("app.agents.support.get_llm")
     def test_chat_router_classifies_order_return_intent(
-        self, mock_conv_llm, mock_router_llm
+        self, mock_support_llm, mock_router_llm
     ):
         """
         Verifies the full LangGraph pipeline:
@@ -126,7 +126,7 @@ class ChatRouterTestCase(unittest.TestCase):
         # Mock Conversational LLM (not called since confidence >= 0.8)
         mock_conv_instance = MagicMock()
         mock_conv_instance.invoke.return_value = _make_mock_conversational_response()
-        mock_conv_llm.return_value = mock_conv_instance
+        mock_support_llm.return_value = mock_conv_instance
 
         token, customer_id = self._register_and_login("Virat Kohli", "virat@example.com")
         headers = {"Authorization": f"Bearer {token}"}
@@ -162,9 +162,9 @@ class ChatRouterTestCase(unittest.TestCase):
     # Test 2: Router receives ORDER_TRACKING intent
     # -----------------------------------------------------------------------
     @patch("app.agents.router.get_llm")
-    @patch("app.agents.conversational.get_llm")
+    @patch("app.agents.support.get_llm")
     def test_chat_router_classifies_order_tracking_intent(
-        self, mock_conv_llm, mock_router_llm
+        self, mock_support_llm, mock_router_llm
     ):
         mock_router_instance = MagicMock()
         mock_router_instance.invoke.return_value = _make_mock_router_response(
@@ -176,7 +176,7 @@ class ChatRouterTestCase(unittest.TestCase):
         mock_conv_instance.invoke.return_value = _make_mock_conversational_response(
             "Let me check your order status right away."
         )
-        mock_conv_llm.return_value = mock_conv_instance
+        mock_support_llm.return_value = mock_conv_instance
 
         token, _ = self._register_and_login("Pranav Tapdiya", "pranav@example.com")
         headers = {"Authorization": f"Bearer {token}"}
@@ -195,9 +195,9 @@ class ChatRouterTestCase(unittest.TestCase):
     # Test 3: Router receives HUMAN_ESCALATION intent
     # -----------------------------------------------------------------------
     @patch("app.agents.router.get_llm")
-    @patch("app.agents.conversational.get_llm")
+    @patch("app.agents.support.get_llm")
     def test_chat_router_classifies_human_escalation_intent(
-        self, mock_conv_llm, mock_router_llm
+        self, mock_support_llm, mock_router_llm
     ):
         mock_router_instance = MagicMock()
         mock_router_instance.invoke.return_value = _make_mock_router_response(
@@ -206,7 +206,7 @@ class ChatRouterTestCase(unittest.TestCase):
         mock_router_llm.return_value = mock_router_instance
 
         mock_conv_instance = MagicMock()
-        mock_conv_llm.return_value = mock_conv_instance
+        mock_support_llm.return_value = mock_conv_instance
 
         token, _ = self._register_and_login("Harvey Specter", "harvey@example.com")
         headers = {"Authorization": f"Bearer {token}"}
@@ -224,9 +224,9 @@ class ChatRouterTestCase(unittest.TestCase):
     # Test 4: Router passes actual user message to the LLM (not hardcoded)
     # -----------------------------------------------------------------------
     @patch("app.agents.router.get_llm")
-    @patch("app.agents.conversational.get_llm")
+    @patch("app.agents.support.get_llm")
     def test_chat_router_receives_actual_runtime_message(
-        self, mock_conv_llm, mock_router_llm
+        self, mock_support_llm, mock_router_llm
     ):
         """
         Verifies that the Router node passes the actual customer message
@@ -239,7 +239,7 @@ class ChatRouterTestCase(unittest.TestCase):
         mock_router_llm.return_value = mock_router_instance
 
         mock_conv_instance = MagicMock()
-        mock_conv_llm.return_value = mock_conv_instance
+        mock_support_llm.return_value = mock_conv_instance
 
         token, _ = self._register_and_login("Mike Ross", "mike@example.com")
         headers = {"Authorization": f"Bearer {token}"}
@@ -317,9 +317,9 @@ class ChatRouterTestCase(unittest.TestCase):
     # Test 9: Router system prompt includes customer name (context injection)
     # -----------------------------------------------------------------------
     @patch("app.agents.router.get_llm")
-    @patch("app.agents.conversational.get_llm")
+    @patch("app.agents.support.get_llm")
     def test_chat_router_system_prompt_contains_customer_context(
-        self, mock_conv_llm, mock_router_llm
+        self, mock_support_llm, mock_router_llm
     ):
         """
         Verifies the Router prompt dynamically injects the authenticated
@@ -331,7 +331,7 @@ class ChatRouterTestCase(unittest.TestCase):
         )
         mock_router_llm.return_value = mock_router_instance
         mock_conv_instance = MagicMock()
-        mock_conv_llm.return_value = mock_conv_instance
+        mock_support_llm.return_value = mock_conv_instance
 
         token, customer_id = self._register_and_login("Rachel Zane", "rachel@example.com")
         headers = {"Authorization": f"Bearer {token}"}
@@ -348,9 +348,9 @@ class ChatRouterTestCase(unittest.TestCase):
     # Test 10: Conversation history is forwarded to the Router
     # -----------------------------------------------------------------------
     @patch("app.agents.router.get_llm")
-    @patch("app.agents.conversational.get_llm")
+    @patch("app.agents.support.get_llm")
     def test_chat_router_receives_conversation_history(
-        self, mock_conv_llm, mock_router_llm
+        self, mock_support_llm, mock_router_llm
     ):
         """
         Verifies that conversation history is passed through to the
@@ -362,7 +362,7 @@ class ChatRouterTestCase(unittest.TestCase):
         )
         mock_router_llm.return_value = mock_router_instance
         mock_conv_instance = MagicMock()
-        mock_conv_llm.return_value = mock_conv_instance
+        mock_support_llm.return_value = mock_conv_instance
 
         token, _ = self._register_and_login("Suits Harvey", "suits@example.com")
         headers = {"Authorization": f"Bearer {token}"}

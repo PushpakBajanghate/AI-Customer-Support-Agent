@@ -58,8 +58,8 @@ class ChatTestCase(unittest.TestCase):
         return login_res.json()["access_token"], login_res.json()["customer"]["id"]
 
     @patch("app.agents.router.get_llm")
-    @patch("app.agents.conversational.get_llm")
-    def test_chat_dynamic_llm_invocation(self, mock_conv_llm, mock_router_llm):
+    @patch("app.agents.support.get_llm")
+    def test_chat_dynamic_llm_invocation(self, mock_support_llm, mock_router_llm):
         """
         Verifies that:
         1. The Router LLM is invoked with the actual user message
@@ -78,7 +78,7 @@ class ChatTestCase(unittest.TestCase):
         mock_router_llm.return_value = mock_router_instance
 
         mock_conv_instance = MagicMock()
-        mock_conv_llm.return_value = mock_conv_instance
+        mock_support_llm.return_value = mock_conv_instance
 
         token, customer_id = self._register_and_login("Virat Kohli", "virat@example.com")
         headers = {"Authorization": f"Bearer {token}"}

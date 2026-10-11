@@ -30,6 +30,7 @@ class Settings(BaseSettings):
         or ""
     )
     LLM_MODEL: str = os.getenv("LLM_MODEL", "gemini-1.5-flash")
+    LLM_FAST_MODEL: str = os.getenv("LLM_FAST_MODEL", "")
 
     # Database Settings
     DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/customer_support_db")
@@ -39,6 +40,8 @@ class Settings(BaseSettings):
     QDRANT_API_KEY: str = os.getenv("QDRANT_API_KEY", "")
     QDRANT_COLLECTION: str = os.getenv("QDRANT_COLLECTION", "support_knowledge")
     RAG_EMBEDDING_MODEL: str = os.getenv("RAG_EMBEDDING_MODEL", "models/gemini-embedding-001")
+    RAG_VECTOR_ENABLED: bool = os.getenv("RAG_VECTOR_ENABLED", "false").lower() in {"1", "true", "yes"}
+    RAG_VECTOR_TIMEOUT_SECONDS: float = float(os.getenv("RAG_VECTOR_TIMEOUT_SECONDS", "3"))
 
     # Security & JWT
     JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "default_secret_key_change_in_production")

@@ -34,6 +34,9 @@ def knowledge_retrieval_needed(state: dict[str, Any]) -> bool:
 
 def retrieve_knowledge(query: str, limit: int = 3) -> list[dict[str, Any]]:
     """Retrieve policy passages from Qdrant; never query transactional data."""
+    if not settings.RAG_VECTOR_ENABLED:
+        return _fallback_local_policy_search(query, limit)
+
     try:
         from langchain_google_genai import GoogleGenerativeAIEmbeddings
         from qdrant_client import QdrantClient
@@ -48,7 +51,11 @@ def retrieve_knowledge(query: str, limit: int = 3) -> list[dict[str, Any]]:
             google_api_key=api_key,
         )
         vector = embeddings.embed_query(query)
-        client = QdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY or None)
+        client = QdrantClient(
+            url=settings.QDRANT_URL,
+            api_key=settings.QDRANT_API_KEY or None,
+            timeout=settings.RAG_VECTOR_TIMEOUT_SECONDS,
+        )
         if hasattr(client, "search"):
             hits = client.search(
                 collection_name=settings.QDRANT_COLLECTION,
