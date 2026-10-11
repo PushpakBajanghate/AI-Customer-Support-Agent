@@ -171,7 +171,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
           </div>
           <div className="sidebar-brand-text">
             <strong>Donna</strong>
-            <span>Enterprise Multi-Agent</span>
+            <span>Customer Support-Agent</span>
           </div>
           <button
             type="button"
@@ -306,10 +306,8 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
         {/* Top Header */}
         <header className="chat-workspace-header">
           <div className="header-left">
-            <h1>Autonomous Support Agent</h1>
-            <p className="header-sub">
-              Multi-Agent LangGraph • Grounded in PostgreSQL & Store Policies
-            </p>
+            <h1>Autonomous Customer Support Agent</h1>
+
           </div>
           <div className="header-right">
             {onToggleTheme && <ThemeToggle theme={theme} onToggle={onToggleTheme} />}
@@ -329,7 +327,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               </div>
-              <h2>How can SupportAI assist you, {customer.name?.split(' ')[0]}?</h2>
+              <h2>How can Donna assist you, {customer.name?.split(' ')[0]}?</h2>
               <p>
                 Ask about your active shipments, cancel an order, start a return, or inquire about company warranty policies.
               </p>
@@ -360,12 +358,12 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
                   >
                     {!isUser && (
                       <div className="assistant-avatar-badge">
-                        <span>AI</span>
+                        <span>D</span>
                       </div>
                     )}
                     <div className="message-content-wrapper">
                       <div className="message-meta-header">
-                        <strong>{isUser ? 'You' : 'SupportAI Agent'}</strong>
+                        <strong>{isUser ? 'You' : 'Donna'}</strong>
                         <time>{formatTime(message.timestamp)}</time>
                       </div>
 

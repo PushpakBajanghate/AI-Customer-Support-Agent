@@ -42,6 +42,7 @@ def _build_graph() -> any:
     graph.add_node("rag", rag_node)
     graph.add_node("supervisor", supervisor_node)
     graph.add_node("escalation", escalation_node)
+    graph.add_node("provider_error", lambda state: {**state, "final_response": None})
 
     # Define edges
     graph.set_entry_point("router")
@@ -53,14 +54,17 @@ def _build_graph() -> any:
         } else "conversational"
 
     def route_after_router(state):
+        if state.get("error"):
+            return "provider_error"
         if escalation_needed(state):
             return "escalation"
         return "rag" if knowledge_retrieval_needed(state) else route_to_agent(state)
 
     graph.add_conditional_edges(
         "router", route_after_router,
-        {"rag": "rag", "support": "support", "conversational": "conversational", "escalation": "escalation"},
+        {"rag": "rag", "support": "support", "conversational": "conversational", "escalation": "escalation", "provider_error": "provider_error"},
     )
+    graph.add_edge("provider_error", END)
     graph.add_edge("escalation", "supervisor")
     graph.add_conditional_edges(
         "rag", route_to_agent,

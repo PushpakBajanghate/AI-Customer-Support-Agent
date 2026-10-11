@@ -4,6 +4,7 @@ Connects to Google Gemini dynamically at runtime using credentials from .env.
 Ensures zero hardcoded responses, fake fallbacks, or mock scripts.
 """
 
+import os
 import time
 from fastapi import HTTPException, status
 from langchain_core.messages import SystemMessage, HumanMessage
@@ -38,6 +39,15 @@ def get_llm(model_override: str | None = None, timeout: int = 15):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="LLM configuration error: LLM_MODEL is not configured in .env."
         )
+
+    if settings.LLM_DIRECT_CONNECTION:
+        # Some managed/dev environments expose a dead localhost proxy. Keep
+        # provider access configurable while allowing the Google host to use a
+        # direct connection when explicitly enabled.
+        configured_hosts = [h.strip() for h in settings.LLM_NO_PROXY_HOSTS.split(",") if h.strip()]
+        for env_name in ("NO_PROXY", "no_proxy"):
+            existing = [h.strip() for h in os.getenv(env_name, "").split(",") if h.strip()]
+            os.environ[env_name] = ",".join(dict.fromkeys(existing + configured_hosts))
 
     return ChatGoogleGenerativeAI(
         model=model_name,

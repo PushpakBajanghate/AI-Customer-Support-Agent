@@ -130,6 +130,13 @@ def send_chat_message(
     # the live provider failed. The client can show a retry state instead.
     if final_state.get("error") and (final_state.get("confidence") or 0.0) <= 0.0:
         logger.error("Chat graph failed for customer_id=%d: %s", current_customer.id, final_state["error"])
+        provider_error = str(final_state["error"])
+        if "429" in provider_error or "RESOURCE_EXHAUSTED" in provider_error:
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="The AI provider quota is temporarily exhausted. Please retry later or configure a provider with available quota.",
+                headers={"Retry-After": "60"},
+            )
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail="The AI support provider is temporarily unavailable. Please retry shortly.",

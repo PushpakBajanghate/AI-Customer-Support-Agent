@@ -31,6 +31,8 @@ class Settings(BaseSettings):
     )
     LLM_MODEL: str = os.getenv("LLM_MODEL", "gemini-1.5-flash")
     LLM_FAST_MODEL: str = os.getenv("LLM_FAST_MODEL", "")
+    LLM_DIRECT_CONNECTION: bool = os.getenv("LLM_DIRECT_CONNECTION", "false").lower() in {"1", "true", "yes"}
+    LLM_NO_PROXY_HOSTS: str = os.getenv("LLM_NO_PROXY_HOSTS", "generativelanguage.googleapis.com,googleapis.com")
 
     # Database Settings
     DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/customer_support_db")
