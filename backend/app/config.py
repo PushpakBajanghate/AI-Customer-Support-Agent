@@ -54,7 +54,9 @@ class Settings(BaseSettings):
     CHAT_RATE_LIMIT_PER_MINUTE: int = int(os.getenv("CHAT_RATE_LIMIT_PER_MINUTE", 20))
 
     # Comma-separated browser origins allowed to call the API.
-    CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "http://localhost:3000")
+    # The deployed frontend is hosted separately from the API. Render sets this
+    # to '*' by default; deployments can still restrict it to a comma list.
+    CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "*")
 
     class Config:
         env_file = ".env"

@@ -50,11 +50,17 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS Middleware for Frontend Communication
+cors_origins = [origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()]
+allow_all_origins = "*" in cors_origins
+
+# The API uses Authorization headers rather than cookies, so wildcard CORS is
+# safe as the deployment default and prevents a missing frontend URL from
+# breaking the production login flow. A comma-separated allow-list remains
+# supported for locked-down deployments.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()],
-    allow_credentials=True,
+    allow_origins=["*"] if allow_all_origins else cors_origins,
+    allow_credentials=not allow_all_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )

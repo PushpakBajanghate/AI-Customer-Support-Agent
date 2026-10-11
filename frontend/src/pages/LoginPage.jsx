@@ -9,12 +9,19 @@ export default function LoginPage({ onAuthSuccess, theme, onToggleTheme }) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [demoLoadError, setDemoLoadError] = useState('');
 
-  useEffect(() => {
+  const loadDemoCustomers = () => {
+    setDemoLoadError('');
     fetchDemoCustomers()
       .then((customers) => setDemoCustomers(customers || []))
-      .catch((err) => console.warn('Could not prefetch demo customers:', err));
-  }, []);
+      .catch((err) => {
+        console.warn('Could not prefetch demo customers:', err);
+        setDemoLoadError(err.message || 'The customer service is unavailable.');
+      });
+  };
+
+  useEffect(loadDemoCustomers, []);
 
   const updateField = (field) => (event) => {
     setForm((current) => ({ ...current, [field]: event.target.value }));
@@ -129,7 +136,12 @@ export default function LoginPage({ onAuthSuccess, theme, onToggleTheme }) {
                 Click any profile to immediately explore live orders, tracking numbers, and returns:
               </p>
               <div className="demo-profiles-list">
-                {demoCustomers.length === 0 ? (
+                {demoLoadError ? (
+                  <div className="demo-loading">
+                    <div>{demoLoadError}</div>
+                    <button type="button" className="secondary-button" onClick={loadDemoCustomers}>Retry</button>
+                  </div>
+                ) : demoCustomers.length === 0 ? (
                   <div className="demo-loading">Loading customer profiles...</div>
                 ) : (
                   demoCustomers.map((cust) => (

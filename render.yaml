@@ -25,7 +25,7 @@ services:
       - key: LLM_API_KEY
         sync: false
       - key: CORS_ORIGINS
-        sync: false
+        value: "*"
       - key: RAG_VECTOR_ENABLED
         value: "false"
       - key: CHAT_RATE_LIMIT_PER_MINUTE

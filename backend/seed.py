@@ -36,9 +36,14 @@ from app.models import (
     SupportTicket,
 )
 
-# Resolve data directory path (located at project-root/data)
-ROOT_DIR = current_dir.parent
-DATA_DIR = ROOT_DIR / "data"
+# Resolve data directory path in both local development and Render monorepos.
+# SEED_DATA_DIR can be supplied if a platform checks out only the service root.
+configured_data_dir = os.getenv("SEED_DATA_DIR")
+DATA_DIR = Path(configured_data_dir) if configured_data_dir else current_dir.parent / "data"
+if not DATA_DIR.exists():
+    service_data_dir = current_dir / "data"
+    if service_data_dir.exists():
+        DATA_DIR = service_data_dir
 
 def parse_iso_datetime(dt_str: str) -> datetime:
     """Helper to convert ISO string to datetime object."""
