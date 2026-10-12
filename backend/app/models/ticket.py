@@ -7,7 +7,7 @@ class SupportTicket(Base):
     __tablename__ = "support_tickets"
 
     id = Column(Integer, primary_key=True, index=True)
-    customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False)
+    customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False, index=True)
     conversation_id = Column(String(36), ForeignKey("conversations.id"), nullable=True, index=True)
     issue = Column(String, nullable=True)
     summary = Column(Text, nullable=True)

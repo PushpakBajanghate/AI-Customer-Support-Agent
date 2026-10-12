@@ -608,6 +608,30 @@ The evaluation framework rigorously measures agent performance without fine-tuni
 
 ## Phase Changelog
 
+### Phase 13: Database Expansion & Production Data Enrichment (2026-10-12)
+- **Status:** Completed
+- **Changes Introduced:**
+  - Expanded relational database to production-scale synthetic dataset across all 10 schema models:
+    - `customers`: 13 → 125 records (unique fictional names, reserved email domains, preserved test accounts).
+    - `products`: 20 → 117 records across 10+ categories (Audio, Displays, Peripherals, Wearables, Apparel, Footwear, Home & Kitchen, Appliances, Personal Care, Sports, Stationery).
+    - `orders`: 41 → 550 records with realistic combinations of statuses (`delivered`, `shipped`, `processing`, `cancelled`) and payment states.
+    - `order_items`: 42 → 750 records with accurate line-item pricing and quantities.
+    - `shipments`: 18 → 260 shipments with unique carrier tracking numbers and logical delivery schedules.
+    - `returns`: 7 → 55 returns with varied realistic reasons and statuses (`requested`, `approved`, `completed`, `rejected`).
+    - `refunds`: 7 → 52 refunds linked to cancelled orders and completed returns (`completed`, `pending`, `failed`).
+    - `support_tickets`: 14 → 75 tickets spanning delivery delays, returns, warranty claims, and escalations.
+    - `conversations`: 31 → 75 customer conversation sessions.
+    - `conversation_messages`: 112 → 180 multi-turn conversation messages.
+  - Replaced destructive seeding with an idempotent, additive mechanism in `backend/seed.py`:
+    - Checks existing primary and unique keys before inserting to ensure zero data overwrites.
+    - Safe to run repeatedly with zero duplicate generation.
+    - Synchronizes PostgreSQL primary key sequences to `MAX(id)`.
+  - Added non-unique B-tree indexes via Alembic migration (`7a82b9c3d4e5_add_foreign_key_indexes.py`):
+    - `ix_orders_customer_id` on `orders(customer_id)`
+    - `ix_order_items_order_id` on `order_items(order_id)`
+    - `ix_support_tickets_customer_id` on `support_tickets(customer_id)`
+  - Verified 100% data integrity, zero orphan foreign keys, zero duplicate unique constraints, and passed all 30 backend test cases.
+
 ### Phase 12: Evaluation Framework (Multi-Dimensional Rigorous Benchmarking) (2026-10-09)
 - **Status:** Completed
 - **Changes Introduced:**

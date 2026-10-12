@@ -70,5 +70,554 @@
     "status": "open",
     "priority": "high",
     "created_at": "2026-10-07T12:00:00"
+  },
+  {
+    "id": 15,
+    "customer_id": 7,
+    "subject": "Return Approval Status",
+    "description": "Customer submitted return request for order #180 and is awaiting return courier pickup scheduling.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-09-29T00:00:00"
+  },
+  {
+    "id": 16,
+    "customer_id": 25,
+    "subject": "GST Invoice Request",
+    "description": "Customer needs B2B tax invoice with corporate GST number updated for business expense claim.",
+    "status": "closed",
+    "priority": "low",
+    "created_at": "2026-10-03T17:00:00"
+  },
+  {
+    "id": 17,
+    "customer_id": 28,
+    "subject": "Incorrect Item Received",
+    "description": "Customer received an incorrect product variant. Requesting exchange for correct SKU.",
+    "status": "in_progress",
+    "priority": "low",
+    "created_at": "2026-09-12T22:00:00"
+  },
+  {
+    "id": 18,
+    "customer_id": 100,
+    "subject": "Incorrect Item Received",
+    "description": "Customer received an incorrect product variant. Requesting exchange for correct SKU.",
+    "status": "resolved",
+    "priority": "low",
+    "created_at": "2026-10-04T10:00:00"
+  },
+  {
+    "id": 19,
+    "customer_id": 6,
+    "subject": "Missing Accessory in Box",
+    "description": "Product package arrived without USB-C charging cable and user manual.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-09-28T13:00:00"
+  },
+  {
+    "id": 20,
+    "customer_id": 19,
+    "subject": "GST Invoice Request",
+    "description": "Customer needs B2B tax invoice with corporate GST number updated for business expense claim.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-09-14T16:00:00"
+  },
+  {
+    "id": 21,
+    "customer_id": 43,
+    "subject": "Return Approval Status",
+    "description": "Customer submitted return request for order #215 and is awaiting return courier pickup scheduling.",
+    "status": "resolved",
+    "priority": "medium",
+    "created_at": "2026-10-08T02:00:00"
+  },
+  {
+    "id": 22,
+    "customer_id": 96,
+    "subject": "Damaged Item on Delivery",
+    "description": "Outer parcel was crushed upon delivery by courier. Customer has photo proof of broken unit.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-10-05T14:00:00"
+  },
+  {
+    "id": 23,
+    "customer_id": 108,
+    "subject": "Payment Gateway Debit Issue",
+    "description": "Account debited twice during UPI checkout attempt for order #224.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-10-06T13:00:00"
+  },
+  {
+    "id": 24,
+    "customer_id": 70,
+    "subject": "Payment Gateway Debit Issue",
+    "description": "Account debited twice during UPI checkout attempt for order #298.",
+    "status": "in_progress",
+    "priority": "high",
+    "created_at": "2026-09-02T10:00:00"
+  },
+  {
+    "id": 25,
+    "customer_id": 24,
+    "subject": "Payment Gateway Debit Issue",
+    "description": "Account debited twice during UPI checkout attempt for order #531.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-10-11T01:00:00"
+  },
+  {
+    "id": 26,
+    "customer_id": 28,
+    "subject": "Missing Accessory in Box",
+    "description": "Product package arrived without USB-C charging cable and user manual.",
+    "status": "closed",
+    "priority": "low",
+    "created_at": "2026-09-07T17:00:00"
+  },
+  {
+    "id": 27,
+    "customer_id": 65,
+    "subject": "Product Defect & Warranty",
+    "description": "Product reported sparking or not turning on after 2 weeks of use. Customer requests replacement under warranty.",
+    "status": "resolved",
+    "priority": "medium",
+    "created_at": "2026-08-27T23:00:00"
+  },
+  {
+    "id": 28,
+    "customer_id": 62,
+    "subject": "Address Modification Request",
+    "description": "Customer requested address change for processing order before dispatch.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-09-17T04:00:00"
+  },
+  {
+    "id": 29,
+    "customer_id": 67,
+    "subject": "Cancellation Request",
+    "description": "Customer requested cancellation of order #233 due to accidental double order.",
+    "status": "in_progress",
+    "priority": "high",
+    "created_at": "2026-09-21T14:00:00"
+  },
+  {
+    "id": 30,
+    "customer_id": 92,
+    "subject": "Return Approval Status",
+    "description": "Customer submitted return request for order #491 and is awaiting return courier pickup scheduling.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-09-23T00:00:00"
+  },
+  {
+    "id": 31,
+    "customer_id": 31,
+    "subject": "Return Approval Status",
+    "description": "Customer submitted return request for order #55 and is awaiting return courier pickup scheduling.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-09-11T22:00:00"
+  },
+  {
+    "id": 32,
+    "customer_id": 93,
+    "subject": "Extended Warranty Inquiry",
+    "description": "Customer asking how to register for manufacturer extended warranty on home appliance.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-09-14T11:00:00"
+  },
+  {
+    "id": 33,
+    "customer_id": 40,
+    "subject": "Address Modification Request",
+    "description": "Customer requested address change for processing order before dispatch.",
+    "status": "open",
+    "priority": "urgent",
+    "created_at": "2026-09-09T20:00:00"
+  },
+  {
+    "id": 34,
+    "customer_id": 56,
+    "subject": "GST Invoice Request",
+    "description": "Customer needs B2B tax invoice with corporate GST number updated for business expense claim.",
+    "status": "in_progress",
+    "priority": "high",
+    "created_at": "2026-10-04T13:00:00"
+  },
+  {
+    "id": 35,
+    "customer_id": 60,
+    "subject": "GST Invoice Request",
+    "description": "Customer needs B2B tax invoice with corporate GST number updated for business expense claim.",
+    "status": "closed",
+    "priority": "high",
+    "created_at": "2026-10-01T15:00:00"
+  },
+  {
+    "id": 36,
+    "customer_id": 40,
+    "subject": "Product Defect & Warranty",
+    "description": "Product reported sparking or not turning on after 2 weeks of use. Customer requests replacement under warranty.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-09-16T14:00:00"
+  },
+  {
+    "id": 37,
+    "customer_id": 4,
+    "subject": "GST Invoice Request",
+    "description": "Customer needs B2B tax invoice with corporate GST number updated for business expense claim.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-09-03T23:00:00"
+  },
+  {
+    "id": 38,
+    "customer_id": 61,
+    "subject": "Extended Warranty Inquiry",
+    "description": "Customer asking how to register for manufacturer extended warranty on home appliance.",
+    "status": "in_progress",
+    "priority": "high",
+    "created_at": "2026-09-16T02:00:00"
+  },
+  {
+    "id": 39,
+    "customer_id": 14,
+    "subject": "Damaged Item on Delivery",
+    "description": "Outer parcel was crushed upon delivery by courier. Customer has photo proof of broken unit.",
+    "status": "resolved",
+    "priority": "low",
+    "created_at": "2026-09-25T02:00:00"
+  },
+  {
+    "id": 40,
+    "customer_id": 45,
+    "subject": "Product Defect & Warranty",
+    "description": "Product reported sparking or not turning on after 2 weeks of use. Customer requests replacement under warranty.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-10-07T02:00:00"
+  },
+  {
+    "id": 41,
+    "customer_id": 10,
+    "subject": "Urgent Refund Query",
+    "description": "Order #28 was cancelled, customer asking for bank transaction UTR reference as amount not credited.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-09-21T22:00:00"
+  },
+  {
+    "id": 42,
+    "customer_id": 39,
+    "subject": "Return Approval Status",
+    "description": "Customer submitted return request for order #112 and is awaiting return courier pickup scheduling.",
+    "status": "resolved",
+    "priority": "high",
+    "created_at": "2026-09-29T08:00:00"
+  },
+  {
+    "id": 43,
+    "customer_id": 45,
+    "subject": "Address Modification Request",
+    "description": "Customer requested address change for processing order before dispatch.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-09-07T00:00:00"
+  },
+  {
+    "id": 44,
+    "customer_id": 7,
+    "subject": "Order Tracking Delay",
+    "description": "Customer inquired regarding delayed shipment for order #19 via FedEx. Tracking shows in transit for over 4 days.",
+    "status": "resolved",
+    "priority": "low",
+    "created_at": "2026-09-13T07:00:00"
+  },
+  {
+    "id": 45,
+    "customer_id": 61,
+    "subject": "Address Modification Request",
+    "description": "Customer requested address change for processing order before dispatch.",
+    "status": "open",
+    "priority": "low",
+    "created_at": "2026-08-30T08:00:00"
+  },
+  {
+    "id": 46,
+    "customer_id": 40,
+    "subject": "Address Modification Request",
+    "description": "Customer requested address change for processing order before dispatch.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-09-10T14:00:00"
+  },
+  {
+    "id": 47,
+    "customer_id": 71,
+    "subject": "Extended Warranty Inquiry",
+    "description": "Customer asking how to register for manufacturer extended warranty on home appliance.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-09-11T00:00:00"
+  },
+  {
+    "id": 48,
+    "customer_id": 58,
+    "subject": "Cancellation Request",
+    "description": "Customer requested cancellation of order #174 due to accidental double order.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-09-16T22:00:00"
+  },
+  {
+    "id": 49,
+    "customer_id": 9,
+    "subject": "Damaged Item on Delivery",
+    "description": "Outer parcel was crushed upon delivery by courier. Customer has photo proof of broken unit.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-10-03T06:00:00"
+  },
+  {
+    "id": 50,
+    "customer_id": 123,
+    "subject": "Missing Accessory in Box",
+    "description": "Product package arrived without USB-C charging cable and user manual.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-09-20T05:00:00"
+  },
+  {
+    "id": 51,
+    "customer_id": 21,
+    "subject": "GST Invoice Request",
+    "description": "Customer needs B2B tax invoice with corporate GST number updated for business expense claim.",
+    "status": "closed",
+    "priority": "medium",
+    "created_at": "2026-10-07T20:00:00"
+  },
+  {
+    "id": 52,
+    "customer_id": 29,
+    "subject": "Product Defect & Warranty",
+    "description": "Product reported sparking or not turning on after 2 weeks of use. Customer requests replacement under warranty.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-08-28T15:00:00"
+  },
+  {
+    "id": 53,
+    "customer_id": 114,
+    "subject": "Return Approval Status",
+    "description": "Customer submitted return request for order #326 and is awaiting return courier pickup scheduling.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-10-09T03:00:00"
+  },
+  {
+    "id": 54,
+    "customer_id": 24,
+    "subject": "Payment Gateway Debit Issue",
+    "description": "Account debited twice during UPI checkout attempt for order #446.",
+    "status": "closed",
+    "priority": "medium",
+    "created_at": "2026-08-28T02:00:00"
+  },
+  {
+    "id": 55,
+    "customer_id": 9,
+    "subject": "Incorrect Item Received",
+    "description": "Customer received an incorrect product variant. Requesting exchange for correct SKU.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-10-05T02:00:00"
+  },
+  {
+    "id": 56,
+    "customer_id": 92,
+    "subject": "Missing Accessory in Box",
+    "description": "Product package arrived without USB-C charging cable and user manual.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-08-30T07:00:00"
+  },
+  {
+    "id": 57,
+    "customer_id": 60,
+    "subject": "Payment Gateway Debit Issue",
+    "description": "Account debited twice during UPI checkout attempt for order #184.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-09-09T21:00:00"
+  },
+  {
+    "id": 58,
+    "customer_id": 48,
+    "subject": "Cancellation Request",
+    "description": "Customer requested cancellation of order #91 due to accidental double order.",
+    "status": "open",
+    "priority": "low",
+    "created_at": "2026-09-05T05:00:00"
+  },
+  {
+    "id": 59,
+    "customer_id": 37,
+    "subject": "Payment Gateway Debit Issue",
+    "description": "Account debited twice during UPI checkout attempt for order #245.",
+    "status": "resolved",
+    "priority": "medium",
+    "created_at": "2026-09-04T07:00:00"
+  },
+  {
+    "id": 60,
+    "customer_id": 61,
+    "subject": "Return Approval Status",
+    "description": "Customer submitted return request for order #293 and is awaiting return courier pickup scheduling.",
+    "status": "resolved",
+    "priority": "medium",
+    "created_at": "2026-09-28T06:00:00"
+  },
+  {
+    "id": 61,
+    "customer_id": 110,
+    "subject": "Extended Warranty Inquiry",
+    "description": "Customer asking how to register for manufacturer extended warranty on home appliance.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-08-30T00:00:00"
+  },
+  {
+    "id": 62,
+    "customer_id": 15,
+    "subject": "Product Defect & Warranty",
+    "description": "Product reported sparking or not turning on after 2 weeks of use. Customer requests replacement under warranty.",
+    "status": "in_progress",
+    "priority": "medium",
+    "created_at": "2026-09-11T20:00:00"
+  },
+  {
+    "id": 63,
+    "customer_id": 70,
+    "subject": "Order Tracking Delay",
+    "description": "Customer inquired regarding delayed shipment for order #198 via DHL Express. Tracking shows in transit for over 4 days.",
+    "status": "resolved",
+    "priority": "medium",
+    "created_at": "2026-09-27T20:00:00"
+  },
+  {
+    "id": 64,
+    "customer_id": 113,
+    "subject": "Damaged Item on Delivery",
+    "description": "Outer parcel was crushed upon delivery by courier. Customer has photo proof of broken unit.",
+    "status": "resolved",
+    "priority": "high",
+    "created_at": "2026-09-13T23:00:00"
+  },
+  {
+    "id": 65,
+    "customer_id": 64,
+    "subject": "Cancellation Request",
+    "description": "Customer requested cancellation of order #75 due to accidental double order.",
+    "status": "in_progress",
+    "priority": "low",
+    "created_at": "2026-10-01T20:00:00"
+  },
+  {
+    "id": 66,
+    "customer_id": 23,
+    "subject": "GST Invoice Request",
+    "description": "Customer needs B2B tax invoice with corporate GST number updated for business expense claim.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-10-06T21:00:00"
+  },
+  {
+    "id": 67,
+    "customer_id": 104,
+    "subject": "GST Invoice Request",
+    "description": "Customer needs B2B tax invoice with corporate GST number updated for business expense claim.",
+    "status": "resolved",
+    "priority": "medium",
+    "created_at": "2026-09-24T20:00:00"
+  },
+  {
+    "id": 68,
+    "customer_id": 81,
+    "subject": "GST Invoice Request",
+    "description": "Customer needs B2B tax invoice with corporate GST number updated for business expense claim.",
+    "status": "open",
+    "priority": "low",
+    "created_at": "2026-09-26T08:00:00"
+  },
+  {
+    "id": 69,
+    "customer_id": 118,
+    "subject": "Address Modification Request",
+    "description": "Customer requested address change for processing order before dispatch.",
+    "status": "closed",
+    "priority": "medium",
+    "created_at": "2026-10-09T11:00:00"
+  },
+  {
+    "id": 70,
+    "customer_id": 54,
+    "subject": "Damaged Item on Delivery",
+    "description": "Outer parcel was crushed upon delivery by courier. Customer has photo proof of broken unit.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-09-23T20:00:00"
+  },
+  {
+    "id": 71,
+    "customer_id": 93,
+    "subject": "Extended Warranty Inquiry",
+    "description": "Customer asking how to register for manufacturer extended warranty on home appliance.",
+    "status": "closed",
+    "priority": "medium",
+    "created_at": "2026-10-10T16:00:00"
+  },
+  {
+    "id": 72,
+    "customer_id": 35,
+    "subject": "Incorrect Item Received",
+    "description": "Customer received an incorrect product variant. Requesting exchange for correct SKU.",
+    "status": "open",
+    "priority": "low",
+    "created_at": "2026-09-15T06:00:00"
+  },
+  {
+    "id": 73,
+    "customer_id": 87,
+    "subject": "GST Invoice Request",
+    "description": "Customer needs B2B tax invoice with corporate GST number updated for business expense claim.",
+    "status": "open",
+    "priority": "medium",
+    "created_at": "2026-09-09T14:00:00"
+  },
+  {
+    "id": 74,
+    "customer_id": 41,
+    "subject": "Extended Warranty Inquiry",
+    "description": "Customer asking how to register for manufacturer extended warranty on home appliance.",
+    "status": "closed",
+    "priority": "urgent",
+    "created_at": "2026-09-25T02:00:00"
+  },
+  {
+    "id": 75,
+    "customer_id": 87,
+    "subject": "Product Defect & Warranty",
+    "description": "Product reported sparking or not turning on after 2 weeks of use. Customer requests replacement under warranty.",
+    "status": "open",
+    "priority": "high",
+    "created_at": "2026-09-19T23:00:00"
   }
 ]

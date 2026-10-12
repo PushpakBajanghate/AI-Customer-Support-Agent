@@ -54,5 +54,389 @@
     "reason": "Key switches too loud for home office environment",
     "status": "requested",
     "created_at": "2026-09-29T15:20:00"
+  },
+  {
+    "id": 8,
+    "order_id": 44,
+    "order_item_id": 45,
+    "reason": "Packaging arrived torn and cosmetic scratches on ApexFit Smart Fitness Tracker Band",
+    "status": "rejected",
+    "created_at": "2026-08-27T21:41:00"
+  },
+  {
+    "id": 9,
+    "order_id": 45,
+    "order_item_id": 47,
+    "reason": "Slight color difference compared to pictures for CoolMaster External Silent Vacuum Laptop Exhaust Cooler",
+    "status": "rejected",
+    "created_at": "2026-05-08T09:21:00"
+  },
+  {
+    "id": 10,
+    "order_id": 49,
+    "order_item_id": 51,
+    "reason": "Ordered by mistake, product is sealed and unused",
+    "status": "rejected",
+    "created_at": "2026-04-20T02:17:00"
+  },
+  {
+    "id": 11,
+    "order_id": 50,
+    "order_item_id": 53,
+    "reason": "Defective unit: does not power on as expected",
+    "status": "rejected",
+    "created_at": "2026-08-21T14:10:00"
+  },
+  {
+    "id": 12,
+    "order_id": 52,
+    "order_item_id": 55,
+    "reason": "Size does not fit comfortably, requesting replacement",
+    "status": "rejected",
+    "created_at": "2026-07-06T03:13:00"
+  },
+  {
+    "id": 13,
+    "order_id": 53,
+    "order_item_id": 56,
+    "reason": "Fabric quality feels rough, seeking alternative model",
+    "status": "rejected",
+    "created_at": "2026-07-25T05:34:00"
+  },
+  {
+    "id": 14,
+    "order_id": 56,
+    "order_item_id": 60,
+    "reason": "Size does not fit comfortably, requesting replacement",
+    "status": "rejected",
+    "created_at": "2026-04-26T14:19:00"
+  },
+  {
+    "id": 15,
+    "order_id": 57,
+    "order_item_id": 61,
+    "reason": "Slight color difference compared to pictures for ErgoDesk Solid Oak Dual Tier Monitor Stand with Organizer",
+    "status": "rejected",
+    "created_at": "2026-08-11T07:11:00"
+  },
+  {
+    "id": 16,
+    "order_id": 59,
+    "order_item_id": 63,
+    "reason": "Product feature differs from manual specifications",
+    "status": "rejected",
+    "created_at": "2026-05-13T15:32:00"
+  },
+  {
+    "id": 17,
+    "order_id": 60,
+    "order_item_id": 64,
+    "reason": "Ordered by mistake, product is sealed and unused",
+    "status": "rejected",
+    "created_at": "2026-06-20T23:03:00"
+  },
+  {
+    "id": 18,
+    "order_id": 61,
+    "order_item_id": 65,
+    "reason": "Fabric quality feels rough, seeking alternative model",
+    "status": "rejected",
+    "created_at": "2026-06-23T20:10:00"
+  },
+  {
+    "id": 19,
+    "order_id": 62,
+    "order_item_id": 67,
+    "reason": "Defective unit: does not power on as expected",
+    "status": "rejected",
+    "created_at": "2026-09-16T09:33:00"
+  },
+  {
+    "id": 20,
+    "order_id": 63,
+    "order_item_id": 68,
+    "reason": "Ordered by mistake, product is sealed and unused",
+    "status": "rejected",
+    "created_at": "2026-09-25T00:25:00"
+  },
+  {
+    "id": 21,
+    "order_id": 66,
+    "order_item_id": 71,
+    "reason": "Packaging arrived torn and cosmetic scratches on Clarity 1080p Full HD Webcam with Stereo Mic",
+    "status": "rejected",
+    "created_at": "2026-08-25T17:24:00"
+  },
+  {
+    "id": 22,
+    "order_id": 67,
+    "order_item_id": 72,
+    "reason": "Fabric quality feels rough, seeking alternative model",
+    "status": "rejected",
+    "created_at": "2026-07-20T03:22:00"
+  },
+  {
+    "id": 23,
+    "order_id": 68,
+    "order_item_id": 73,
+    "reason": "Slight color difference compared to pictures for UltraView 27-inch QHD Fast IPS 180Hz Esports Monitor",
+    "status": "rejected",
+    "created_at": "2026-05-30T17:38:00"
+  },
+  {
+    "id": 24,
+    "order_id": 70,
+    "order_item_id": 75,
+    "reason": "Fabric quality feels rough, seeking alternative model",
+    "status": "rejected",
+    "created_at": "2026-05-25T00:46:00"
+  },
+  {
+    "id": 25,
+    "order_id": 71,
+    "order_item_id": 76,
+    "reason": "Defective unit: does not power on as expected",
+    "status": "rejected",
+    "created_at": "2026-06-22T05:35:00"
+  },
+  {
+    "id": 26,
+    "order_id": 75,
+    "order_item_id": 83,
+    "reason": "Defective unit: does not power on as expected",
+    "status": "rejected",
+    "created_at": "2026-06-21T06:41:00"
+  },
+  {
+    "id": 27,
+    "order_id": 76,
+    "order_item_id": 85,
+    "reason": "Fabric quality feels rough, seeking alternative model",
+    "status": "rejected",
+    "created_at": "2026-07-02T08:23:00"
+  },
+  {
+    "id": 28,
+    "order_id": 77,
+    "order_item_id": 86,
+    "reason": "Product feature differs from manual specifications",
+    "status": "rejected",
+    "created_at": "2026-09-19T10:19:00"
+  },
+  {
+    "id": 29,
+    "order_id": 78,
+    "order_item_id": 87,
+    "reason": "Packaging arrived torn and cosmetic scratches on HydroShield Thermal Water Bottle 1L",
+    "status": "rejected",
+    "created_at": "2026-05-02T01:39:00"
+  },
+  {
+    "id": 30,
+    "order_id": 81,
+    "order_item_id": 90,
+    "reason": "Product feature differs from manual specifications",
+    "status": "rejected",
+    "created_at": "2026-08-13T15:51:00"
+  },
+  {
+    "id": 31,
+    "order_id": 84,
+    "order_item_id": 94,
+    "reason": "Defective unit: does not power on as expected",
+    "status": "rejected",
+    "created_at": "2026-07-07T02:27:00"
+  },
+  {
+    "id": 32,
+    "order_id": 86,
+    "order_item_id": 96,
+    "reason": "Audio cutting out periodically during bluetooth playback",
+    "status": "completed",
+    "created_at": "2026-10-03T04:57:00"
+  },
+  {
+    "id": 33,
+    "order_id": 88,
+    "order_item_id": 98,
+    "reason": "Fabric quality feels rough, seeking alternative model",
+    "status": "rejected",
+    "created_at": "2026-05-10T09:33:00"
+  },
+  {
+    "id": 34,
+    "order_id": 89,
+    "order_item_id": 99,
+    "reason": "Defective unit: does not power on as expected",
+    "status": "rejected",
+    "created_at": "2026-05-04T06:24:00"
+  },
+  {
+    "id": 35,
+    "order_id": 93,
+    "order_item_id": 103,
+    "reason": "Slight color difference compared to pictures for ErgoGlide Vertical Ergonomic Wireless Mouse 4000 DPI",
+    "status": "rejected",
+    "created_at": "2026-09-29T15:04:00"
+  },
+  {
+    "id": 36,
+    "order_id": 94,
+    "order_item_id": 104,
+    "reason": "Ordered by mistake, product is sealed and unused",
+    "status": "rejected",
+    "created_at": "2026-07-06T10:04:00"
+  },
+  {
+    "id": 37,
+    "order_id": 97,
+    "order_item_id": 107,
+    "reason": "Slight color difference compared to pictures for Titanium Edge Stainless Steel Chef Knife 8-inch",
+    "status": "rejected",
+    "created_at": "2026-06-02T22:50:00"
+  },
+  {
+    "id": 38,
+    "order_id": 100,
+    "order_item_id": 111,
+    "reason": "Defective unit: does not power on as expected",
+    "status": "rejected",
+    "created_at": "2026-05-09T16:16:00"
+  },
+  {
+    "id": 39,
+    "order_id": 102,
+    "order_item_id": 115,
+    "reason": "Fabric quality feels rough, seeking alternative model",
+    "status": "rejected",
+    "created_at": "2026-07-12T06:24:00"
+  },
+  {
+    "id": 40,
+    "order_id": 103,
+    "order_item_id": 116,
+    "reason": "Slight color difference compared to pictures for KeyMaster Pro Low-Profile Ultra-Slim Bluetooth Keyboard",
+    "status": "rejected",
+    "created_at": "2026-06-26T07:56:00"
+  },
+  {
+    "id": 41,
+    "order_id": 104,
+    "order_item_id": 117,
+    "reason": "Ordered by mistake, product is sealed and unused",
+    "status": "rejected",
+    "created_at": "2026-07-27T20:50:00"
+  },
+  {
+    "id": 42,
+    "order_id": 105,
+    "order_item_id": 118,
+    "reason": "Slight color difference compared to pictures for Strata Pro Carbon Plate Marathon Racing Shoes",
+    "status": "rejected",
+    "created_at": "2026-06-06T01:50:00"
+  },
+  {
+    "id": 43,
+    "order_id": 106,
+    "order_item_id": 119,
+    "reason": "Fabric quality feels rough, seeking alternative model",
+    "status": "rejected",
+    "created_at": "2026-08-15T23:34:00"
+  },
+  {
+    "id": 44,
+    "order_id": 107,
+    "order_item_id": 120,
+    "reason": "Defective unit: does not power on as expected",
+    "status": "rejected",
+    "created_at": "2026-06-20T07:30:00"
+  },
+  {
+    "id": 45,
+    "order_id": 109,
+    "order_item_id": 122,
+    "reason": "Size does not fit comfortably, requesting replacement",
+    "status": "rejected",
+    "created_at": "2026-07-24T16:12:00"
+  },
+  {
+    "id": 46,
+    "order_id": 112,
+    "order_item_id": 125,
+    "reason": "Slight color difference compared to pictures for HydroShield Thermal Water Bottle 1L",
+    "status": "rejected",
+    "created_at": "2026-05-01T20:21:00"
+  },
+  {
+    "id": 47,
+    "order_id": 113,
+    "order_item_id": 126,
+    "reason": "Ordered by mistake, product is sealed and unused",
+    "status": "rejected",
+    "created_at": "2026-07-19T07:27:00"
+  },
+  {
+    "id": 48,
+    "order_id": 114,
+    "order_item_id": 127,
+    "reason": "Size does not fit comfortably, requesting replacement",
+    "status": "rejected",
+    "created_at": "2026-05-31T09:29:00"
+  },
+  {
+    "id": 49,
+    "order_id": 115,
+    "order_item_id": 129,
+    "reason": "Product feature differs from manual specifications",
+    "status": "rejected",
+    "created_at": "2026-08-27T07:20:00"
+  },
+  {
+    "id": 50,
+    "order_id": 116,
+    "order_item_id": 131,
+    "reason": "Product feature differs from manual specifications",
+    "status": "rejected",
+    "created_at": "2026-08-19T06:28:00"
+  },
+  {
+    "id": 51,
+    "order_id": 118,
+    "order_item_id": 134,
+    "reason": "Defective unit: does not power on as expected",
+    "status": "rejected",
+    "created_at": "2026-08-10T17:25:00"
+  },
+  {
+    "id": 52,
+    "order_id": 119,
+    "order_item_id": 135,
+    "reason": "Ordered by mistake, product is sealed and unused",
+    "status": "rejected",
+    "created_at": "2026-07-03T10:11:00"
+  },
+  {
+    "id": 53,
+    "order_id": 121,
+    "order_item_id": 138,
+    "reason": "Size does not fit comfortably, requesting replacement",
+    "status": "rejected",
+    "created_at": "2026-07-18T00:30:00"
+  },
+  {
+    "id": 54,
+    "order_id": 124,
+    "order_item_id": 143,
+    "reason": "Packaging arrived torn and cosmetic scratches on VisionTech Dual Monitor Heavy Duty Gas Spring Desk Arm",
+    "status": "rejected",
+    "created_at": "2026-06-04T18:06:00"
+  },
+  {
+    "id": 55,
+    "order_id": 125,
+    "order_item_id": 144,
+    "reason": "Packaging arrived torn and cosmetic scratches on SoundBar Max 240W Dolby Atmos with Wireless Subwoofer",
+    "status": "rejected",
+    "created_at": "2026-07-28T04:17:00"
   }
 ]

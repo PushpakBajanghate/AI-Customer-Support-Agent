@@ -1,0 +1,478 @@
+[
+  {
+    "id": 116,
+    "conversation_id": "df61ab41-1836-4310-8e70-7b08c56092c5",
+    "role": "user",
+    "content": "Can I return the headphones I bought last week?",
+    "timestamp": "2026-09-29T10:00:00"
+  },
+  {
+    "id": 117,
+    "conversation_id": "df61ab41-1836-4310-8e70-7b08c56092c5",
+    "role": "assistant",
+    "content": "Yes, SonicPulse wireless headphones have a 14-day return window. Since your order was delivered 4 days ago, it is eligible for return.",
+    "timestamp": "2026-09-29T10:01:00"
+  },
+  {
+    "id": 118,
+    "conversation_id": "185c3879-ddad-49d8-86b5-70f99203515f",
+    "role": "user",
+    "content": "When will my refund be processed for the cancelled order?",
+    "timestamp": "2026-10-08T12:00:00"
+  },
+  {
+    "id": 119,
+    "conversation_id": "185c3879-ddad-49d8-86b5-70f99203515f",
+    "role": "assistant",
+    "content": "Refunds for cancelled orders typically process within 3 to 5 business days to your original payment method.",
+    "timestamp": "2026-10-08T12:01:00"
+  },
+  {
+    "id": 120,
+    "conversation_id": "dde4e171-6dfb-4f81-9c2f-1db28d3bb3ea",
+    "role": "user",
+    "content": "Hello, can you help me check the status of my order?",
+    "timestamp": "2026-09-28T09:00:00"
+  },
+  {
+    "id": 121,
+    "conversation_id": "dde4e171-6dfb-4f81-9c2f-1db28d3bb3ea",
+    "role": "assistant",
+    "content": "Hello! I would be glad to help you track your order. Let me retrieve your recent orders and shipment details.",
+    "timestamp": "2026-09-28T09:01:00"
+  },
+  {
+    "id": 122,
+    "conversation_id": "9edf7af9-a554-490d-8525-bd9153d0eac7",
+    "role": "user",
+    "content": "Hello, can you help me check the status of my order?",
+    "timestamp": "2026-09-24T06:00:00"
+  },
+  {
+    "id": 123,
+    "conversation_id": "9edf7af9-a554-490d-8525-bd9153d0eac7",
+    "role": "assistant",
+    "content": "Hello! I would be glad to help you track your order. Let me retrieve your recent orders and shipment details.",
+    "timestamp": "2026-09-24T06:01:00"
+  },
+  {
+    "id": 124,
+    "conversation_id": "c6245709-a1c4-4ea6-81b3-a382910334ad",
+    "role": "user",
+    "content": "I need to speak to a human customer representative please.",
+    "timestamp": "2026-09-24T04:00:00"
+  },
+  {
+    "id": 125,
+    "conversation_id": "c6245709-a1c4-4ea6-81b3-a382910334ad",
+    "role": "assistant",
+    "content": "I understand. I am escalating your query and creating an urgent support ticket for a customer support representative.",
+    "timestamp": "2026-09-24T04:01:00"
+  },
+  {
+    "id": 126,
+    "conversation_id": "e46abc70-d90c-4aef-807c-606fcf24d1dc",
+    "role": "user",
+    "content": "My delivered parcel has a missing cable inside the box.",
+    "timestamp": "2026-10-03T13:00:00"
+  },
+  {
+    "id": 127,
+    "conversation_id": "e46abc70-d90c-4aef-807c-606fcf24d1dc",
+    "role": "assistant",
+    "content": "I apologize for the missing accessory. I have logged a support ticket for our dispatch team to send a replacement cable.",
+    "timestamp": "2026-10-03T13:01:00"
+  },
+  {
+    "id": 128,
+    "conversation_id": "330f721f-3051-411d-ba60-536b6f3bf739",
+    "role": "user",
+    "content": "I need to speak to a human customer representative please.",
+    "timestamp": "2026-09-30T08:00:00"
+  },
+  {
+    "id": 129,
+    "conversation_id": "330f721f-3051-411d-ba60-536b6f3bf739",
+    "role": "assistant",
+    "content": "I understand. I am escalating your query and creating an urgent support ticket for a customer support representative.",
+    "timestamp": "2026-09-30T08:01:00"
+  },
+  {
+    "id": 130,
+    "conversation_id": "5075052e-2dbd-4254-8556-b674ac077e5b",
+    "role": "user",
+    "content": "I need to speak to a human customer representative please.",
+    "timestamp": "2026-09-22T16:00:00"
+  },
+  {
+    "id": 131,
+    "conversation_id": "5075052e-2dbd-4254-8556-b674ac077e5b",
+    "role": "assistant",
+    "content": "I understand. I am escalating your query and creating an urgent support ticket for a customer support representative.",
+    "timestamp": "2026-09-22T16:01:00"
+  },
+  {
+    "id": 132,
+    "conversation_id": "80020712-1778-4f4e-a294-9e030eef58a1",
+    "role": "user",
+    "content": "Does the 27-inch 4K monitor come with a manufacturer warranty?",
+    "timestamp": "2026-10-10T10:00:00"
+  },
+  {
+    "id": 133,
+    "conversation_id": "80020712-1778-4f4e-a294-9e030eef58a1",
+    "role": "assistant",
+    "content": "Yes, the UltraView 27-inch 4K monitor includes a comprehensive 730-day (2-year) manufacturer warranty.",
+    "timestamp": "2026-10-10T10:01:00"
+  },
+  {
+    "id": 134,
+    "conversation_id": "5afe6c83-0faa-431b-8b39-1b81e3daea1a",
+    "role": "user",
+    "content": "I need to speak to a human customer representative please.",
+    "timestamp": "2026-10-02T06:00:00"
+  },
+  {
+    "id": 135,
+    "conversation_id": "5afe6c83-0faa-431b-8b39-1b81e3daea1a",
+    "role": "assistant",
+    "content": "I understand. I am escalating your query and creating an urgent support ticket for a customer support representative.",
+    "timestamp": "2026-10-02T06:01:00"
+  },
+  {
+    "id": 136,
+    "conversation_id": "10dce432-e9b3-41c0-9f7d-b834ca4a13a7",
+    "role": "user",
+    "content": "My delivered parcel has a missing cable inside the box.",
+    "timestamp": "2026-09-24T10:00:00"
+  },
+  {
+    "id": 137,
+    "conversation_id": "10dce432-e9b3-41c0-9f7d-b834ca4a13a7",
+    "role": "assistant",
+    "content": "I apologize for the missing accessory. I have logged a support ticket for our dispatch team to send a replacement cable.",
+    "timestamp": "2026-09-24T10:01:00"
+  },
+  {
+    "id": 138,
+    "conversation_id": "bc236592-dca1-47b8-a160-ad5bd6984e7f",
+    "role": "user",
+    "content": "When will my refund be processed for the cancelled order?",
+    "timestamp": "2026-09-12T05:00:00"
+  },
+  {
+    "id": 139,
+    "conversation_id": "bc236592-dca1-47b8-a160-ad5bd6984e7f",
+    "role": "assistant",
+    "content": "Refunds for cancelled orders typically process within 3 to 5 business days to your original payment method.",
+    "timestamp": "2026-09-12T05:01:00"
+  },
+  {
+    "id": 140,
+    "conversation_id": "2343e840-2d53-4b1e-952c-8f0225704488",
+    "role": "user",
+    "content": "Can I return the headphones I bought last week?",
+    "timestamp": "2026-09-12T10:00:00"
+  },
+  {
+    "id": 141,
+    "conversation_id": "2343e840-2d53-4b1e-952c-8f0225704488",
+    "role": "assistant",
+    "content": "Yes, SonicPulse wireless headphones have a 14-day return window. Since your order was delivered 4 days ago, it is eligible for return.",
+    "timestamp": "2026-09-12T10:01:00"
+  },
+  {
+    "id": 142,
+    "conversation_id": "60633b1d-9ef4-4794-94dc-45f4dbe8d64a",
+    "role": "user",
+    "content": "I need to speak to a human customer representative please.",
+    "timestamp": "2026-09-13T12:00:00"
+  },
+  {
+    "id": 143,
+    "conversation_id": "60633b1d-9ef4-4794-94dc-45f4dbe8d64a",
+    "role": "assistant",
+    "content": "I understand. I am escalating your query and creating an urgent support ticket for a customer support representative.",
+    "timestamp": "2026-09-13T12:01:00"
+  },
+  {
+    "id": 144,
+    "conversation_id": "db65f4c7-2d1a-4d73-ba9d-c0ae2a2652aa",
+    "role": "user",
+    "content": "Hello, can you help me check the status of my order?",
+    "timestamp": "2026-09-13T04:00:00"
+  },
+  {
+    "id": 145,
+    "conversation_id": "db65f4c7-2d1a-4d73-ba9d-c0ae2a2652aa",
+    "role": "assistant",
+    "content": "Hello! I would be glad to help you track your order. Let me retrieve your recent orders and shipment details.",
+    "timestamp": "2026-09-13T04:01:00"
+  },
+  {
+    "id": 146,
+    "conversation_id": "1bcd8cd8-be5a-4df2-b084-f03139a05503",
+    "role": "user",
+    "content": "My delivered parcel has a missing cable inside the box.",
+    "timestamp": "2026-09-14T15:00:00"
+  },
+  {
+    "id": 147,
+    "conversation_id": "1bcd8cd8-be5a-4df2-b084-f03139a05503",
+    "role": "assistant",
+    "content": "I apologize for the missing accessory. I have logged a support ticket for our dispatch team to send a replacement cable.",
+    "timestamp": "2026-09-14T15:01:00"
+  },
+  {
+    "id": 148,
+    "conversation_id": "e9592c84-4255-476e-879c-ee6e5327d82d",
+    "role": "user",
+    "content": "I need to speak to a human customer representative please.",
+    "timestamp": "2026-09-18T04:00:00"
+  },
+  {
+    "id": 149,
+    "conversation_id": "e9592c84-4255-476e-879c-ee6e5327d82d",
+    "role": "assistant",
+    "content": "I understand. I am escalating your query and creating an urgent support ticket for a customer support representative.",
+    "timestamp": "2026-09-18T04:01:00"
+  },
+  {
+    "id": 150,
+    "conversation_id": "3f25fba6-d7da-4cf7-98eb-3a824dbde0e0",
+    "role": "user",
+    "content": "I need to speak to a human customer representative please.",
+    "timestamp": "2026-09-13T14:00:00"
+  },
+  {
+    "id": 151,
+    "conversation_id": "3f25fba6-d7da-4cf7-98eb-3a824dbde0e0",
+    "role": "assistant",
+    "content": "I understand. I am escalating your query and creating an urgent support ticket for a customer support representative.",
+    "timestamp": "2026-09-13T14:01:00"
+  },
+  {
+    "id": 152,
+    "conversation_id": "3cc990db-2d7f-41cd-a8cc-5fdcd4b9a9c8",
+    "role": "user",
+    "content": "My delivered parcel has a missing cable inside the box.",
+    "timestamp": "2026-09-25T15:00:00"
+  },
+  {
+    "id": 153,
+    "conversation_id": "3cc990db-2d7f-41cd-a8cc-5fdcd4b9a9c8",
+    "role": "assistant",
+    "content": "I apologize for the missing accessory. I have logged a support ticket for our dispatch team to send a replacement cable.",
+    "timestamp": "2026-09-25T15:01:00"
+  },
+  {
+    "id": 154,
+    "conversation_id": "639d0b33-65d3-422a-8c1e-a459beea2571",
+    "role": "user",
+    "content": "When will my refund be processed for the cancelled order?",
+    "timestamp": "2026-09-18T00:00:00"
+  },
+  {
+    "id": 155,
+    "conversation_id": "639d0b33-65d3-422a-8c1e-a459beea2571",
+    "role": "assistant",
+    "content": "Refunds for cancelled orders typically process within 3 to 5 business days to your original payment method.",
+    "timestamp": "2026-09-18T00:01:00"
+  },
+  {
+    "id": 156,
+    "conversation_id": "44a81f02-a6d3-49c5-b4bc-91d630b666db",
+    "role": "user",
+    "content": "Hello, can you help me check the status of my order?",
+    "timestamp": "2026-09-19T17:00:00"
+  },
+  {
+    "id": 157,
+    "conversation_id": "44a81f02-a6d3-49c5-b4bc-91d630b666db",
+    "role": "assistant",
+    "content": "Hello! I would be glad to help you track your order. Let me retrieve your recent orders and shipment details.",
+    "timestamp": "2026-09-19T17:01:00"
+  },
+  {
+    "id": 158,
+    "conversation_id": "9b46a255-fd69-42a8-9614-d1eeb9775522",
+    "role": "user",
+    "content": "My delivered parcel has a missing cable inside the box.",
+    "timestamp": "2026-09-21T12:00:00"
+  },
+  {
+    "id": 159,
+    "conversation_id": "9b46a255-fd69-42a8-9614-d1eeb9775522",
+    "role": "assistant",
+    "content": "I apologize for the missing accessory. I have logged a support ticket for our dispatch team to send a replacement cable.",
+    "timestamp": "2026-09-21T12:01:00"
+  },
+  {
+    "id": 160,
+    "conversation_id": "4583bc97-23e3-4211-a67a-c3b3f3d5c71f",
+    "role": "user",
+    "content": "My delivered parcel has a missing cable inside the box.",
+    "timestamp": "2026-09-21T13:00:00"
+  },
+  {
+    "id": 161,
+    "conversation_id": "4583bc97-23e3-4211-a67a-c3b3f3d5c71f",
+    "role": "assistant",
+    "content": "I apologize for the missing accessory. I have logged a support ticket for our dispatch team to send a replacement cable.",
+    "timestamp": "2026-09-21T13:01:00"
+  },
+  {
+    "id": 162,
+    "conversation_id": "96ca86e4-0809-49c7-a24e-edd14974e420",
+    "role": "user",
+    "content": "Does the 27-inch 4K monitor come with a manufacturer warranty?",
+    "timestamp": "2026-09-21T08:00:00"
+  },
+  {
+    "id": 163,
+    "conversation_id": "96ca86e4-0809-49c7-a24e-edd14974e420",
+    "role": "assistant",
+    "content": "Yes, the UltraView 27-inch 4K monitor includes a comprehensive 730-day (2-year) manufacturer warranty.",
+    "timestamp": "2026-09-21T08:01:00"
+  },
+  {
+    "id": 164,
+    "conversation_id": "39319322-dfa3-485e-9a6a-fc4544e208b9",
+    "role": "user",
+    "content": "Does the 27-inch 4K monitor come with a manufacturer warranty?",
+    "timestamp": "2026-10-08T12:00:00"
+  },
+  {
+    "id": 165,
+    "conversation_id": "39319322-dfa3-485e-9a6a-fc4544e208b9",
+    "role": "assistant",
+    "content": "Yes, the UltraView 27-inch 4K monitor includes a comprehensive 730-day (2-year) manufacturer warranty.",
+    "timestamp": "2026-10-08T12:01:00"
+  },
+  {
+    "id": 166,
+    "conversation_id": "c6b93c8a-ab64-474a-a054-afdea2945478",
+    "role": "user",
+    "content": "I need to speak to a human customer representative please.",
+    "timestamp": "2026-09-17T13:00:00"
+  },
+  {
+    "id": 167,
+    "conversation_id": "c6b93c8a-ab64-474a-a054-afdea2945478",
+    "role": "assistant",
+    "content": "I understand. I am escalating your query and creating an urgent support ticket for a customer support representative.",
+    "timestamp": "2026-09-17T13:01:00"
+  },
+  {
+    "id": 168,
+    "conversation_id": "c40bb14d-f6eb-4b2b-a7b6-ca07fcd69992",
+    "role": "user",
+    "content": "My delivered parcel has a missing cable inside the box.",
+    "timestamp": "2026-09-16T07:00:00"
+  },
+  {
+    "id": 169,
+    "conversation_id": "c40bb14d-f6eb-4b2b-a7b6-ca07fcd69992",
+    "role": "assistant",
+    "content": "I apologize for the missing accessory. I have logged a support ticket for our dispatch team to send a replacement cable.",
+    "timestamp": "2026-09-16T07:01:00"
+  },
+  {
+    "id": 170,
+    "conversation_id": "554f4de3-df35-4130-968f-0dc7835ad67e",
+    "role": "user",
+    "content": "Can I return the headphones I bought last week?",
+    "timestamp": "2026-09-18T13:00:00"
+  },
+  {
+    "id": 171,
+    "conversation_id": "554f4de3-df35-4130-968f-0dc7835ad67e",
+    "role": "assistant",
+    "content": "Yes, SonicPulse wireless headphones have a 14-day return window. Since your order was delivered 4 days ago, it is eligible for return.",
+    "timestamp": "2026-09-18T13:01:00"
+  },
+  {
+    "id": 172,
+    "conversation_id": "ed8608f4-96da-4aa9-ae67-02ee3f07cd2c",
+    "role": "user",
+    "content": "When will my refund be processed for the cancelled order?",
+    "timestamp": "2026-09-23T07:00:00"
+  },
+  {
+    "id": 173,
+    "conversation_id": "ed8608f4-96da-4aa9-ae67-02ee3f07cd2c",
+    "role": "assistant",
+    "content": "Refunds for cancelled orders typically process within 3 to 5 business days to your original payment method.",
+    "timestamp": "2026-09-23T07:01:00"
+  },
+  {
+    "id": 174,
+    "conversation_id": "0ec3d4f4-94d3-4db5-b157-8a9613352346",
+    "role": "user",
+    "content": "Can I return the headphones I bought last week?",
+    "timestamp": "2026-10-09T04:00:00"
+  },
+  {
+    "id": 175,
+    "conversation_id": "0ec3d4f4-94d3-4db5-b157-8a9613352346",
+    "role": "assistant",
+    "content": "Yes, SonicPulse wireless headphones have a 14-day return window. Since your order was delivered 4 days ago, it is eligible for return.",
+    "timestamp": "2026-10-09T04:01:00"
+  },
+  {
+    "id": 176,
+    "conversation_id": "3a3c5ac7-f503-4ea9-b1b1-a58656b506b6",
+    "role": "user",
+    "content": "Can I return the headphones I bought last week?",
+    "timestamp": "2026-09-13T05:00:00"
+  },
+  {
+    "id": 177,
+    "conversation_id": "3a3c5ac7-f503-4ea9-b1b1-a58656b506b6",
+    "role": "assistant",
+    "content": "Yes, SonicPulse wireless headphones have a 14-day return window. Since your order was delivered 4 days ago, it is eligible for return.",
+    "timestamp": "2026-09-13T05:01:00"
+  },
+  {
+    "id": 178,
+    "conversation_id": "196a67b7-cc5b-4882-9593-4a4d680be453",
+    "role": "user",
+    "content": "Does the 27-inch 4K monitor come with a manufacturer warranty?",
+    "timestamp": "2026-10-11T00:00:00"
+  },
+  {
+    "id": 179,
+    "conversation_id": "196a67b7-cc5b-4882-9593-4a4d680be453",
+    "role": "assistant",
+    "content": "Yes, the UltraView 27-inch 4K monitor includes a comprehensive 730-day (2-year) manufacturer warranty.",
+    "timestamp": "2026-10-11T00:01:00"
+  },
+  {
+    "id": 180,
+    "conversation_id": "90e10b20-52db-4594-bc6d-ac5b8bbc52f8",
+    "role": "user",
+    "content": "Can I return the headphones I bought last week?",
+    "timestamp": "2026-10-04T15:00:00"
+  },
+  {
+    "id": 181,
+    "conversation_id": "90e10b20-52db-4594-bc6d-ac5b8bbc52f8",
+    "role": "assistant",
+    "content": "Yes, SonicPulse wireless headphones have a 14-day return window. Since your order was delivered 4 days ago, it is eligible for return.",
+    "timestamp": "2026-10-04T15:01:00"
+  },
+  {
+    "id": 182,
+    "conversation_id": "5c4d4560-4e20-4c95-9c5b-931a50635c18",
+    "role": "user",
+    "content": "My delivered parcel has a missing cable inside the box.",
+    "timestamp": "2026-09-19T12:00:00"
+  },
+  {
+    "id": 183,
+    "conversation_id": "5c4d4560-4e20-4c95-9c5b-931a50635c18",
+    "role": "assistant",
+    "content": "I apologize for the missing accessory. I have logged a support ticket for our dispatch team to send a replacement cable.",
+    "timestamp": "2026-09-19T12:01:00"
+  }
+]

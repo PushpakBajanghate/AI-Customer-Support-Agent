@@ -326,10 +326,10 @@ python -m venv venv
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the automated database seed script
+# Run the automated database seed script (safe, additive, and idempotent)
 python seed.py
 ```
-*Populates 10 synthetic customer profiles, 20 products, 28 orders, shipments, returns, refunds, and support tickets.*
+*Populates 125 synthetic customer profiles, 117 products across 10+ categories, 550 orders, 750 order items, 260 shipments, 55 returns, 52 refunds, 75 support tickets, 75 conversations, and 180 conversation messages. Includes database index migrations on foreign-key lookup columns (`orders.customer_id`, `order_items.order_id`, `support_tickets.customer_id`) for accelerated query performance.*
 
 ### 2. Running the Backend
 

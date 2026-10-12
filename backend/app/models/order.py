@@ -7,7 +7,7 @@ class Order(Base):
     __tablename__ = "orders"
 
     id = Column(Integer, primary_key=True, index=True)
-    customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False)
+    customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False, index=True)
     order_date = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     status = Column(String, nullable=False)  # delivered, shipped, processing, cancelled
     payment_status = Column(String, nullable=False)  # paid, pending, refunded

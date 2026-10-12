@@ -4,7 +4,7 @@
     "name": "SonicPulse Wireless Noise Cancelling Headphones",
     "category": "Audio",
     "brand": "SonicWave",
-    "price": 4999.00,
+    "price": 4999.0,
     "return_window_days": 14,
     "warranty_days": 365
   },
@@ -13,7 +13,7 @@
     "name": "AuraBass True Wireless Earbuds",
     "category": "Audio",
     "brand": "SonicWave",
-    "price": 1999.00,
+    "price": 1999.0,
     "return_window_days": 7,
     "warranty_days": 365
   },
@@ -22,7 +22,7 @@
     "name": "UltraView 27-inch 4K IPS Monitor",
     "category": "Monitors",
     "brand": "VisionTech",
-    "price": 22499.00,
+    "price": 22499.0,
     "return_window_days": 10,
     "warranty_days": 730
   },
@@ -31,7 +31,7 @@
     "name": "NovaPro Mechanical Gaming Keyboard (Brown Switch)",
     "category": "Peripherals",
     "brand": "KeyMaster",
-    "price": 3499.00,
+    "price": 3499.0,
     "return_window_days": 14,
     "warranty_days": 365
   },
@@ -40,7 +40,7 @@
     "name": "ErgoGlide Precision Wireless Mouse",
     "category": "Peripherals",
     "brand": "KeyMaster",
-    "price": 1299.00,
+    "price": 1299.0,
     "return_window_days": 14,
     "warranty_days": 180
   },
@@ -49,7 +49,7 @@
     "name": "ApexFit Smart Fitness Tracker Band",
     "category": "Wearables",
     "brand": "ApexGear",
-    "price": 2799.00,
+    "price": 2799.0,
     "return_window_days": 10,
     "warranty_days": 365
   },
@@ -58,7 +58,7 @@
     "name": "Veloce 65W GaN Fast Charger",
     "category": "Accessories",
     "brand": "VoltCraft",
-    "price": 1499.00,
+    "price": 1499.0,
     "return_window_days": 7,
     "warranty_days": 180
   },
@@ -67,7 +67,7 @@
     "name": "PowerStream 20000mAh Power Bank with PD",
     "category": "Accessories",
     "brand": "VoltCraft",
-    "price": 2199.00,
+    "price": 2199.0,
     "return_window_days": 7,
     "warranty_days": 180
   },
@@ -76,7 +76,7 @@
     "name": "Clarity 1080p Full HD Webcam with Stereo Mic",
     "category": "Peripherals",
     "brand": "VisionTech",
-    "price": 2899.00,
+    "price": 2899.0,
     "return_window_days": 14,
     "warranty_days": 365
   },
@@ -85,7 +85,7 @@
     "name": "AeroVent Laptop Cooling Stand with RGB",
     "category": "Accessories",
     "brand": "CoolMaster",
-    "price": 1199.00,
+    "price": 1199.0,
     "return_window_days": 14,
     "warranty_days": 180
   },
@@ -94,7 +94,7 @@
     "name": "Classic Fit Cotton Pique Polo Shirt",
     "category": "Apparel",
     "brand": "UrbanThread",
-    "price": 999.00,
+    "price": 999.0,
     "return_window_days": 30,
     "warranty_days": 0
   },
@@ -103,7 +103,7 @@
     "name": "All-Weather Commuter Laptop Backpack (25L)",
     "category": "Luggage",
     "brand": "UrbanThread",
-    "price": 2499.00,
+    "price": 2499.0,
     "return_window_days": 30,
     "warranty_days": 365
   },
@@ -112,7 +112,7 @@
     "name": "HydroShield Thermal Water Bottle 1L",
     "category": "Home & Kitchen",
     "brand": "PureLife",
-    "price": 799.00,
+    "price": 799.0,
     "return_window_days": 14,
     "warranty_days": 180
   },
@@ -121,7 +121,7 @@
     "name": "BaristaPro Stainless Steel French Press",
     "category": "Home & Kitchen",
     "brand": "PureLife",
-    "price": 1699.00,
+    "price": 1699.0,
     "return_window_days": 14,
     "warranty_days": 365
   },
@@ -130,7 +130,7 @@
     "name": "OptiClean Sonic Electric Toothbrush",
     "category": "Personal Care",
     "brand": "HealthCraft",
-    "price": 1899.00,
+    "price": 1899.0,
     "return_window_days": 0,
     "warranty_days": 365
   },
@@ -139,7 +139,7 @@
     "name": "BreathePure HEPA Room Air Purifier",
     "category": "Home Appliances",
     "brand": "PureLife",
-    "price": 8999.00,
+    "price": 8999.0,
     "return_window_days": 10,
     "warranty_days": 730
   },
@@ -148,7 +148,7 @@
     "name": "SoundBar Studio 120W Dolby Audio",
     "category": "Audio",
     "brand": "SonicWave",
-    "price": 6499.00,
+    "price": 6499.0,
     "return_window_days": 10,
     "warranty_days": 365
   },
@@ -157,7 +157,7 @@
     "name": "Strata Lite Running Shoes",
     "category": "Footwear",
     "brand": "ApexGear",
-    "price": 3299.00,
+    "price": 3299.0,
     "return_window_days": 30,
     "warranty_days": 90
   },
@@ -166,7 +166,7 @@
     "name": "Titanium Edge Stainless Steel Chef Knife 8-inch",
     "category": "Home & Kitchen",
     "brand": "KitchenPro",
-    "price": 1399.00,
+    "price": 1399.0,
     "return_window_days": 14,
     "warranty_days": 365
   },
@@ -175,8 +175,881 @@
     "name": "Braided USB-C to USB-C 100W Cable 2m",
     "category": "Accessories",
     "brand": "VoltCraft",
-    "price": 499.00,
+    "price": 499.0,
     "return_window_days": 7,
+    "warranty_days": 180
+  },
+  {
+    "id": 21,
+    "name": "SonicPulse Studio Pro Over-Ear Monitor Headphones",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 7999.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 22,
+    "name": "AuraBass Mini Portable Bluetooth Speaker 10W",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 1499.0,
+    "return_window_days": 10,
+    "warranty_days": 365
+  },
+  {
+    "id": 23,
+    "name": "SoundBar Max 240W Dolby Atmos with Wireless Subwoofer",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 14999.0,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 24,
+    "name": "AuraBass Sports Wireless Neckband IPX7",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 1299.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 25,
+    "name": "WaveCast Studio USB Condenser Microphone with Pop Filter",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 3999.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 26,
+    "name": "SonicPulse ANC Wireless Gaming Headset with Boom Mic",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 5499.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 27,
+    "name": "AuraBeats Pocket FM & Bluetooth Radio Retro Edition",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 1799.0,
+    "return_window_days": 7,
+    "warranty_days": 180
+  },
+  {
+    "id": 28,
+    "name": "Audiophile Zero Open-Back Hi-Fi Reference Headphones",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 12499.0,
+    "return_window_days": 14,
+    "warranty_days": 730
+  },
+  {
+    "id": 29,
+    "name": "SoundPulse Rugged Waterproof Outdoor Speaker 30W",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 3299.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 30,
+    "name": "VocalPro Dynamic Karaoke Microphone with XLR Cable",
+    "category": "Audio",
+    "brand": "SonicWave",
+    "price": 1199.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 31,
+    "name": "UltraView 34-inch WQHD Curved Gaming Monitor 144Hz",
+    "category": "Monitors",
+    "brand": "VisionTech",
+    "price": 34999.0,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 32,
+    "name": "UltraView 24-inch FHD Borderless IPS Office Monitor",
+    "category": "Monitors",
+    "brand": "VisionTech",
+    "price": 9999.0,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 33,
+    "name": "VisionTech Portable 15.6-inch USB-C Touchscreen Display",
+    "category": "Monitors",
+    "brand": "VisionTech",
+    "price": 14999.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 34,
+    "name": "UltraView ProArt 32-inch 4K HDR Color-Accurate Designer Monitor",
+    "category": "Monitors",
+    "brand": "VisionTech",
+    "price": 48999.0,
+    "return_window_days": 10,
+    "warranty_days": 1095
+  },
+  {
+    "id": 35,
+    "name": "VisionTech Dual Monitor Heavy Duty Gas Spring Desk Arm",
+    "category": "Monitors",
+    "brand": "VisionTech",
+    "price": 3499.0,
+    "return_window_days": 14,
+    "warranty_days": 730
+  },
+  {
+    "id": 36,
+    "name": "VisionLite 22-inch Compact 1080p LED Monitor",
+    "category": "Monitors",
+    "brand": "VisionTech",
+    "price": 6999.0,
+    "return_window_days": 10,
+    "warranty_days": 365
+  },
+  {
+    "id": 37,
+    "name": "UltraView 27-inch QHD Fast IPS 180Hz Esports Monitor",
+    "category": "Monitors",
+    "brand": "VisionTech",
+    "price": 25999.0,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 38,
+    "name": "VisionScreen Privacy Screen Filter 24-inch Magnetic",
+    "category": "Monitors",
+    "brand": "VisionTech",
+    "price": 1499.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 39,
+    "name": "NovaPro Wireless 75% Mechanical Keyboard (Red Switches)",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 4299.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 40,
+    "name": "ErgoGlide Vertical Ergonomic Wireless Mouse 4000 DPI",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 1899.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 41,
+    "name": "KeyMaster Pro Low-Profile Ultra-Slim Bluetooth Keyboard",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 2899.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 42,
+    "name": "ErgoGlide RGB Gaming Mouse Lightweight 58g Honeycomb",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 2199.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 43,
+    "name": "KeyMaster Doubleshot PBT Pudding Keycaps 108-Key Set",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 999.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 44,
+    "name": "Clarity 4K UHD Conference Webcam with Auto-Framing",
+    "category": "Peripherals",
+    "brand": "VisionTech",
+    "price": 6999.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 45,
+    "name": "ErgoDesk XL Anti-Fray Waterproof Desk Mat 900x400mm",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 799.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 46,
+    "name": "KeyMaster Precision USB Graphic Drawing Tablet 10x6 inch",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 4499.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 47,
+    "name": "SilentTouch Wireless Keyboard and Silent Mouse Combo",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 1999.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 48,
+    "name": "ErgoRest Memory Foam Ergonomic Keyboard Wrist Rest",
+    "category": "Peripherals",
+    "brand": "KeyMaster",
+    "price": 599.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 49,
+    "name": "ApexFit Smartwatch Active 2 AMOLED with Bluetooth Calling",
+    "category": "Wearables",
+    "brand": "ApexGear",
+    "price": 4999.0,
+    "return_window_days": 10,
+    "warranty_days": 365
+  },
+  {
+    "id": 50,
+    "name": "ApexFit GPS Multi-Sport Adventure Watch with Sapphire Glass",
+    "category": "Wearables",
+    "brand": "ApexGear",
+    "price": 12999.0,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 51,
+    "name": "ApexFit Smart Fitness Ring Continuous Heart Rate & Sleep",
+    "category": "Wearables",
+    "brand": "ApexGear",
+    "price": 8999.0,
+    "return_window_days": 7,
+    "warranty_days": 365
+  },
+  {
+    "id": 52,
+    "name": "ApexGear Milanese Magnetic Loop Smartwatch Strap 22mm",
+    "category": "Wearables",
+    "brand": "ApexGear",
+    "price": 699.0,
+    "return_window_days": 14,
+    "warranty_days": 90
+  },
+  {
+    "id": 53,
+    "name": "ApexFit Kids Safety GPS Smartwatch with SOS Call",
+    "category": "Wearables",
+    "brand": "ApexGear",
+    "price": 3499.0,
+    "return_window_days": 10,
+    "warranty_days": 365
+  },
+  {
+    "id": 54,
+    "name": "ApexPulse Chest Strap Bluetooth Heart Rate Monitor",
+    "category": "Wearables",
+    "brand": "ApexGear",
+    "price": 2299.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 55,
+    "name": "Veloce 100W GaN 4-Port Fast Desktop Charging Station",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 3299.0,
+    "return_window_days": 7,
+    "warranty_days": 365
+  },
+  {
+    "id": 56,
+    "name": "PowerStream 10000mAh Magnetic Wireless MagSafe Power Bank",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 1899.0,
+    "return_window_days": 7,
+    "warranty_days": 180
+  },
+  {
+    "id": 57,
+    "name": "VoltCraft 7-in-1 USB-C Hub with 4K HDMI & 100W PD",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 2499.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 58,
+    "name": "PowerStream Solar Outdoor 26800mAh Camping Power Bank",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 3799.0,
+    "return_window_days": 7,
+    "warranty_days": 365
+  },
+  {
+    "id": 59,
+    "name": "Veloce Braided 3-in-1 Universal Fast Charging Cable 1.5m",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 399.0,
+    "return_window_days": 7,
+    "warranty_days": 180
+  },
+  {
+    "id": 60,
+    "name": "AeroVent Aluminium Foldable Laptop Riser Ergo Stand",
+    "category": "Accessories",
+    "brand": "CoolMaster",
+    "price": 899.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 61,
+    "name": "VoltCraft Surge Protected 8-Way Smart Power Strip 2500W",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 1699.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 62,
+    "name": "VoltCraft Car Fast Charger 45W Dual USB-C Metal Body",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 799.0,
+    "return_window_days": 7,
+    "warranty_days": 180
+  },
+  {
+    "id": 63,
+    "name": "CableTidy Silicone Cable Management Organizer Clips (Pack of 6)",
+    "category": "Accessories",
+    "brand": "VoltCraft",
+    "price": 299.0,
+    "return_window_days": 14,
+    "warranty_days": 90
+  },
+  {
+    "id": 64,
+    "name": "CoolMaster External Silent Vacuum Laptop Exhaust Cooler",
+    "category": "Accessories",
+    "brand": "CoolMaster",
+    "price": 1099.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 65,
+    "name": "All-Day Performance Breathable Chino Trousers",
+    "category": "Apparel",
+    "brand": "UrbanThread",
+    "price": 1799.0,
+    "return_window_days": 30,
+    "warranty_days": 0
+  },
+  {
+    "id": 66,
+    "name": "Merino Wool Thermoregulating Crew Neck Sweater",
+    "category": "Apparel",
+    "brand": "UrbanThread",
+    "price": 2899.0,
+    "return_window_days": 30,
+    "warranty_days": 0
+  },
+  {
+    "id": 67,
+    "name": "FlexDry Anti-Odor Athletic Training T-Shirt",
+    "category": "Apparel",
+    "brand": "ApexGear",
+    "price": 799.0,
+    "return_window_days": 30,
+    "warranty_days": 0
+  },
+  {
+    "id": 68,
+    "name": "UrbanShield Waterproof Hooded Windbreaker Jacket",
+    "category": "Apparel",
+    "brand": "UrbanThread",
+    "price": 3499.0,
+    "return_window_days": 30,
+    "warranty_days": 180
+  },
+  {
+    "id": 69,
+    "name": "Tailored Slim-Fit Wrinkle-Resistant Formal Oxford Shirt",
+    "category": "Apparel",
+    "brand": "UrbanThread",
+    "price": 1499.0,
+    "return_window_days": 30,
+    "warranty_days": 0
+  },
+  {
+    "id": 70,
+    "name": "ActiveStretch Quick-Dry Running Shorts with Zip Pocket",
+    "category": "Apparel",
+    "brand": "ApexGear",
+    "price": 899.0,
+    "return_window_days": 30,
+    "warranty_days": 0
+  },
+  {
+    "id": 71,
+    "name": "CozyFleece Heavyweight Pullover Winter Hoodie",
+    "category": "Apparel",
+    "brand": "UrbanThread",
+    "price": 2199.0,
+    "return_window_days": 30,
+    "warranty_days": 0
+  },
+  {
+    "id": 72,
+    "name": "Seamless Moisture-Wicking Compression Base Layer Set",
+    "category": "Apparel",
+    "brand": "ApexGear",
+    "price": 1399.0,
+    "return_window_days": 30,
+    "warranty_days": 0
+  },
+  {
+    "id": 73,
+    "name": "UrbanDenim Stretch Comfort Slim Fit Jeans Dark Indigo",
+    "category": "Apparel",
+    "brand": "UrbanThread",
+    "price": 1999.0,
+    "return_window_days": 30,
+    "warranty_days": 0
+  },
+  {
+    "id": 74,
+    "name": "ThermaGrip Touchscreen Winter Thermal Knit Gloves",
+    "category": "Apparel",
+    "brand": "UrbanThread",
+    "price": 499.0,
+    "return_window_days": 30,
+    "warranty_days": 0
+  },
+  {
+    "id": 75,
+    "name": "Strata Pro Carbon Plate Marathon Racing Shoes",
+    "category": "Footwear",
+    "brand": "ApexGear",
+    "price": 7999.0,
+    "return_window_days": 30,
+    "warranty_days": 90
+  },
+  {
+    "id": 76,
+    "name": "TrailBlazer Waterproof Vibram Outsole Hiking Boots",
+    "category": "Footwear",
+    "brand": "ApexGear",
+    "price": 5499.0,
+    "return_window_days": 30,
+    "warranty_days": 180
+  },
+  {
+    "id": 77,
+    "name": "UrbanGlide Breathable Knit Slip-On Casual Loafers",
+    "category": "Footwear",
+    "brand": "UrbanThread",
+    "price": 2199.0,
+    "return_window_days": 30,
+    "warranty_days": 90
+  },
+  {
+    "id": 78,
+    "name": "ApexCushion Cloud Recovery Slides for Plantar Relief",
+    "category": "Footwear",
+    "brand": "ApexGear",
+    "price": 1299.0,
+    "return_window_days": 30,
+    "warranty_days": 90
+  },
+  {
+    "id": 79,
+    "name": "CourtMaster High-Traction Indoor Badminton Court Shoes",
+    "category": "Footwear",
+    "brand": "ApexGear",
+    "price": 2899.0,
+    "return_window_days": 30,
+    "warranty_days": 90
+  },
+  {
+    "id": 80,
+    "name": "Classic Derby Genuine Full Grain Leather Formal Shoes",
+    "category": "Footwear",
+    "brand": "UrbanThread",
+    "price": 3999.0,
+    "return_window_days": 30,
+    "warranty_days": 180
+  },
+  {
+    "id": 81,
+    "name": "NomadPro Expandable Hardshell Carry-On Trolley 38L",
+    "category": "Luggage",
+    "brand": "UrbanThread",
+    "price": 4999.0,
+    "return_window_days": 14,
+    "warranty_days": 730
+  },
+  {
+    "id": 82,
+    "name": "CitySling Anti-Theft Water-Resistant Crossbody Bag",
+    "category": "Luggage",
+    "brand": "UrbanThread",
+    "price": 1499.0,
+    "return_window_days": 30,
+    "warranty_days": 365
+  },
+  {
+    "id": 83,
+    "name": "Voyager 45L Duffel Weekender Bag with Shoe Compartment",
+    "category": "Luggage",
+    "brand": "UrbanThread",
+    "price": 2799.0,
+    "return_window_days": 30,
+    "warranty_days": 365
+  },
+  {
+    "id": 84,
+    "name": "TechPack Modular Electronics Cable Organizer Travel Pouch",
+    "category": "Luggage",
+    "brand": "UrbanThread",
+    "price": 899.0,
+    "return_window_days": 30,
+    "warranty_days": 180
+  },
+  {
+    "id": 85,
+    "name": "Alpine Trek 60L Internal Frame Backpack with Rain Cover",
+    "category": "Luggage",
+    "brand": "ApexGear",
+    "price": 4299.0,
+    "return_window_days": 14,
+    "warranty_days": 730
+  },
+  {
+    "id": 86,
+    "name": "BaristaPro Smart Conical Burr Coffee Grinder 30 Settings",
+    "category": "Home & Kitchen",
+    "brand": "PureLife",
+    "price": 5499.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 87,
+    "name": "CrispWave 5.5L Digital Touchscreen Air Fryer 1700W",
+    "category": "Home & Kitchen",
+    "brand": "PureLife",
+    "price": 6999.0,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 88,
+    "name": "ChefMaster Multi-Ply Stainless Steel Tri-Ply Kadai 26cm",
+    "category": "Home & Kitchen",
+    "brand": "KitchenPro",
+    "price": 2199.0,
+    "return_window_days": 14,
+    "warranty_days": 1095
+  },
+  {
+    "id": 89,
+    "name": "Artisan Cast Iron Pre-Seasoned Dutch Oven 4.5L",
+    "category": "Home & Kitchen",
+    "brand": "KitchenPro",
+    "price": 3299.0,
+    "return_window_days": 14,
+    "warranty_days": 1825
+  },
+  {
+    "id": 90,
+    "name": "PureDine 24-Piece Food-Grade Stainless Cutlery Set",
+    "category": "Home & Kitchen",
+    "brand": "KitchenPro",
+    "price": 1599.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 91,
+    "name": "HydroShield Double Wall Vacuum Insulated Food Jar 750ml",
+    "category": "Home & Kitchen",
+    "brand": "PureLife",
+    "price": 999.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 92,
+    "name": "BaristaPro Automatic Milk Frother and Steamer 4-in-1",
+    "category": "Home & Kitchen",
+    "brand": "PureLife",
+    "price": 2399.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 93,
+    "name": "KitchenPro Precision Digital Kitchen Scale 0.1g Accuracy",
+    "category": "Home & Kitchen",
+    "brand": "KitchenPro",
+    "price": 799.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 94,
+    "name": "PureLife Borosilicate Glass Airtight Storage Jars Set of 4",
+    "category": "Home & Kitchen",
+    "brand": "PureLife",
+    "price": 1199.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 95,
+    "name": "ChefMaster Hand-Forged Damascus Steel Santoku Knife 7-inch",
+    "category": "Home & Kitchen",
+    "brand": "KitchenPro",
+    "price": 2799.0,
+    "return_window_days": 14,
+    "warranty_days": 730
+  },
+  {
+    "id": 96,
+    "name": "AeroBreeze BLDC Energy Saving Silent Smart Pedestal Fan",
+    "category": "Home Appliances",
+    "brand": "PureLife",
+    "price": 4299.0,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 97,
+    "name": "SteamWave Professional Garment Steamer 1800W 1.8L",
+    "category": "Home Appliances",
+    "brand": "PureLife",
+    "price": 3499.0,
+    "return_window_days": 10,
+    "warranty_days": 365
+  },
+  {
+    "id": 98,
+    "name": "RoboVac Smart Laser Navigation Robotic Vacuum & Mop",
+    "category": "Home Appliances",
+    "brand": "PureLife",
+    "price": 22999.0,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 99,
+    "name": "AromaMist Ultrasonic Essential Oil Diffuser with LED",
+    "category": "Home Appliances",
+    "brand": "PureLife",
+    "price": 1299.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 100,
+    "name": "AquaPure UV+UF Smart Under-Sink Water Purifier 7L",
+    "category": "Home Appliances",
+    "brand": "PureLife",
+    "price": 11499.0,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 101,
+    "name": "OptiGroom Cordless Waterproof Beard Trimmer with 20 Lengths",
+    "category": "Personal Care",
+    "brand": "HealthCraft",
+    "price": 1699.0,
+    "return_window_days": 0,
+    "warranty_days": 365
+  },
+  {
+    "id": 102,
+    "name": "HydroSonic Water Flosser with 5 Pressure Modes IPX7",
+    "category": "Personal Care",
+    "brand": "HealthCraft",
+    "price": 2499.0,
+    "return_window_days": 0,
+    "warranty_days": 365
+  },
+  {
+    "id": 103,
+    "name": "SilkyGlide Ionic Negative Ion Hair Dryer 1800W",
+    "category": "Personal Care",
+    "brand": "HealthCraft",
+    "price": 2999.0,
+    "return_window_days": 14,
+    "warranty_days": 730
+  },
+  {
+    "id": 104,
+    "name": "OptiClean Electric Toothbrush Replacement Brush Heads (4-Pack)",
+    "category": "Personal Care",
+    "brand": "HealthCraft",
+    "price": 699.0,
+    "return_window_days": 0,
+    "warranty_days": 0
+  },
+  {
+    "id": 105,
+    "name": "DermaCare Heated Facial Steamer with Nano Ionic Mist",
+    "category": "Personal Care",
+    "brand": "HealthCraft",
+    "price": 1899.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 106,
+    "name": "PurePosture Ergonomic Lumbar Back Support Massager Cushion",
+    "category": "Personal Care",
+    "brand": "HealthCraft",
+    "price": 2199.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 107,
+    "name": "ApexGrip Quick-Adjust Dial Dumbbells Set 24kg Pair",
+    "category": "Sports & Fitness",
+    "brand": "ApexGear",
+    "price": 14999.0,
+    "return_window_days": 10,
+    "warranty_days": 730
+  },
+  {
+    "id": 108,
+    "name": "ZenFlow Eco-Friendly High Density TPE Non-Slip Yoga Mat 6mm",
+    "category": "Sports & Fitness",
+    "brand": "ApexGear",
+    "price": 1299.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 109,
+    "name": "PowerBand Heavy Duty Pull-Up Assist Resistance Bands Set",
+    "category": "Sports & Fitness",
+    "brand": "ApexGear",
+    "price": 899.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 110,
+    "name": "ApexRope High-Speed Aluminum Bearing Skipping Jump Rope",
+    "category": "Sports & Fitness",
+    "brand": "ApexGear",
+    "price": 599.0,
+    "return_window_days": 14,
+    "warranty_days": 180
+  },
+  {
+    "id": 111,
+    "name": "HydroPack 2L Hydration Backpack for Cycling & Marathon",
+    "category": "Sports & Fitness",
+    "brand": "ApexGear",
+    "price": 1799.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 112,
+    "name": "DeepRelief Percussion Deep Tissue Muscle Massage Gun 6 Heads",
+    "category": "Sports & Fitness",
+    "brand": "ApexGear",
+    "price": 3799.0,
+    "return_window_days": 10,
+    "warranty_days": 365
+  },
+  {
+    "id": 113,
+    "name": "Classic Black Hardcover Dot Grid Bullet Journal 160 GSM",
+    "category": "Books & Stationery",
+    "brand": "PaperCraft",
+    "price": 699.0,
+    "return_window_days": 14,
+    "warranty_days": 0
+  },
+  {
+    "id": 114,
+    "name": "Artisan Metal Fountain Pen with Medium Nib & Converter",
+    "category": "Books & Stationery",
+    "brand": "PaperCraft",
+    "price": 1299.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 115,
+    "name": "PaperCraft Fineliner Archival Pigment Ink Pens Set of 8",
+    "category": "Books & Stationery",
+    "brand": "PaperCraft",
+    "price": 549.0,
+    "return_window_days": 14,
+    "warranty_days": 0
+  },
+  {
+    "id": 116,
+    "name": "ErgoDesk Solid Oak Dual Tier Monitor Stand with Organizer",
+    "category": "Books & Stationery",
+    "brand": "PaperCraft",
+    "price": 2499.0,
+    "return_window_days": 14,
+    "warranty_days": 365
+  },
+  {
+    "id": 117,
+    "name": "Executive Vegan Leather Portfolio Padfolio Folder A4",
+    "category": "Books & Stationery",
+    "brand": "PaperCraft",
+    "price": 1199.0,
+    "return_window_days": 14,
     "warranty_days": 180
   }
 ]
