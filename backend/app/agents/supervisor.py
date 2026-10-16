@@ -133,6 +133,12 @@ def _confirmation_prompt(action_type: str, order_id: int | None) -> str:
 def _success_message(action_type: str, result: dict) -> str:
     if action_type == "create_support_ticket":
         return "Your issue has been escalated to a support representative."
+    if action_type == "create_refund" and result.get("data", {}).get("escalated"):
+        ticket_id = result["data"].get("ticket_id")
+        return (
+            f"Your refund request was recorded and escalated to a human agent for manual review "
+            f"because the amount is above our approval threshold. Support ticket #{ticket_id} is now open."
+        )
     labels = {"cancel_order": "cancellation", "create_return": "return request", "create_refund": "refund request", "create_support_ticket": "support ticket"}
     identifier = result.get("data", {}).get("id")
     suffix = f" #{identifier}" if identifier else ""

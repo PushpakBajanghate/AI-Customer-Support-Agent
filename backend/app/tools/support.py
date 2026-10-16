@@ -19,6 +19,7 @@ from app.models.refund import Refund
 from app.models.return_model import Return
 from app.models.shipment import Shipment
 from app.models.ticket import SupportTicket
+from app.config import settings
 from app.models.conversation import Conversation
 
 
@@ -145,8 +146,28 @@ def create_refund(order_id: int, customer_id: int, db: Session | None = None) ->
         refund = Refund(order_id=order_id, amount=order.total_amount, status="pending")
         session.add(refund)
         order.payment_status = "pending"
+        escalation_ticket = None
+        if float(order.total_amount or 0) >= settings.REFUND_ESCALATION_THRESHOLD:
+            escalation_ticket = SupportTicket(
+                customer_id=customer_id,
+                subject=f"Manual review required for refund on order #{order.id}",
+                description=(
+                    f"Refund of ₹{float(order.total_amount):,.2f} exceeds the manual-review threshold "
+                    f"of ₹{settings.REFUND_ESCALATION_THRESHOLD:,.2f}. Please verify and approve the refund."
+                ),
+                issue="high_value_refund",
+                summary=f"High-value refund escalation for order #{order.id}",
+                status="open",
+                priority="high",
+            )
+            session.add(escalation_ticket)
         session.commit()
-        return {"ok": True, "data": _refund_data(refund)}
+        refund_data = _refund_data(refund)
+        if escalation_ticket:
+            refund_data["escalated"] = True
+            refund_data["ticket_id"] = escalation_ticket.id
+            refund_data["escalation_threshold"] = settings.REFUND_ESCALATION_THRESHOLD
+        return {"ok": True, "data": refund_data}
     return _write(db, command)
 
 

@@ -53,6 +53,10 @@ class Settings(BaseSettings):
     # Production Rate Limiting
     CHAT_RATE_LIMIT_PER_MINUTE: int = int(os.getenv("CHAT_RATE_LIMIT_PER_MINUTE", 20))
 
+    # Refunds above this amount require manual review. Keep this configurable
+    # so deployments can apply their own financial-control policy.
+    REFUND_ESCALATION_THRESHOLD: float = float(os.getenv("REFUND_ESCALATION_THRESHOLD", "25000"))
+
     # Comma-separated browser origins allowed to call the API.
     # The deployed frontend is hosted separately from the API. Render sets this
     # to '*' by default; deployments can still restrict it to a comma list.

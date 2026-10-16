@@ -44,6 +44,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
   const [customerContext, setCustomerContext] = useState(null);
   const [demoCustomers, setDemoCustomers] = useState([]);
   const [showSwitchModal, setShowSwitchModal] = useState(false);
+  const [cancelOrder, setCancelOrder] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const endRef = useRef(null);
   const textareaRef = useRef(null);
@@ -138,6 +139,13 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
     } catch (err) {
       alert('Failed to switch customer: ' + err.message);
     }
+  };
+
+  const confirmCancellation = () => {
+    if (!cancelOrder) return;
+    const orderId = cancelOrder.id;
+    setCancelOrder(null);
+    submitMessage(`I want to cancel order #${orderId}. Please proceed.`);
   };
 
   const orders = customerContext?.recent_orders || [];
@@ -235,7 +243,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
                         <button
                           type="button"
                           className="order-action-btn btn-danger"
-                          onClick={() => submitMessage(`I want to cancel order #${o.id}.`)}
+                          onClick={() => setCancelOrder(o)}
                         >
                           Cancel
                         </button>
@@ -494,6 +502,31 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
                   {c.id === customer.id && <span className="active-tag">Current</span>}
                 </button>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {cancelOrder && (
+        <div className="modal-overlay" onClick={() => setCancelOrder(null)}>
+          <div className="modal-content confirmation-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="confirmation-icon" aria-hidden="true">!</div>
+              <button type="button" className="modal-close" onClick={() => setCancelOrder(null)} aria-label="Close cancellation confirmation">
+                ×
+              </button>
+            </div>
+            <h3>Cancel order #{cancelOrder.id}?</h3>
+            <p className="modal-subtitle">
+              This request will be sent through the live support workflow. You will get one more server-side confirmation before the order is changed.
+            </p>
+            <div className="confirmation-order-summary">
+              <strong>{(cancelOrder.items || []).map((item) => item.product_name).join(', ') || 'Order item'}</strong>
+              <span>₹{Number(cancelOrder.total_amount || 0).toLocaleString()}</span>
+            </div>
+            <div className="confirmation-actions">
+              <button type="button" className="modal-secondary-btn" onClick={() => setCancelOrder(null)}>Keep order</button>
+              <button type="button" className="modal-danger-btn" onClick={confirmCancellation}>Continue cancellation</button>
             </div>
           </div>
         </div>

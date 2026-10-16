@@ -24,7 +24,11 @@ HISTORY_LIMIT = 12
 
 
 def ensure_customer_demo_orders(db: Session, customer_id: int):
-    """Ensures accounts are provisioned with realistic active and historical orders for policy reviews."""
+    """Ensures every profile has the two linked demo orders used by the live UI.
+
+    The marker makes this safe to run at login/context load time: existing
+    orders are preserved and the expansion is inserted once per customer.
+    """
     all_products = db.query(Product).order_by(Product.id).all()
     if not all_products:
         return
@@ -32,6 +36,37 @@ def ensure_customer_demo_orders(db: Session, customer_id: int):
     now = datetime.now(timezone.utc)
     existing_orders = db.query(Order).filter(Order.customer_id == customer_id).all()
     existing_order_count = len(existing_orders)
+
+    expansion_orders = [o for o in existing_orders if (o.shipping_address or "").startswith("Demo expansion order")]
+    if len(expansion_orders) < 2:
+        p_processing = max(all_products, key=lambda product: float(product.price or 0))
+        p_delivered = all_products[1] if len(all_products) > 1 else all_products[0]
+        new_specs = [
+            (p_processing, "processing", "paid", now - timedelta(hours=2), False),
+            (p_delivered, "delivered", "paid", now - timedelta(days=3), True),
+        ]
+        for index, (product, order_status, payment_status, order_date, with_shipment) in enumerate(new_specs, start=1):
+            if any((o.shipping_address or "") == f"Demo expansion order {index}" for o in expansion_orders):
+                continue
+            order = Order(
+                customer_id=customer_id,
+                order_date=order_date,
+                status=order_status,
+                payment_status=payment_status,
+                total_amount=product.price,
+                shipping_address=f"Demo expansion order {index}",
+            )
+            db.add(order)
+            db.flush()
+            db.add(OrderItem(order_id=order.id, product_id=product.id, quantity=1, price=product.price))
+            if with_shipment:
+                db.add(Shipment(
+                    order_id=order.id,
+                    carrier="BlueDart",
+                    tracking_number=f"BLU-{order.id}99-DEMO",
+                    status="delivered",
+                    estimated_delivery=order_date + timedelta(days=2),
+                ))
 
     # 1. Provision active orders if account has none
     if existing_order_count == 0:
@@ -191,7 +226,7 @@ def load_customer_context(db: Session, customer_id: int) -> dict:
     ensure_customer_demo_orders(db, customer_id)
     return {
         "customer": get_customer_information(db, customer_id),
-        "recent_orders": get_recent_orders(db, customer_id, limit=5),
+        "recent_orders": get_recent_orders(db, customer_id, limit=10),
         "shipments": get_shipments(db, customer_id),
         "open_returns": get_returns(db, customer_id, statuses={"requested", "approved"}, limit=5),
         "recent_refunds": get_refunds(db, customer_id, limit=5),
