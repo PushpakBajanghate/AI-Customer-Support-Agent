@@ -37,7 +37,10 @@ def ensure_customer_demo_orders(db: Session, customer_id: int):
     existing_orders = db.query(Order).filter(Order.customer_id == customer_id).all()
     existing_order_count = len(existing_orders)
 
-    expansion_orders = [o for o in existing_orders if (o.shipping_address or "").startswith("Demo expansion order")]
+    expansion_orders = [
+        o for o in existing_orders
+        if (o.shipping_address or "").startswith(("Demo expansion order", "Profile expansion order"))
+    ]
     if len(expansion_orders) < 2:
         p_processing = max(all_products, key=lambda product: float(product.price or 0))
         p_delivered = all_products[1] if len(all_products) > 1 else all_products[0]
@@ -226,7 +229,8 @@ def load_customer_context(db: Session, customer_id: int) -> dict:
     ensure_customer_demo_orders(db, customer_id)
     return {
         "customer": get_customer_information(db, customer_id),
-        "recent_orders": get_recent_orders(db, customer_id, limit=10),
+        "recent_orders": get_recent_orders(db, customer_id, limit=50),
+        "total_orders": db.query(Order).filter(Order.customer_id == customer_id).count(),
         "shipments": get_shipments(db, customer_id),
         "open_returns": get_returns(db, customer_id, statuses={"requested", "approved"}, limit=5),
         "recent_refunds": get_refunds(db, customer_id, limit=5),

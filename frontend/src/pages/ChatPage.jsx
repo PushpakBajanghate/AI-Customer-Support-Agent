@@ -151,6 +151,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
   const orders = customerContext?.recent_orders || [];
   const shipments = customerContext?.shipments || [];
   const openTickets = customerContext?.open_support_tickets || [];
+  const totalOrders = customerContext?.total_orders ?? orders.length;
 
   return (
     <main className="workspace-shell">
@@ -203,7 +204,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
         <div className="sidebar-orders-section">
           <div className="sidebar-section-header">
             <span className="sidebar-section-title">Your Live Orders (PostgreSQL)</span>
-            <span className="orders-count-badge">{orders.length}</span>
+            <span className="orders-count-badge">{totalOrders}</span>
           </div>
 
           <div className="sidebar-orders-list">
@@ -317,7 +318,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
           <div className="header-left">
             <h1>Autonomous Customer Support Agent</h1>
             <div className="live-account-summary" aria-live="polite">
-              <span><strong>{orders.length}</strong> live orders</span>
+              <span><strong>{totalOrders}</strong> live orders</span>
               <span><strong>{shipments.length}</strong> shipment records</span>
               <span><strong>{openTickets.length}</strong> open tickets</span>
             </div>

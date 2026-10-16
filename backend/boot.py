@@ -1,4 +1,4 @@
-"""Production boot hook: seed only a brand-new database, never on redeploy."""
+"""Production boot hook: run the additive, idempotent seed on every deploy."""
 
 from pathlib import Path
 
@@ -21,14 +21,9 @@ def main() -> None:
     except Exception:
         Base.metadata.create_all(bind=engine)
 
-    session = SessionLocal()
-    try:
-        has_customers = session.query(Customer.id).first() is not None
-    finally:
-        session.close()
-
-    if not has_customers:
-        seed_database()
+    # The seed is additive and idempotent. Running it on every deploy is what
+    # makes new JSON-backed orders reach an already-populated production DB.
+    seed_database()
 
     # Keep existing production databases additive: every profile gets the same
     # two linked demo orders on the next deploy, without replacing real data.
