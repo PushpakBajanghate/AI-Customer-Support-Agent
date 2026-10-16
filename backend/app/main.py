@@ -46,7 +46,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="AI Customer Support Agent API",
     description="Backend API for AI Customer Support Agent (Production-Minded Multi-Agent LangGraph Architecture)",
-    version="1.0.0",
+    version=settings.APP_RELEASE,
     lifespan=lifespan
 )
 
@@ -74,7 +74,7 @@ def read_root():
     return {
         "status": "healthy",
         "service": "AI Customer Support Agent API",
-        "version": "1.0.0",
+        "version": settings.APP_RELEASE,
         "phase": "Production Ready — LangGraph Multi-Agent with RAG & Evaluation",
         "docs_url": "/docs"
     }
@@ -91,5 +91,6 @@ def health_check():
     return {
         "status": "ok",
         "environment": settings.APP_ENV,
-        "database": db_status
+        "database": db_status,
+        "release": settings.APP_RELEASE,
     }

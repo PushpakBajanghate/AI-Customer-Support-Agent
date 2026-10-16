@@ -18,6 +18,7 @@ else:
 class Settings(BaseSettings):
     """Application settings and configuration parameters."""
     APP_ENV: str = os.getenv("APP_ENV", "development")
+    APP_RELEASE: str = os.getenv("APP_RELEASE", "local")
     API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
     API_PORT: int = int(os.getenv("API_PORT", 8000))
 

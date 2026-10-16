@@ -3,6 +3,8 @@ services:
     name: ai-customer-support-api
     runtime: python
     plan: free
+    branch: main
+    autoDeploy: true
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: python boot.py && uvicorn app.main:app --host 0.0.0.0 --port $PORT
@@ -10,6 +12,8 @@ services:
     envVars:
       - key: APP_ENV
         value: production
+      - key: APP_RELEASE
+        value: b60a5c2
       - key: PYTHON_VERSION
         value: 3.13.1
       - key: DATABASE_URL
