@@ -8,6 +8,7 @@ from alembic import command
 from app.database import Base, SessionLocal, engine
 from app.models.customer import Customer
 from seed import seed_database
+from app.services.conversation import ensure_customer_demo_orders
 
 
 def main() -> None:
@@ -28,6 +29,15 @@ def main() -> None:
 
     if not has_customers:
         seed_database()
+
+    # Keep existing production databases additive: every profile gets the same
+    # two linked demo orders on the next deploy, without replacing real data.
+    session = SessionLocal()
+    try:
+        for customer_id, in session.query(Customer.id).all():
+            ensure_customer_demo_orders(session, customer_id)
+    finally:
+        session.close()
 
 
 if __name__ == "__main__":

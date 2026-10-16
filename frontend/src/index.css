@@ -1239,6 +1239,29 @@ textarea {
   color: #475569;
 }
 
+.live-account-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.01em;
+}
+
+.live-account-summary span {
+  padding: 5px 9px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.live-account-summary strong {
+  color: var(--primary-blue);
+  font-weight: 800;
+}
+
 /* ============================================================
    DEMO PROFILE SWITCHER MODAL
    ============================================================ */

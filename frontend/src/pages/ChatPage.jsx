@@ -150,6 +150,7 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
 
   const orders = customerContext?.recent_orders || [];
   const shipments = customerContext?.shipments || [];
+  const openTickets = customerContext?.open_support_tickets || [];
 
   return (
     <main className="workspace-shell">
@@ -315,7 +316,11 @@ export default function ChatPage({ token, customer, onLogout, onNewChat, theme, 
         <header className="chat-workspace-header">
           <div className="header-left">
             <h1>Autonomous Customer Support Agent</h1>
-
+            <div className="live-account-summary" aria-live="polite">
+              <span><strong>{orders.length}</strong> live orders</span>
+              <span><strong>{shipments.length}</strong> shipment records</span>
+              <span><strong>{openTickets.length}</strong> open tickets</span>
+            </div>
           </div>
           <div className="header-right">
             {onToggleTheme && <ThemeToggle theme={theme} onToggle={onToggleTheme} />}

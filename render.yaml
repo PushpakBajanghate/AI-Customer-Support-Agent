@@ -30,6 +30,8 @@ services:
         value: "false"
       - key: CHAT_RATE_LIMIT_PER_MINUTE
         value: "20"
+      - key: REFUND_ESCALATION_THRESHOLD
+        value: "25000"
 
 databases:
   - name: ai-customer-support-db
