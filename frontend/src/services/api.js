@@ -8,7 +8,7 @@ const configuredApiUrl = typeof import.meta !== 'undefined' && import.meta.env
   : '';
 const API_BASE_URL = (configuredApiUrl || (
   typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
-    ? 'https://ai-customer-support-api.onrender.com'
+    ? 'https://ai-customer-support-api-4le6.onrender.com'
     : 'http://localhost:8000'
 )).replace(/\/$/, '');
 
